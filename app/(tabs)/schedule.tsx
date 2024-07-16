@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export default function HomeScreen() {
+export default function ScheduleScreen() {
   return (
     <View
       style={{
@@ -9,7 +9,7 @@ export default function HomeScreen() {
         alignItems: "center",
       }}
     >
-      <Text>Home Page</Text>
+      <Text>Schedule Page</Text>
     </View>
   );
 }
