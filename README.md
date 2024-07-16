@@ -1,50 +1,47 @@
-# Welcome to your Expo app 👋
+# EXTRA
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## EXTRA Mobile App Service
+> 보조출연 매칭 서비스 <br/>
+> 개발 기간: 2024.07 ~
 
-## Get started
+### 배포 주소
 
-1. Install dependencies
+### Github Link
+> Mobile APP: https://github.com/geon-2/extra-react-native-app <br/>
+> Web Service: <br/>
+> BF Server: <br/>
 
-   ```bash
-   npm install
-   ```
+## 팀원 소개
+<table>
+  <tbody>
+    <tr>
+        <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>PM : 미뇽/박지민</b></sub></a><br /></td>
+        <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>Designer : 메건/정효재</b></sub></a><br /></td>
+        <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>Designer : 제이/장지민</b></sub></a><br /></td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://flaxen-game-fbe.notion.site/Portfolio-c9778cd22b96491799877509d70df599?pvs=4"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀장 : 노아/이건</b></sub></a><br /></td>
+      <td align="center"><a href="https://lucky-eris-8a7.notion.site/Jinyeong-Choi-e8c82e6f567a46a69d35929feae3e6f3"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 주디/최진영</b></sub></a><br /></td>
+      <td align="center"><a href="https://superb-toque-d66.notion.site/8acb4f541b974070bae61011c2920564"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 아리/노예원</b></sub></a><br /></td>
+      <td align="center"><a href="https://youujin.notion.site/8b818f4e49d9431ea856e68fd2450238?pvs=4"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 다홍/서유진</b></sub></a><br /></td>
+     <tr/>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 팀장 : 팡선/박창선</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 사루/노혜능</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 팀원 : 사야/신주은</b></sub></a><br /></td>
+    </tr>
+  </tbody>
+</table>
 
-2. Start the app
+## 프로젝트 소개
+보조출연 매칭 서비스
 
-   ```bash
-    npx expo start
-   ```
+## 기술 스택
 
-In the output, you'll find options to open the app in a
+### ✔️Design
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### ✔️Front-end
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"><img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=Expo&logoColor=white">
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### ✔️Back-end
+<img src="https://img.shields.io/badge/Spring-Boot-6DB33F?style=for-the-badge&logo=Spring-Boot&logoColor=white">
