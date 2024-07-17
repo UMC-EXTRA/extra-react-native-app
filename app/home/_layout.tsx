@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React from 'react';
 import { Image } from 'react-native';
 import { Tabs } from 'expo-router';
 import normalize from 'react-native-normalize';
@@ -15,12 +15,12 @@ const SpeechGrayIcon = require('@/assets/images/icons/Speech-gray.png');
 const UserColorIcon = require('@/assets/images/icons/User-color.png');
 const UserGrayIcon = require('@/assets/images/icons/User-gray.png');
 
-export default function TabsLayout() {
+const TabsLayout: React.FC = () => {
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: colors.tabBarBackground,
+          backgroundColor: colors.background,
           height: normalize(100),
           paddingTop: 0,
         },
@@ -42,7 +42,7 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: '지원현황',
           headerShown: false,
-          tabBarIcon: ({ focused }): ReactNode => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Image
                 source={focused ? PlaylistColorIcon : PlaylistGrayIcon}
@@ -57,7 +57,7 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: '스케줄표',
           headerShown: false,
-          tabBarIcon: ({ focused }): ReactNode => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Image
                 source={focused ? TodayColorIcon : TodayGrayIcon}
@@ -72,7 +72,7 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: '홈',
           headerShown: false,
-          tabBarIcon: ({ focused }): ReactNode => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Image
                 source={focused ? HomeColorIcon : HomeGrayIcon}
@@ -87,7 +87,7 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: '채팅',
           headerShown: false,
-          tabBarIcon: ({ focused }): ReactNode => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Image
                 source={focused ? SpeechColorIcon : SpeechGrayIcon}
@@ -102,7 +102,7 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: '마이페이지',
           headerShown: false,
-          tabBarIcon: ({ focused }): ReactNode => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Image
                 source={focused ? UserColorIcon : UserGrayIcon}
@@ -114,7 +114,7 @@ export default function TabsLayout() {
       />
     </Tabs>
   );
-}
+};
 
 const styles = {
   image: {
@@ -122,3 +122,5 @@ const styles = {
     height: normalize(30),
   },
 };
+
+export default TabsLayout;

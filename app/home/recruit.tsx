@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-export default function HomeScreen() {
+const RecruitScreen = () => {
   return (
     <View
       style={{
@@ -9,7 +9,9 @@ export default function HomeScreen() {
         alignItems: 'center',
       }}
     >
-      <Text>Home Page</Text>
+      <Text>Recruit Page</Text>
     </View>
   );
-}
+};
+
+export default RecruitScreen;

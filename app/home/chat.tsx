@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-export default function ChatScreen() {
+const ChatScreen = () => {
   return (
     <View
       style={{
@@ -12,4 +12,6 @@ export default function ChatScreen() {
       <Text>Chat Page</Text>
     </View>
   );
-}
+};
+
+export default ChatScreen;
