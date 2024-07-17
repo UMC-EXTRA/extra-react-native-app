@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 const SignUpScreen = () => {
   return (
     <View>
-      <Text>Find ID</Text>
+      <Text>회원가입</Text>
     </View>
   );
 };

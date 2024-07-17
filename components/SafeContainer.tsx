@@ -7,7 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const SignContainer = ({ children }: Props) => {
+const SafeContainer = ({ children }: Props) => {
   return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
 };
 
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignContainer;
+export default SafeContainer;
