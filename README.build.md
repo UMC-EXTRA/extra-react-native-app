@@ -1,17 +1,20 @@
 # EXTRA
 
 ## EXTRA Mobile App Service
+
 > 보조출연 매칭 서비스 <br/>
 > 개발 기간: 2024.07 ~
 
 ### 배포 주소
 
 ### Github Link
+
 > Mobile APP: https://github.com/geon-2/extra-react-native-app <br/>
 > Web Service: <br/>
 > BF Server: <br/>
 
 ## 팀원 소개
+
 <table>
   <tbody>
     <tr>
@@ -33,15 +36,19 @@
 </table>
 
 ## 프로젝트 소개
+
 보조출연 매칭 서비스
 
 ## 기술 스택
 
 ### ✔️Design
+
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
 
 ### ✔️Front-end
+
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"><img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=Expo&logoColor=white">
 
 ### ✔️Back-end
+
 <img src="https://img.shields.io/badge/Spring-Boot-6DB33F?style=for-the-badge&logo=Spring-Boot&logoColor=white">
