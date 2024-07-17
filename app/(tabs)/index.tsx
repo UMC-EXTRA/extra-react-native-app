@@ -1,15 +1,17 @@
-import { Text, View } from "react-native";
+import { View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 export default function HomeScreen() {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
-      <Text>Home Page</Text>
+      <WebView
+        source={{ uri: 'https://extra-react-webview.vercel.app/' }}
+        style={{ flex: 1 }}
+      />
     </View>
   );
 }
