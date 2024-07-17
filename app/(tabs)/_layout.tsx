@@ -20,7 +20,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.tabBarBackground,
           height: normalize(100),
           paddingTop: 0,
         },

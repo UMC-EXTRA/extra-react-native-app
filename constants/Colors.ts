@@ -5,8 +5,9 @@
 
 // theme Colors
 export default {
-  dark: '#000',
-  background: '#232226',
+  background: '#000',
+  headerBackground: '#191919',
+  tabBarBackground: '#232226',
   highlight: '#F5C001',
   text: '#000',
   textLight: '#969696',
