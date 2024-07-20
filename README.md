@@ -7,10 +7,10 @@
 1. expo go 다운로드
 
 - Play Store
-  ![](/assets/develop/play_store.png)
+  <img src="/assets/develop/play_store.png" width="200" height="200">
 
 - App Store
-  ![](/assets/develop/app_store.png)
+  <img src="/assets/develop/app_store.png" width="200" height="200">
 
 2. React 실행 시 아래 커멘드로 실행
 
