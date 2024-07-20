@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { Image } from 'react-native';
 import { Tabs } from 'expo-router';
-import normalize from 'react-native-normalize';
 import { FontAwesome } from '@expo/vector-icons';
+import getSize from '@/scripts/getSize';
 
 const HomeColorIcon = require('@/assets/images/icons/Home-color.png');
 const HomeGrayIcon = require('@/assets/images/icons/Home-gray.png');
@@ -21,18 +21,18 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: '#232226',
-          height: normalize(100),
+          height: getSize(160),
           paddingTop: 0,
         },
         tabBarLabelStyle: {
           fontWeight: 900,
-          fontSize: normalize(12),
+          fontSize: getSize(14),
         },
-        tabBarInactiveTintColor: '#B7B7B7',
+        tabBarInactiveTintColor: '#999',
         tabBarActiveTintColor: '#F5C001',
         tabBarItemStyle: {
-          height: normalize(55),
-          marginTop: normalize(20),
+          height: getSize(55),
+          marginTop: getSize(27),
           alignSelf: 'flex-start',
         },
       }}
@@ -43,11 +43,9 @@ export default function TabsLayout() {
           tabBarLabel: '지원현황',
           headerStyle: {
             backgroundColor: '#232226',
-            height: normalize(80),
+            height: getSize(80),
           },
-          headerLeft: () => {
-            return <FontAwesome name="angle-left" size={30} color="white" />;
-          },
+          headerShown: false,
           tabBarIcon: ({ focused }): ReactNode => {
             return (
               <Image
@@ -124,7 +122,7 @@ export default function TabsLayout() {
 
 const styles = {
   image: {
-    width: normalize(30),
-    height: normalize(30),
+    width: getSize(39),
+    height: getSize(39),
   },
 };
