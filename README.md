@@ -24,7 +24,7 @@
   ➜  press h + enter to show help
 ```
 
-3. Network 옆의 주소로 webview에 테스팅
+3. Webview 주소를 Network 주소로 수정
 
 ```jsx
 <WebView
