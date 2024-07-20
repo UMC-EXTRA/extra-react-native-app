@@ -13,6 +13,7 @@ export default function HomeScreen() {
         style={{ width: '100%', height: getSize(261), backgroundColor: '#000' }}
       ></View>
       <WebView
+        // 아래 링크를 수정하세요.
         source={{ uri: 'https://extra-react-webview.vercel.app/' }}
         style={{ flex: 1 }}
       />
