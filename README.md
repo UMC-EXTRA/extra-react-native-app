@@ -38,7 +38,7 @@
 - 지원현황: /app/home/recruit
 - 스케줄표: /app/home/schedule
 
-> 참고: 라우팅된 주소를 테스팅하고 싶은 경우엔 해당 주소로 변경해야함
+> 참고: 라우팅된 주소를 테스팅하고 싶은 경우엔 해당 주소로 변경해야함<br/>
 > 예: 스케줄표주소 -> http://localhost:5173/schedule
 
 ```jsx
