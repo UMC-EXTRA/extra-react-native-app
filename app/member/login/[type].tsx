@@ -134,25 +134,7 @@ const LoginScreen = () => {
           <View style={styles.socialButtonContainer}>
             <TouchableOpacity
               onPress={() => alert('kakao')}
-              style={styles.socialLoginButton}
-            >
-              <Image
-                source={require('@/assets/images/icons/kakao.png')}
-                style={styles.iconImage}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => alert('kakao')}
-              style={styles.socialLoginButton}
-            >
-              <Image
-                source={require('@/assets/images/icons/kakao.png')}
-                style={styles.iconImage}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => alert('kakao')}
-              style={styles.socialLoginButton}
+              style={{ ...styles.socialLoginButton, marginRight: 0 }}
             >
               <Image
                 source={require('@/assets/images/icons/kakao.png')}
@@ -253,10 +235,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5C001',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: getSize(41),
   },
   iconImage: {
-    width: getSize(24),
-    height: getSize(24),
+    width: getSize(25),
+    height: getSize(26),
   },
 });
 
