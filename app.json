@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
-    "scheme": "com.extra.reactnativeapp",
+    "scheme": "extra",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/logo.png",
@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.extra.reactnativeapp"
+      "bundleIdentifier": "com.extra.reactnative.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.extra.reactnativeapp"
+      "package": "com.extra.reactnative.app"
     },
     "web": {
       "bundler": "metro",

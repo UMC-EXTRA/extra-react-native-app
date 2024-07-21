@@ -1,8 +1,7 @@
-import React from 'react';
 import { Image } from 'react-native';
 import { Tabs } from 'expo-router';
-import normalize from 'react-native-normalize';
 import colors from '@/constants/Colors';
+import getSize from '@/scripts/getSize';
 
 const HomeColorIcon = require('@/assets/images/icons/Home-color.png');
 const HomeGrayIcon = require('@/assets/images/icons/Home-gray.png');
@@ -15,24 +14,24 @@ const SpeechGrayIcon = require('@/assets/images/icons/Speech-gray.png');
 const UserColorIcon = require('@/assets/images/icons/User-color.png');
 const UserGrayIcon = require('@/assets/images/icons/User-gray.png');
 
-const TabsLayout: React.FC = () => {
+const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
           backgroundColor: colors.background,
-          height: normalize(100),
+          height: getSize(100),
           paddingTop: 0,
         },
         tabBarLabelStyle: {
           fontWeight: 900,
-          fontSize: normalize(12),
+          fontSize: getSize(14),
         },
-        tabBarInactiveTintColor: colors.tabLabelLight,
-        tabBarActiveTintColor: colors.highlight,
+        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: '#F5C001',
         tabBarItemStyle: {
-          height: normalize(55),
-          marginTop: normalize(20),
+          height: getSize(55),
+          marginTop: getSize(27),
           alignSelf: 'flex-start',
         },
       }}
@@ -41,6 +40,10 @@ const TabsLayout: React.FC = () => {
         name="recruit"
         options={{
           tabBarLabel: '지원현황',
+          headerStyle: {
+            backgroundColor: '#232226',
+            height: getSize(80),
+          },
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
@@ -118,8 +121,8 @@ const TabsLayout: React.FC = () => {
 
 const styles = {
   image: {
-    width: normalize(30),
-    height: normalize(30),
+    width: getSize(39),
+    height: getSize(39),
   },
 };
 
