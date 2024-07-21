@@ -4,7 +4,7 @@
 
 이 저장소에서 새로운 브랜치를 생성해서 테스팅해주세요!!
 
-1. expo go 다운로드
+**1. expo go 다운로드**
 
 - Play Store <br/>
   <img src="/assets/develop/play_store.png" width="200" height="200">
@@ -14,7 +14,7 @@
 
 <br/>
 
-2. React 실행 시 아래 커멘드로 실행
+**2. React 실행 시 아래 커멘드로 실행**
 
 ```bash
     $ npm run dev -- --host
@@ -26,9 +26,9 @@
   ➜  press h + enter to show help
 ```
 
-<br/><br/>
+<br/>
 
-3. Webview 주소를 Network 주소로 수정
+**3. Webview 주소를 Network 주소로 수정**
 
 ```jsx
 <WebView
@@ -55,6 +55,6 @@
 
 <br/>
 
-4. npm start
+**4. npm start**
 
-5. 모바일에서 qr 스캔
+**5. 모바일에서 qr 스캔**
