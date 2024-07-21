@@ -12,6 +12,8 @@
 - App Store <br/>
   <img src="/assets/develop/app_store.png" width="200" height="200">
 
+<br/><br/>
+
 2. React 실행 시 아래 커멘드로 실행
 
 ```bash
@@ -23,6 +25,8 @@
   ➜  Network: http://아이피주소:5173
   ➜  press h + enter to show help
 ```
+
+<br/><br/>
 
 3. Webview 주소를 Network 주소로 수정
 
@@ -48,3 +52,11 @@
   style={{ flex: 1 }}
 />
 ```
+
+<br/><br/>
+
+4. npm start
+
+<br/><br/>
+
+5. 모바일에서 qr 스캔
