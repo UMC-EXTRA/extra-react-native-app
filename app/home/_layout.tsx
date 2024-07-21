@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { Image } from 'react-native';
 import { Tabs } from 'expo-router';
-import normalize from 'react-native-normalize';
-import colors from '@/constants/Colors';
+import { FontAwesome } from '@expo/vector-icons';
+import getSize from '@/scripts/getSize';
 
 const HomeColorIcon = require('@/assets/images/icons/Home-color.png');
 const HomeGrayIcon = require('@/assets/images/icons/Home-gray.png');
@@ -20,19 +20,19 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: colors.tabBarBackground,
-          height: normalize(100),
+          backgroundColor: '#232226',
+          height: getSize(160),
           paddingTop: 0,
         },
         tabBarLabelStyle: {
           fontWeight: 900,
-          fontSize: normalize(12),
+          fontSize: getSize(14),
         },
-        tabBarInactiveTintColor: colors.tabLabelLight,
-        tabBarActiveTintColor: colors.highlight,
+        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: '#F5C001',
         tabBarItemStyle: {
-          height: normalize(55),
-          marginTop: normalize(20),
+          height: getSize(55),
+          marginTop: getSize(27),
           alignSelf: 'flex-start',
         },
       }}
@@ -41,6 +41,10 @@ export default function TabsLayout() {
         name="recruit"
         options={{
           tabBarLabel: '지원현황',
+          headerStyle: {
+            backgroundColor: '#232226',
+            height: getSize(80),
+          },
           headerShown: false,
           tabBarIcon: ({ focused }): ReactNode => {
             return (
@@ -118,7 +122,7 @@ export default function TabsLayout() {
 
 const styles = {
   image: {
-    width: normalize(30),
-    height: normalize(30),
+    width: getSize(39),
+    height: getSize(39),
   },
 };
