@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-kakao/core": "^2.2.5",
+    "@react-native-kakao/user": "^2.2.5",
     "@react-navigation/bottom-tabs": "^6.6.0",
     "@react-navigation/native": "^6.1.17",
     "expo": "~51.0.20",
