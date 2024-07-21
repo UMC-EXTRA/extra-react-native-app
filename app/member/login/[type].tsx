@@ -65,7 +65,7 @@ const LoginScreen = () => {
         <View style={styles.imageContainer}>
           <Image
             source={require('@/assets/images/logo.png')}
-            style={styles.image}
+            style={styles.logoImage}
           />
         </View>
         <View style={styles.loginFormContainer}>
@@ -130,6 +130,36 @@ const LoginScreen = () => {
               <Text style={styles.navigationButtonText}>회원가입</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.socialLoginTitle}>간편 로그인</Text>
+          <View style={styles.socialButtonContainer}>
+            <TouchableOpacity
+              onPress={() => alert('kakao')}
+              style={styles.socialLoginButton}
+            >
+              <Image
+                source={require('@/assets/images/icons/kakao.png')}
+                style={styles.iconImage}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => alert('kakao')}
+              style={styles.socialLoginButton}
+            >
+              <Image
+                source={require('@/assets/images/icons/kakao.png')}
+                style={styles.iconImage}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => alert('kakao')}
+              style={styles.socialLoginButton}
+            >
+              <Image
+                source={require('@/assets/images/icons/kakao.png')}
+                style={styles.iconImage}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </Pressable>
     </SafeContainer>
@@ -141,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 30,
     paddingTop: getSize(133),
   },
-  image: {
+  logoImage: {
     width: getSize(124),
     height: getSize(124),
   },
@@ -200,6 +230,33 @@ const styles = StyleSheet.create({
     width: getSize(1),
     height: getSize(12),
     backgroundColor: '#969696',
+  },
+  socialLoginTitle: {
+    marginTop: getSize(42),
+    width: '100%',
+    textAlign: 'center',
+    fontSize: getSize(18),
+    fontWeight: '900',
+    fontFamily: 'Inter',
+    color: '#fff',
+    marginBottom: getSize(30),
+  },
+  socialButtonContainer: {
+    width: '100%',
+    height: getSize(58),
+    flexDirection: 'row',
+  },
+  socialLoginButton: {
+    width: getSize(58),
+    height: getSize(58),
+    borderRadius: getSize(29),
+    backgroundColor: '#F5C001',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconImage: {
+    width: getSize(24),
+    height: getSize(24),
   },
 });
 
