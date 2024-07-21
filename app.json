@@ -4,22 +4,24 @@
     "slug": "extra-react-native-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/images/logo.png",
+    "scheme": "extra",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.extra.reactnative.app"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.extra.reactnative.app"
     },
     "web": {
       "bundler": "metro",
@@ -28,7 +30,32 @@
     },
     "plugins": [
       "expo-router",
-      "expo-build-properties"
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraMavenRepos": [
+              "https://devrepo.kakao.com/nexus/content/groups/public/"
+            ],
+            "newArchEnabled": true
+          },
+          "ios": {
+            "newArchEnabled": true
+          }
+        }
+      ],
+      [
+        "@react-native-kakao/core",
+        {
+          "nativeAppKey": "{{native app key}}",
+          "android": {
+            "authCodeHandlerActivity": true
+          },
+          "ios": {
+            "handleKakaoOpenUrl": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
