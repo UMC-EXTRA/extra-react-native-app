@@ -1,23 +1,19 @@
-import { Text } from 'react-native';
-import { useNavigation, router } from 'expo-router';
-import { useEffect } from 'react';
-import SafeContainer from '@/components/SafeContainer';
+import { Text, View, StyleSheet } from 'react-native';
 import BackHeader from '@/components/BackHeader';
 
 const FindIdScreen = () => {
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    navigation.setOptions({
-      header: () => <BackHeader />,
-    });
-  }, [navigation]);
-
   return (
-    <SafeContainer>
+    <View style={styles.container}>
+      <BackHeader title="아이디 찾기" />
       <Text>Find ID</Text>
-    </SafeContainer>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default FindIdScreen;
