@@ -12,7 +12,7 @@
 - App Store <br/>
   <img src="/assets/develop/app_store.png" width="200" height="200">
 
-<br/><br/>
+<br/>
 
 2. React 실행 시 아래 커멘드로 실행
 
@@ -53,10 +53,8 @@
 />
 ```
 
-<br/><br/>
+<br/>
 
 4. npm start
-
-<br/><br/>
 
 5. 모바일에서 qr 스캔
