@@ -24,7 +24,8 @@ const TabsLayout = () => {
           paddingTop: 0,
         },
         tabBarLabelStyle: {
-          fontWeight: 900,
+          fontFamily: 'Inter-Bold',
+          fontWeight: '900',
           fontSize: getSize(14),
         },
         tabBarInactiveTintColor: '#999',

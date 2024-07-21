@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { useEffect } from 'react';
 import { router } from 'expo-router';
+import { getKeyHashAndroid } from '@react-native-kakao/core';
 import SafeContainer from '@/components/SafeContainer';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
@@ -50,11 +52,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   mainText: {
-    fontFamily: 'Inter',
+    fontFamily: 'Inter-ExtraBold',
     textAlign: 'center',
     fontSize: getSize(29),
     color: 'white',
-    fontWeight: 900,
+    fontWeight: '900',
   },
   linkContainer: {
     flex: 76,

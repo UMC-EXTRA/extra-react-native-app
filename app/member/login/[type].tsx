@@ -8,7 +8,7 @@ import {
   Keyboard,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useNavigation, useLocalSearchParams, router } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
 import SafeContainer from '@/components/SafeContainer';
 import getSize from '@/scripts/getSize';
@@ -22,7 +22,6 @@ const LoginScreen = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
-  const navigation = useNavigation();
 
   const ref_input: Array<React.RefObject<TextInput>> = [];
   ref_input[0] = useRef(null);
@@ -38,13 +37,6 @@ const LoginScreen = () => {
   };
   // user type (user, admin)
   const { type } = useLocalSearchParams();
-
-  // hide header
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
 
   // check if id and password are entered
   useEffect(() => {
@@ -78,6 +70,7 @@ const LoginScreen = () => {
                 placeholder="아이디를 입력해주세요"
                 placeholderTextColor={'#5E5E5E'}
                 autoComplete="off"
+                returnKeyType="next"
                 ref={ref_input[0]}
                 onSubmitEditing={() => {
                   onFocusNext(0);
@@ -91,7 +84,7 @@ const LoginScreen = () => {
                 placeholder="비밀번호를 입력해주세요"
                 placeholderTextColor={'#5E5E5E'}
                 autoComplete="off"
-                enterKeyHint="enter"
+                returnKeyType="done"
                 ref={ref_input[1]}
                 onSubmitEditing={() => {
                   onFocusNext(1);
@@ -134,25 +127,7 @@ const LoginScreen = () => {
           <View style={styles.socialButtonContainer}>
             <TouchableOpacity
               onPress={() => alert('kakao')}
-              style={styles.socialLoginButton}
-            >
-              <Image
-                source={require('@/assets/images/icons/kakao.png')}
-                style={styles.iconImage}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => alert('kakao')}
-              style={styles.socialLoginButton}
-            >
-              <Image
-                source={require('@/assets/images/icons/kakao.png')}
-                style={styles.iconImage}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => alert('kakao')}
-              style={styles.socialLoginButton}
+              style={{ ...styles.socialLoginButton, marginRight: 0 }}
             >
               <Image
                 source={require('@/assets/images/icons/kakao.png')}
@@ -197,7 +172,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: getSize(2),
     fontSize: getSize(15),
-    fontWeight: 700,
+    fontFamily: 'Inter-SemiBold',
+    fontWeight: '700',
     color: '#fff',
     paddingLeft: getSize(14),
   },
@@ -209,9 +185,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginButtonText: {
-    fontFamily: 'Inter',
+    fontFamily: 'Inter-Bold',
     fontSize: getSize(15),
-    fontWeight: 800,
+    fontWeight: '800',
   },
   navigationButtonContainer: {
     marginTop: getSize(41),
@@ -221,9 +197,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navigationButtonText: {
-    fontFamily: 'Inter',
+    fontFamily: 'Inter-Light',
     fontSize: getSize(13),
-    fontWeight: 200,
+    fontWeight: '200',
     color: '#969696',
   },
   divisionBar: {
@@ -237,7 +213,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: getSize(18),
     fontWeight: '900',
-    fontFamily: 'Inter',
+    fontFamily: 'Inter-ExtraBold',
     color: '#fff',
     marginBottom: getSize(30),
   },
@@ -253,6 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5C001',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: getSize(41),
   },
   iconImage: {
     width: getSize(24),
