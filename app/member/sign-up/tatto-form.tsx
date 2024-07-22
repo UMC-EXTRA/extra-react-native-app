@@ -8,6 +8,11 @@ import colors from '@/constants/Colors';
 import BackHeader from '@/components/BackHeader';
 import getSize from '@/scripts/getSize';
 
+import { setTattoData } from '@/redux/signUpSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { TattoState } from '@/redux/stateTypes';
+import tattoNames from '@/redux/stateTypes';
+
 interface SelectInputProps {
   value: boolean;
   setValue: () => void;
@@ -62,54 +67,49 @@ const SelectInput = ({ value, setValue, placeholder }: SelectInputProps) => {
   );
 };
 
-type Tatto = {
-  [key: string]: {
-    name: string;
-    value: boolean;
-  };
-};
-
 const TattoFormScreen = () => {
-  const [noTatto, setNoTatto] = useState(false);
-  const [tattos, setTattos] = useState<Tatto>({
-    face: { name: '얼굴', value: false },
-    chest: { name: '가슴', value: false },
-    arm: { name: '팔', value: false },
-    leg: { name: '다리', value: false },
-    shoulder: { name: '어깨', value: false },
-    back: { name: '등', value: false },
-    hand: { name: '손', value: false },
-    feet: { name: '발', value: false },
-    etc: { name: '기타', value: false },
+  const signUp = useAppSelector(state => state.signUp);
+  const dispatch = useAppDispatch();
+
+  const [hasTatto, setHasTatto] = useState<Boolean>(false);
+  const [tatto, setTatto] = useState<TattoState>({
+    face: false,
+    chest: false,
+    arm: false,
+    leg: false,
+    shoulder: false,
+    back: false,
+    hand: false,
+    feet: false,
+    etc: false,
   });
-  const [enteredTatto, setEnteredTatto] = useState(false);
+  const [complete, setComplete] = useState(false);
 
   useEffect(() => {
-    if (
-      Object.values(tattos).filter(tatto => tatto.value).length > 0 ||
-      noTatto
-    ) {
-      setEnteredTatto(true);
-    } else {
-      setEnteredTatto(false);
-    }
-  }, [noTatto, tattos]);
-
-  useEffect(() => {
-    if (noTatto) {
-      const newTattos = { ...tattos };
-      for (let key in tattos) {
-        newTattos[key].value = false;
+    if (signUp.enteredTatto && signUp.hasTatto !== undefined) {
+      setComplete(true);
+      setHasTatto(signUp.hasTatto);
+      if (signUp.tatto) {
+        setTatto(signUp.tatto);
       }
-      setTattos(newTattos);
     }
-  }, [noTatto]);
+  }, [signUp.enteredTatto, signUp.hasTatto, signUp.tatto]);
 
   useEffect(() => {
-    if (Object.values(tattos).filter(tatto => tatto.value).length > 0) {
-      setNoTatto(false);
+    if (Object.values(tatto).filter(value => value).length > 0 || !hasTatto) {
+      setComplete(true);
+    } else {
+      setComplete(false);
     }
-  }, [tattos]);
+  }, [hasTatto, tatto]);
+
+  useEffect(() => {
+    if (Object.values(tatto).filter(value => value).length > 0) {
+      setHasTatto(true);
+    } else {
+      setHasTatto(false);
+    }
+  }, [tatto]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -127,96 +127,121 @@ const TattoFormScreen = () => {
           }}
         >
           <SelectInput
-            value={noTatto}
-            setValue={() => setNoTatto(!noTatto)}
+            value={!hasTatto}
+            setValue={() => {
+              setHasTatto(!hasTatto);
+              setTatto({
+                face: false,
+                chest: false,
+                arm: false,
+                leg: false,
+                shoulder: false,
+                back: false,
+                hand: false,
+                feet: false,
+                etc: false,
+              });
+            }}
             placeholder="없음"
           />
           <SelectInput
-            value={tattos['face'].value}
+            value={hasTatto && tatto['face']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['face'].value = !newTattos['face'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['face'] = !newTatto['face'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['face'].name}
+            placeholder={tattoNames['face']}
           />
           <SelectInput
-            value={tattos['chest'].value}
+            value={hasTatto && tatto['chest']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['chest'].value = !newTattos['chest'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['chest'] = !newTatto['chest'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['chest'].name}
+            placeholder={tattoNames['chest']}
           />
           <SelectInput
-            value={tattos['arm'].value}
+            value={hasTatto && tatto['arm']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['arm'].value = !newTattos['arm'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['arm'] = !newTatto['arm'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['arm'].name}
+            placeholder={tattoNames['arm']}
           />
           <SelectInput
-            value={tattos['leg'].value}
+            value={hasTatto && tatto['leg']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['leg'].value = !newTattos['leg'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['leg'] = !newTatto['leg'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['leg'].name}
+            placeholder={tattoNames['leg']}
           />
           <SelectInput
-            value={tattos['shoulder'].value}
+            value={hasTatto && tatto['shoulder']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['shoulder'].value = !newTattos['shoulder'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['shoulder'] = !newTatto['shoulder'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['shoulder'].name}
+            placeholder={tattoNames['shoulder']}
           />
           <SelectInput
-            value={tattos['back'].value}
+            value={hasTatto && tatto['back']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['back'].value = !newTattos['back'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['back'] = !newTatto['back'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['back'].name}
+            placeholder={tattoNames['back']}
           />
           <SelectInput
-            value={tattos['hand'].value}
+            value={hasTatto && tatto['hand']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['hand'].value = !newTattos['hand'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['hand'] = !newTatto['hand'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['hand'].name}
+            placeholder={tattoNames['hand']}
           />
           <SelectInput
-            value={tattos['feet'].value}
+            value={hasTatto && tatto['feet']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['feet'].value = !newTattos['feet'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['feet'] = !newTatto['feet'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['feet'].name}
+            placeholder={tattoNames['feet']}
           />
           <SelectInput
-            value={tattos['etc'].value}
+            value={hasTatto && tatto['etc']}
             setValue={() => {
-              const newTattos = { ...tattos };
-              newTattos['etc'].value = !newTattos['etc'].value;
-              setTattos(newTattos);
+              const newTatto = { ...tatto };
+              newTatto['etc'] = !newTatto['etc'];
+              setTatto(newTatto);
+              setHasTatto(true);
             }}
-            placeholder={tattos['etc'].name}
+            placeholder={tattoNames['etc']}
           />
         </View>
         <FormButton
-          active={enteredTatto}
+          active={complete}
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}
-          onPress={() => console.log('next')}
+          onPress={() => {
+            dispatch(setTattoData({ hasTatto, tatto }));
+            router.back();
+          }}
           text="다음"
         />
       </Container>

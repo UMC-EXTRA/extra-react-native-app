@@ -1,7 +1,6 @@
 import {
   Text,
   StyleSheet,
-  TextInput,
   Pressable,
   Keyboard,
   KeyboardAvoidingView,
@@ -19,29 +18,33 @@ import {
   onFocusNext,
   InputStyle,
   InputTextStyle,
-} from '@/components/InputComponent';
+} from '@/components/InputComponents';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import BackHeader from '@/components/BackHeader';
+import { useAppDispatch } from '@/redux/hooks';
+import { setBasicData } from '@/redux/signUpSlice';
 
 const BasicFormScreen = () => {
+  const dispatch = useAppDispatch();
+
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
-  const [birth, setBirth] = useState('');
-  const [gender, setGender] = useState('');
-  const [address, setAddress] = useState('');
-  const [valid, setValid] = useState(false);
+  const [birthday, setBirthday] = useState('');
+  const [sex, setSex] = useState<null | Boolean>(null);
+  const [home, setHome] = useState('');
+  const [complete, setComplete] = useState(false);
 
   const items = [
-    { title: '남자', value: 1 },
-    { title: '여자', value: 2 },
+    { title: '여자', value: false },
+    { title: '남자', value: true },
   ];
 
   const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const ref_input: Array<React.RefObject<TextInput>> = getRefInput(6);
+  const ref_input = getRefInput(6);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
     adjustOffset(index + 1);
@@ -61,15 +64,15 @@ const BasicFormScreen = () => {
       email.length > 0 &&
       phone.length > 0 &&
       name.length > 0 &&
-      birth.length &&
-      gender.length > 0 &&
-      address.length > 0
+      birthday.length &&
+      sex != null &&
+      home.length > 0
     ) {
-      setValid(true);
+      setComplete(true);
     } else {
-      setValid(false);
+      setComplete(false);
     }
-  }, [email, phone, name, birth, gender, address]);
+  }, [email, phone, name, birthday, sex, home]);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#000' }}>
@@ -137,8 +140,8 @@ const BasicFormScreen = () => {
                 placeholder="생일을 입력해주세요. 예)19901010"
                 inputMode="tel"
                 keyboardType="number-pad"
-                value={birth}
-                onChangeText={setBirth}
+                value={birthday}
+                onChangeText={setBirthday}
                 ref={ref_input[3]}
                 onSubmitEditing={() => focusNext(3)}
                 onFocus={() => adjustOffset(3)}
@@ -146,7 +149,7 @@ const BasicFormScreen = () => {
               <SelectDropdown
                 data={items}
                 onSelect={(selectedItem, index) => {
-                  setGender(selectedItem.value);
+                  setSex(selectedItem.value);
                 }}
                 renderButton={(selectedItem, isOpened) => (
                   <View style={{ ...InputStyle, justifyContent: 'center' }}>
@@ -176,16 +179,28 @@ const BasicFormScreen = () => {
               />
               <Input
                 placeholder="거주지를 입력해주세요."
-                value={address}
-                onChangeText={setAddress}
+                value={home}
+                onChangeText={setHome}
                 ref={ref_input[5]}
                 onSubmitEditing={() => focusNext(5)}
                 onFocus={() => adjustOffset(5)}
                 style={{ marginBottom: 0 }}
               />
               <FormButton
-                active={true}
-                onPress={() => router.push('/member/sign-up/sign-body-form')}
+                active={complete}
+                onPress={() => {
+                  dispatch(
+                    setBasicData({
+                      email,
+                      phone,
+                      name,
+                      sex,
+                      birthday,
+                      home,
+                    }),
+                  );
+                  router.push('/member/sign-up/sign-physical-form');
+                }}
                 text="다음"
                 style={{ marginTop: getSize(63), marginBottom: getSize(20) }}
               />

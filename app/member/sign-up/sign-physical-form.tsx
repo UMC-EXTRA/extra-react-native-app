@@ -12,23 +12,26 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { Container } from '@/components/Container';
 import { MainText, SubText, FormButton } from '@/components/FormComponents';
-import { Input, InputStyle, InputTextStyle } from '@/components/InputComponent';
+import {
+  Input,
+  InputStyle,
+  InputTextStyle,
+} from '@/components/InputComponents';
 import BackHeader from '@/components/BackHeader';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-const BodyFormScreen = () => {
+import type { TattoState, AccountState, TermState } from '@/redux/stateTypes';
+import tattoNames from '@/redux/stateTypes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { initalTerms, setPhysicalData } from '@/redux/signUpSlice';
+
+const PhysicalFormScreen = () => {
+  const signUp = useAppSelector(state => state.signUp);
+  const dispatch = useAppDispatch();
+
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
-  const [enteredTatto, setEnteredTatto] = useState(false);
-  const [hasTatto, setHasTatto] = useState(false);
-  const [tattos, setTattos] = useState({});
-  const [enteredAccount, setEnteredAccount] = useState(false);
-  const [account, setAccount] = useState({
-    bank: '',
-    bankName: '',
-    number: '',
-  });
 
   return (
     <View style={{ flex: 1 }}>
@@ -74,9 +77,20 @@ const BodyFormScreen = () => {
             }}
           >
             <Text style={InputTextStyle}>
-              {enteredTatto ? (
-                hasTatto ? (
-                  `문신 있음 ()`
+              {signUp.enteredTatto == true ? (
+                signUp.hasTatto !== undefined && signUp.hasTatto ? (
+                  `문신 있음 (${
+                    signUp.tatto
+                      ? Object.entries(tattoNames)
+                          .filter(
+                            ([key, value]) =>
+                              signUp.tatto &&
+                              signUp.tatto[key as keyof TattoState],
+                          )
+                          .map(([, value]) => value)
+                          .join(', ')
+                      : ''
+                  })`
                 ) : (
                   `문신 없음`
                 )
@@ -100,8 +114,8 @@ const BodyFormScreen = () => {
             }}
           >
             <Text style={InputTextStyle}>
-              {enteredAccount ? (
-                account.bankName + ' ' + account.number
+              {signUp.enteredAccount && signUp.account ? (
+                signUp.account.bankName + ' ' + signUp.account.accountNumber
               ) : (
                 <Text style={{ color: colors.placeholder }}>
                   계좌번호를 입력해주세요.
@@ -148,4 +162,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BodyFormScreen;
+export default PhysicalFormScreen;

@@ -9,8 +9,12 @@ import {
   BackLinkButton,
 } from '@/components/FormComponents';
 import { Container } from '@/components/Container';
+import { useAppDispatch } from '@/redux/hooks';
+import { resetState } from '@/redux/signUpSlice';
 
 const SignUpScreen = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <View style={{ flex: 1 }}>
       <BackHeader />
@@ -27,7 +31,13 @@ const SignUpScreen = () => {
           text="본인 인증하기"
           style={{ marginTop: getSize(57) }}
         />
-        <BackLinkButton style={{ marginTop: getSize(17) }} />
+        <BackLinkButton
+          style={{ marginTop: getSize(17) }}
+          onPress={() => {
+            dispatch(resetState());
+            router.back();
+          }}
+        />
       </Container>
     </View>
   );

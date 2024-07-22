@@ -13,12 +13,17 @@ import { useEffect, useState, useRef } from 'react';
 import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
+import { useAppDispatch } from '@/redux/hooks';
+import { initalSignUpData } from '@/redux/signUpSlice';
+
 /*
   Login page
   - Login with id and password
   - Social login buttons
 */
 const LoginScreen = () => {
+  const dispatch = useAppDispatch();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
@@ -119,7 +124,12 @@ const LoginScreen = () => {
               <Text style={styles.navigationButtonText}>비밀번호 찾기</Text>
             </TouchableOpacity>
             <View style={styles.divisionBar} />
-            <TouchableOpacity onPress={() => router.push('/member/sign-up')}>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(initalSignUpData());
+                router.push('/member/sign-up');
+              }}
+            >
               <Text style={styles.navigationButtonText}>회원가입</Text>
             </TouchableOpacity>
           </View>
