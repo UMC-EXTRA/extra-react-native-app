@@ -22,6 +22,7 @@
     "@react-native-kakao/user": "^2.2.5",
     "@react-navigation/bottom-tabs": "^6.6.0",
     "@react-navigation/native": "^6.1.17",
+    "@reduxjs/toolkit": "^2.2.6",
     "expo": "~51.0.20",
     "expo-build-properties": "^0.12.3",
     "expo-constants": "~16.0.2",
@@ -43,7 +44,7 @@
     "react-native-screens": "3.31.1",
     "react-native-web": "~0.19.10",
     "react-native-webview": "13.8.6",
-    "styled-components": "^6.1.12"
+    "react-redux": "^9.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
