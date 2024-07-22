@@ -1,20 +1,30 @@
 import {
-  View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
   Pressable,
   Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
 } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
-import { router } from 'expo-router';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React, { useState, useEffect, useRef } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import SelectDropdown from 'react-native-select-dropdown';
+import { Container } from '@/components/Container';
+import { MainText, SubText, FormButton } from '@/components/FormComponents';
+import {
+  Input,
+  getRefInput,
+  onFocusNext,
+  InputStyle,
+  InputTextStyle,
+} from '@/components/InputComponent';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import BackHeader from '@/components/BackHeader';
 
-const FormScreen = () => {
+const BasicFormScreen = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
@@ -23,27 +33,27 @@ const FormScreen = () => {
   const [address, setAddress] = useState('');
   const [valid, setValid] = useState(false);
 
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([
-    { label: '남자', value: 'male' },
-    { label: '여자', value: 'female' },
-  ]);
+  const items = [
+    { title: '남자', value: 1 },
+    { title: '여자', value: 2 },
+  ];
 
-  const ref_input: Array<React.RefObject<TextInput>> = [];
-  ref_input[0] = useRef(null);
-  ref_input[1] = useRef(null);
-  ref_input[2] = useRef(null);
-  ref_input[3] = useRef(null);
-  ref_input[4] = useRef(null);
-  ref_input[6] = useRef(null);
+  const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
 
-  const onFocusNext = (index: number) => {
-    if (ref_input[index + 1] && index < ref_input.length - 1) {
-      ref_input[index + 1].current?.focus();
-    }
-    if (ref_input[index + 1] && index == ref_input.length - 1) {
-      ref_input[index].current?.blur();
-    }
+  const ref_input: Array<React.RefObject<TextInput>> = getRefInput(6);
+  const focusNext = (index: number) => {
+    onFocusNext(ref_input, index);
+    adjustOffset(index + 1);
+  };
+
+  const adjustOffset = (index: number) => {
+    let offset = -getSize(150);
+    offset += index * getSize(50);
+    setKeyboardVerticalOffset(offset);
+
+    // ScrollView를 조정된 위치로 스크롤
+    scrollViewRef.current?.scrollTo({ y: offset, animated: true });
   };
 
   useEffect(() => {
@@ -62,186 +72,138 @@ const FormScreen = () => {
   }, [email, phone, name, birth, gender, address]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#000' }}>
       <BackHeader />
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Text style={styles.mainText}>필수 정보를 입력해주세요.</Text>
-          <Text style={{ ...styles.subText, marginTop: getSize(18) }}>
-            일자리 신청에 꼭 필요한
-          </Text>
-          <Text
-            style={{
-              ...styles.subText,
-              marginTop: getSize(5),
-              marginBottom: getSize(39),
-            }}
+        <ScrollView
+          style={{ flex: 1 }}
+          ref={scrollViewRef}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
+          <KeyboardAvoidingView
+            behavior="position"
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={keyboardVerticalOffset}
           >
-            정보를 입력해주세요.
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="이메일을 입력해주세요."
-            placeholderTextColor="#696969"
-            inputMode="email"
-            value={email}
-            onChangeText={setEmail}
-            returnKeyType="next"
-            ref={ref_input[0]}
-            onSubmitEditing={() => onFocusNext(0)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="전화번호를 입력해주세요."
-            placeholderTextColor="#696969"
-            inputMode="tel"
-            value={phone}
-            onChangeText={setPhone}
-            returnKeyType="next"
-            ref={ref_input[1]}
-            onSubmitEditing={() => onFocusNext(1)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="이름을 입력해주세요."
-            placeholderTextColor="#696969"
-            value={name}
-            onChangeText={setName}
-            returnKeyType="next"
-            ref={ref_input[2]}
-            onSubmitEditing={() => onFocusNext(2)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="생일을 입력해주세요. 예)19901010"
-            placeholderTextColor="#696969"
-            keyboardType="number-pad"
-            value={birth}
-            onChangeText={setBirth}
-            returnKeyType="next"
-            ref={ref_input[3]}
-            onSubmitEditing={() => onFocusNext(3)}
-          />
-          <DropDownPicker
-            open={open}
-            value={gender}
-            items={items}
-            setOpen={setOpen}
-            setValue={setGender}
-            setItems={setItems}
-            style={styles.input}
-            placeholder="성별을 선택해주세요."
-            placeholderStyle={{
-              color: '#696969',
-              fontSize: getSize(14),
-              fontFamily: 'Inter-SemiBold',
-              fontWeight: '500',
-            }}
-            textStyle={{
-              color: '#fff',
-              fontSize: getSize(14),
-              fontFamily: 'Inter-Bold',
-              fontWeight: '700',
-            }}
-            containerStyle={{
-              width: getSize(368),
-              height: getSize(59),
-              marginBottom: getSize(19),
-            }}
-            listItemContainerStyle={{
-              backgroundColor: '#000',
-            }}
-            selectedItemContainerStyle={{
-              backgroundColor: '#696969',
-            }}
-          />
-          <TextInput
-            style={{ ...styles.input, marginBottom: 0 }}
-            placeholder="거주지를 입력해주세요."
-            placeholderTextColor="#696969"
-            value={address}
-            onChangeText={setAddress}
-            returnKeyType="done"
-            ref={ref_input[5]}
-            onSubmitEditing={() => onFocusNext(5)}
-          />
-          <TouchableOpacity
-            style={{
-              ...styles.confirmButton,
-              backgroundColor: valid ? colors.highlight : '#575757',
-            }}
-            disabled={valid}
-            onPress={() => router.push('/member/')}
-          >
-            <Text
-              style={{
-                ...styles.confirmButtonText,
-                color: valid ? '#000' : '#adadad',
-              }}
-            >
-              다음
-            </Text>
-          </TouchableOpacity>
-        </View>
+            <Container>
+              <MainText
+                style={{
+                  marginTop: getSize(29),
+                  textAlign: 'start',
+                  width: getSize(368),
+                }}
+              >
+                필수 정보를 입력해주세요.
+              </MainText>
+              <SubText style={{ marginTop: getSize(18) }}>
+                일자리 신청에 꼭 필요한
+              </SubText>
+              <SubText
+                style={{
+                  marginTop: getSize(5),
+                  marginBottom: getSize(39),
+                }}
+              >
+                정보를 입력해주세요.
+              </SubText>
+              <Input
+                placeholder="이메일을 입력해주세요."
+                inputMode="email"
+                value={email}
+                onChangeText={setEmail}
+                onSubmitEditing={() => focusNext(0)}
+                onFocus={() => adjustOffset(0)}
+                ref={ref_input[0]}
+              />
+              <Input
+                placeholder="전화번호를 입력해주세요."
+                inputMode="tel"
+                value={phone}
+                onChangeText={setPhone}
+                onSubmitEditing={() => focusNext(1)}
+                onFocus={() => adjustOffset(1)}
+                ref={ref_input[1]}
+              />
+              <Input
+                placeholder="이름을 입력해주세요."
+                inputMode="tel"
+                value={name}
+                onChangeText={setName}
+                ref={ref_input[2]}
+                onSubmitEditing={() => focusNext(2)}
+                onFocus={() => adjustOffset(2)}
+              />
+              <Input
+                placeholder="생일을 입력해주세요. 예)19901010"
+                inputMode="tel"
+                keyboardType="number-pad"
+                value={birth}
+                onChangeText={setBirth}
+                ref={ref_input[3]}
+                onSubmitEditing={() => focusNext(3)}
+                onFocus={() => adjustOffset(3)}
+              />
+              <SelectDropdown
+                data={items}
+                onSelect={(selectedItem, index) => {
+                  setGender(selectedItem.value);
+                }}
+                renderButton={(selectedItem, isOpened) => (
+                  <View style={{ ...InputStyle, justifyContent: 'center' }}>
+                    <Text style={InputTextStyle}>
+                      {(selectedItem && selectedItem.title) || (
+                        <Text style={{ color: colors.placeholder }}>
+                          "성별을 선택해주세요."
+                        </Text>
+                      )}
+                    </Text>
+                  </View>
+                )}
+                renderItem={(item, index, isSelected) => (
+                  <View
+                    style={{
+                      ...styles.dropDownItem,
+                      ...(isSelected && { backgroundColor: '#111' }),
+                    }}
+                  >
+                    <Text style={InputTextStyle}>{item.title}</Text>
+                  </View>
+                )}
+                dropdownStyle={{
+                  borderRadius: getSize(15),
+                  backgroundColor: colors.headerBackground,
+                }}
+              />
+              <Input
+                placeholder="거주지를 입력해주세요."
+                value={address}
+                onChangeText={setAddress}
+                ref={ref_input[5]}
+                onSubmitEditing={() => focusNext(5)}
+                onFocus={() => adjustOffset(5)}
+                style={{ marginBottom: 0 }}
+              />
+              <FormButton
+                active={true}
+                onPress={() => router.push('/member/sign-up/sign-body-form')}
+                text="다음"
+                style={{ marginTop: getSize(63), marginBottom: getSize(20) }}
+              />
+            </Container>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-  },
-  mainText: {
-    marginTop: getSize(29),
-    color: '#fff',
-    fontSize: getSize(20),
-    fontFamily: 'Inter-ExtraBold',
-    fontWeight: '900',
-    lineHeight: getSize(41),
-    width: getSize(368),
-  },
-  subText: {
-    width: getSize(368),
-    color: '#fff',
-    fontSize: getSize(14),
-    fontWeight: '200',
-    fontFamily: 'Inter-Light',
-    lineHeight: getSize(15),
-  },
-  input: {
-    backgroundColor: '#000',
-    width: getSize(368),
+  dropDownItem: {
+    width: '100%',
     height: getSize(59),
-    borderRadius: getSize(15),
-    borderStyle: 'solid',
-    borderWidth: getSize(2),
-    borderColor: '#696969',
     paddingLeft: getSize(26),
-    color: '#fff',
-    fontSize: getSize(14),
-    fontFamily: 'Inter-Bold',
-    fontWeight: '700',
-    marginBottom: 19,
-    marginHorizontal: 'auto',
-  },
-  confirmButton: {
-    width: getSize(383),
-    height: getSize(53),
-    borderRadius: getSize(18),
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: getSize(63),
-  },
-  confirmButtonText: {
-    fontSize: getSize(17),
-    fontFamily: 'Inter-Bold',
-    fontWeight: '700',
-    textAlign: 'center',
-    lineHeight: getSize(22),
   },
 });
 
-export default FormScreen;
+export default BasicFormScreen;
