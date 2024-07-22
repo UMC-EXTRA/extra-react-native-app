@@ -10,7 +10,7 @@ import {
 import { Image } from 'expo-image';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
-import SafeContainer from '@/components/SafeContainer';
+import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
 /*

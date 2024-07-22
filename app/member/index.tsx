@@ -1,9 +1,7 @@
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import { getKeyHashAndroid } from '@react-native-kakao/core';
-import SafeContainer from '@/components/SafeContainer';
-import colors from '@/constants/Colors';
+import { SafeContainer } from '@/components/Container';
+import { MainText, NextLinkButton } from '@/components/FormComponents';
 import getSize from '@/scripts/getSize';
 
 /*
@@ -14,33 +12,30 @@ const MemberScreen = () => {
   return (
     <SafeContainer>
       <View style={styles.mainTextContainer}>
-        <Text style={styles.mainText}>
+        <MainText style={{ fontSize: getSize(29) }}>
           어서오세요!{'\n'}원하시는 서비스를 선택해주세요
-        </Text>
+        </MainText>
       </View>
       <View style={styles.linkContainer}>
-        <TouchableHighlight
-          style={styles.link}
+        <NextLinkButton
           onPress={() =>
             router.push({
               pathname: '/member/login/[type]',
               params: { type: 'user' },
             })
           }
-        >
-          <Text style={styles.linkText}>보조출연자</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.link}
+          style={{ marginBottom: getSize(20) }}
+          text="보조출연자"
+        />
+        <NextLinkButton
           onPress={() =>
             router.push({
               pathname: '/member/login/[type]',
               params: { type: 'admin' },
             })
           }
-        >
-          <Text style={styles.linkText}>관리자</Text>
-        </TouchableHighlight>
+          text="관리자"
+        />
       </View>
     </SafeContainer>
   );
@@ -51,33 +46,11 @@ const styles = StyleSheet.create({
     flex: 24,
     justifyContent: 'flex-end',
   },
-  mainText: {
-    fontFamily: 'Inter-ExtraBold',
-    textAlign: 'center',
-    fontSize: getSize(29),
-    color: 'white',
-    fontWeight: '900',
-  },
   linkContainer: {
     flex: 76,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  link: {
-    width: '90%',
-    height: getSize(50),
-    backgroundColor: colors.highlight,
-    borderRadius: getSize(10),
-    marginBottom: getSize(10),
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  linkText: {
-    color: colors.text,
-    fontSize: getSize(18),
-    textAlign: 'center',
   },
 });
 

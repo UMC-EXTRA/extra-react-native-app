@@ -9,7 +9,8 @@ export default {
   headerBackground: '#191919',
   tabBarBackground: '#232226',
   highlight: '#F5C001',
-  text: '#000',
-  textLight: '#969696',
-  tabLabelLight: '#B7B7B7',
+  activeText: '#000',
+  inactiveText: '#ADADAD',
+  disabled: '#575757',
+  placeholder: '#696969',
 };

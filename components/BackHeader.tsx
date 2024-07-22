@@ -5,7 +5,7 @@ import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
 interface Props {
-  title: string | null;
+  title?: string | null;
   onPress?: () => void;
 }
 
