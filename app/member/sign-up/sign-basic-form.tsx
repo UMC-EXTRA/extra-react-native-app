@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Container } from '@/components/Container';
 import { MainText, SubText, FormButton } from '@/components/FormComponents';
