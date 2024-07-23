@@ -26,7 +26,7 @@ const Index = () => {
     return null;
   }
 
-  return <Redirect href="/member" />;
+  return <Redirect href="/permission" />;
 };
 
 export default Index;
