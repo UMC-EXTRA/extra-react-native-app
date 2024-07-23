@@ -8,6 +8,7 @@ const ScheduleScreen = () => {
     <View
       style={{
         flex: 1,
+        backgroundColor: '#000',
       }}
     >
       <BackHeader title="스케줄표" onPress={() => router.navigate('/home')} />

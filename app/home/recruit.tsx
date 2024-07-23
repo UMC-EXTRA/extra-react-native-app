@@ -8,6 +8,7 @@ const RecruitScreen = () => {
     <View
       style={{
         flex: 1,
+        backgroundColor: '#000',
       }}
     >
       <BackHeader title="지원 현황" onPress={() => router.navigate('/home')} />
