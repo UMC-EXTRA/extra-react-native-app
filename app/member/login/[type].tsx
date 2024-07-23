@@ -12,18 +12,12 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
 import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
-
-import { useAppDispatch } from '@/redux/hooks';
-import { initalSignUpData } from '@/redux/signUpSlice';
-
 /*
   Login page
   - Login with id and password
   - Social login buttons
 */
 const LoginScreen = () => {
-  const dispatch = useAppDispatch();
-
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
@@ -126,7 +120,6 @@ const LoginScreen = () => {
             <View style={styles.divisionBar} />
             <TouchableOpacity
               onPress={() => {
-                dispatch(initalSignUpData());
                 router.push('/member/sign-up');
               }}
             >

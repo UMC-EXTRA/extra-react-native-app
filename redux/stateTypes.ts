@@ -28,15 +28,15 @@ type AccountState = {
   accountHolder: string;
 };
 
-type TermState = [
-  {
-    id: number;
-    title: string;
-    content: string;
-    agree: boolean;
-    optional: boolean;
-  },
-];
+type Term = {
+  id: number;
+  title: string;
+  content: string;
+  agree: boolean;
+  optional: boolean;
+};
+
+type TermState = (Term | undefined)[];
 
 export type { TattoState, AccountState, TermState };
 export default tattoNames;

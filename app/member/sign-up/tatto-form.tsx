@@ -86,12 +86,10 @@ const TattoFormScreen = () => {
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
-    if (signUp.enteredTatto && signUp.hasTatto !== undefined) {
+    if (signUp.enteredTatto) {
       setComplete(true);
       setHasTatto(signUp.hasTatto);
-      if (signUp.tatto) {
-        setTatto(signUp.tatto);
-      }
+      setTatto(signUp.tatto);
     }
   }, [signUp.enteredTatto, signUp.hasTatto, signUp.tatto]);
 

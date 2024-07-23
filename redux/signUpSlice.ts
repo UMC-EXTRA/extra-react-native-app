@@ -2,45 +2,61 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TattoState, AccountState, TermState } from './stateTypes';
 
 type SliceState = {
-  email?: string;
-  password?: string;
-  name?: string;
-  sex?: boolean;
-  birthday?: Date;
-  home?: string;
-  height?: number;
-  weight?: number;
-  phone?: string;
-  enteredTatto?: boolean;
-  hasTatto?: boolean;
-  tatto?: TattoState;
-  enteredAccount?: boolean;
-  account?: AccountState;
-  terms?: TermState;
+  email: string;
+  password: string;
+  name: string;
+  sex: boolean;
+  birthday: Date;
+  home: string;
+  height: number;
+  weight: number;
+  phone: string;
+  enteredTatto: boolean;
+  hasTatto: boolean;
+  tatto: TattoState;
+  enteredAccount: boolean;
+  account: AccountState;
+  terms: TermState;
 };
 
-const initialState: SliceState = {};
+const initialState: SliceState = {
+  email: '',
+  password: '',
+  name: '',
+  sex: false,
+  birthday: new Date(),
+  home: '',
+  height: 0.0,
+  weight: 0.0,
+  phone: '',
+  enteredTatto: false,
+  hasTatto: false,
+  tatto: {
+    face: false,
+    chest: false,
+    arm: false,
+    leg: false,
+    shoulder: false,
+    back: false,
+    hand: false,
+    feet: false,
+    etc: false,
+  },
+  enteredAccount: false,
+  account: {
+    bankName: '',
+    accountNumber: '',
+    accountHolder: '',
+  },
+  terms: [],
+};
 
 const signUpSlice = createSlice({
   name: 'signUp',
   initialState,
   reducers: {
-    initalSignUpData: state => {
-      state = {
-        email: '',
-        password: '',
-        name: '',
-        sex: false,
-        birthday: new Date(),
-        home: '',
-        height: 0.0,
-        weight: 0.0,
-        phone: '',
-        enteredTatto: false,
-      };
-    },
-    initalTerms: (state, action) => {
-      state.terms = action.payload;
+    initTerms: (state, action) => {
+      state.terms = action.payload.terms;
     },
     setBasicData: (state, action) => {
       state.email = action.payload.email;
@@ -62,6 +78,9 @@ const signUpSlice = createSlice({
       state.enteredAccount = true;
       state.account = action.payload.account;
     },
+    setTermData: (state, action) => {
+      state.terms = action.payload.terms;
+    },
     resetState: state => {
       state = initialState;
     },
@@ -69,12 +88,12 @@ const signUpSlice = createSlice({
 });
 
 export const {
-  initalSignUpData,
-  initalTerms,
+  initTerms,
   setBasicData,
   setPhysicalData,
   setTattoData,
   setAccountData,
+  setTermData,
   resetState,
 } = signUpSlice.actions;
 export default signUpSlice.reducer;

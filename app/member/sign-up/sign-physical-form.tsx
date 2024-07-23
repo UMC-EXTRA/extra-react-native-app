@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -20,11 +20,12 @@ import {
 import BackHeader from '@/components/BackHeader';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
+import TermModal from '@/components/TermModal';
 
 import type { TattoState, AccountState, TermState } from '@/redux/stateTypes';
 import tattoNames from '@/redux/stateTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { initalTerms, setPhysicalData } from '@/redux/signUpSlice';
+import { initTerms, setPhysicalData } from '@/redux/signUpSlice';
 
 const PhysicalFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -32,9 +33,74 @@ const PhysicalFormScreen = () => {
 
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
+  const [display, setDisplay] = useState(false);
+  const [termComplete, setTermComplete] = useState(false);
+  const [complete, setComplete] = useState(false);
+
+  useEffect(() => {
+    dispatch(
+      initTerms({
+        terms: [
+          {
+            id: 1,
+            title: '이용약관 동의',
+            content: '내용내용내용내용내용내용내용내용',
+            agree: false,
+            optional: false,
+          },
+          {
+            id: 2,
+            title: '개인정보 수집 및 이용 동의',
+            content: '내용내용내용내용내용내용내용내용',
+            agree: false,
+            optional: false,
+          },
+          {
+            id: 3,
+            title: '위치정보 이용 동의',
+            content: '내용내용내용내용내용내용내용내용',
+            agree: false,
+            optional: false,
+          },
+          {
+            id: 4,
+            title: '개인정보 유효기간 탈퇴 시로 지정',
+            content: '내용내용내용내용내용내용내용내용',
+            agree: false,
+            optional: true,
+          },
+          {
+            id: 5,
+            title: '홍보성 정보 메일, SMS 수신동의',
+            content: '내용내용내용내용내용내용내용내용',
+            agree: false,
+            optional: true,
+          },
+        ],
+      }),
+    );
+  }, []);
+
+  useEffect(() => {
+    if (
+      height.length > 0 &&
+      weight.length > 0 &&
+      signUp.enteredTatto &&
+      signUp.enteredAccount &&
+      termComplete
+    )
+      setComplete(true);
+    else setComplete(false);
+  }, [
+    height,
+    weight,
+    signUp.enteredTatto,
+    signUp.enteredAccount,
+    termComplete,
+  ]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, position: 'relative' }}>
       <BackHeader />
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
@@ -77,20 +143,15 @@ const PhysicalFormScreen = () => {
             }}
           >
             <Text style={InputTextStyle}>
-              {signUp.enteredTatto == true ? (
-                signUp.hasTatto !== undefined && signUp.hasTatto ? (
-                  `문신 있음 (${
-                    signUp.tatto
-                      ? Object.entries(tattoNames)
-                          .filter(
-                            ([key, value]) =>
-                              signUp.tatto &&
-                              signUp.tatto[key as keyof TattoState],
-                          )
-                          .map(([, value]) => value)
-                          .join(', ')
-                      : ''
-                  })`
+              {signUp.enteredTatto ? (
+                signUp.hasTatto ? (
+                  `문신 있음 (${Object.entries(tattoNames)
+                    .filter(
+                      ([key, value]) =>
+                        signUp.tatto && signUp.tatto[key as keyof TattoState],
+                    )
+                    .map(([, value]) => value)
+                    .join(', ')})`
                 ) : (
                   `문신 없음`
                 )
@@ -114,7 +175,7 @@ const PhysicalFormScreen = () => {
             }}
           >
             <Text style={InputTextStyle}>
-              {signUp.enteredAccount && signUp.account ? (
+              {signUp.enteredAccount ? (
                 signUp.account.bankName + ' ' + signUp.account.accountNumber
               ) : (
                 <Text style={{ color: colors.placeholder }}>
@@ -133,16 +194,27 @@ const PhysicalFormScreen = () => {
               ...InputStyle,
               ...styles.termOpenButton,
             }}
+            onPress={() => setDisplay(true)}
           >
             <Text style={InputTextStyle}>약관 보기</Text>
           </TouchableOpacity>
           <FormButton
-            active={true}
-            onPress={() => console.log('next')}
+            active={complete}
+            onPress={() => {
+              dispatch(setPhysicalData({ height, weight }));
+              router.push('/member/sign-up/complete');
+            }}
             text="다음"
           />
         </Container>
       </Pressable>
+      {display && (
+        <TermModal
+          setDisplay={setDisplay}
+          complete={termComplete}
+          setComplete={setTermComplete}
+        />
+      )}
     </View>
   );
 };

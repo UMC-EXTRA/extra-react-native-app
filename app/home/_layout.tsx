@@ -19,8 +19,8 @@ const TabsLayout = () => {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: colors.background,
-          height: getSize(100),
+          backgroundColor: colors.tabBarBackground,
+          height: getSize(160),
           paddingTop: 0,
         },
         tabBarLabelStyle: {
