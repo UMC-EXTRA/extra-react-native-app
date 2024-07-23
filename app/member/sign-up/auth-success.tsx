@@ -1,14 +1,13 @@
 import { View } from 'react-native';
 import { router } from 'expo-router';
-import BackHeader from '@/components/BackHeader';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import { Container } from '@/components/Container';
 import { MainText, NextLinkButton } from '@/components/FormComponents';
 import getSize from '@/scripts/getSize';
 
 const AuthSucessScreen = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <BackHeader />
+    <BackHeaderContainer>
       <Container style={{ paddingTop: getSize(219) }}>
         <MainText>
           본인 인증에 성공했어요!{'\n'} 이제 회원가입을 도와드릴게요.
@@ -19,7 +18,7 @@ const AuthSucessScreen = () => {
           text="회원가입 하러가기"
         />
       </Container>
-    </View>
+    </BackHeaderContainer>
   );
 };
 

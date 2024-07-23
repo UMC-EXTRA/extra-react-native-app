@@ -1,6 +1,7 @@
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
+import { MainContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
@@ -17,6 +18,23 @@ const BackHeader = ({ title = null, onPress = () => router.back() }: Props) => {
       </TouchableOpacity>
       {title && <Text style={styles.headerTitle}>{title}</Text>}
     </View>
+  );
+};
+
+interface BackHeaderContainerProps extends Props {
+  children: React.ReactNode;
+}
+
+const BackHeaderContainer = ({
+  children,
+  title = null,
+  onPress = () => router.back(),
+}: BackHeaderContainerProps) => {
+  return (
+    <MainContainer>
+      <BackHeader title={title} onPress={onPress} />
+      {children}
+    </MainContainer>
   );
 };
 
@@ -49,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BackHeader;
+export { BackHeader, BackHeaderContainer };

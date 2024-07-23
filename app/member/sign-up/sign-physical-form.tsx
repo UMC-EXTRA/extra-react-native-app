@@ -17,12 +17,12 @@ import {
   InputStyle,
   InputTextStyle,
 } from '@/components/InputComponents';
-import BackHeader from '@/components/BackHeader';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 import TermModal from '@/components/TermModal';
 
-import type { TattoState, AccountState, TermState } from '@/redux/stateTypes';
+import type { TattoState } from '@/redux/stateTypes';
 import tattoNames from '@/redux/stateTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { initTerms, setPhysicalData } from '@/redux/signUpSlice';
@@ -100,8 +100,7 @@ const PhysicalFormScreen = () => {
   ]);
 
   return (
-    <View style={{ flex: 1, position: 'relative' }}>
-      <BackHeader />
+    <BackHeaderContainer>
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
           <MainText
@@ -215,7 +214,7 @@ const PhysicalFormScreen = () => {
           setComplete={setTermComplete}
         />
       )}
-    </View>
+    </BackHeaderContainer>
   );
 };
 

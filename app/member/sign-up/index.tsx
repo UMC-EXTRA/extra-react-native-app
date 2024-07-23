@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { router } from 'expo-router';
-import BackHeader from '@/components/BackHeader';
-import getSize from '@/scripts/getSize';
+
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import {
   MainText,
   MainLightText,
@@ -9,6 +9,8 @@ import {
   BackLinkButton,
 } from '@/components/FormComponents';
 import { Container } from '@/components/Container';
+import getSize from '@/scripts/getSize';
+
 import { useAppDispatch } from '@/redux/hooks';
 import { resetState } from '@/redux/signUpSlice';
 
@@ -16,8 +18,7 @@ const SignUpScreen = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <View style={{ flex: 1 }}>
-      <BackHeader />
+    <BackHeaderContainer>
       <Container style={{ paddingTop: getSize(136) }}>
         <MainLightText>
           <MainText>어서오세요!</MainText>
@@ -39,7 +40,7 @@ const SignUpScreen = () => {
           }}
         />
       </Container>
-    </View>
+    </BackHeaderContainer>
   );
 };
 

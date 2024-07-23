@@ -1,16 +1,15 @@
 import { Text, View } from 'react-native';
+import { router } from 'expo-router';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
 const ProfileScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
+    <BackHeaderContainer
+      title="프로필"
+      onPress={() => router.navigate('/home')}
     >
       <Text>Profile Page</Text>
-    </View>
+    </BackHeaderContainer>
   );
 };
 

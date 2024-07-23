@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Container } from '@/components/Container';
 import { FormButton, MainText } from '@/components/FormComponents';
 import colors from '@/constants/Colors';
-import BackHeader from '@/components/BackHeader';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import getSize from '@/scripts/getSize';
 
 import { setTattoData } from '@/redux/signUpSlice';
@@ -110,8 +110,7 @@ const TattoFormScreen = () => {
   }, [tatto]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <BackHeader />
+    <BackHeaderContainer>
       <Container>
         <View
           style={{
@@ -243,7 +242,7 @@ const TattoFormScreen = () => {
           text="다음"
         />
       </Container>
-    </View>
+    </BackHeaderContainer>
   );
 };
 

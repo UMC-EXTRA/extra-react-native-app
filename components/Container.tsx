@@ -5,7 +5,6 @@ import colors from '@/constants/Colors';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: colors.background,
   },
 });
@@ -17,14 +16,24 @@ interface Props {
 
 const SafeContainer = ({ children, style = {} }: Props) => {
   return (
-    <SafeAreaView style={{ ...styles.container, ...style }}>
+    <SafeAreaView
+      style={{ ...styles.container, alignItems: 'center', ...style }}
+    >
       {children}
     </SafeAreaView>
   );
 };
 
 const Container = ({ children, style = {} }: Props) => {
+  return (
+    <View style={{ ...styles.container, alignItems: 'center', ...style }}>
+      {children}
+    </View>
+  );
+};
+
+const MainContainer = ({ children, style = {} }: Props) => {
   return <View style={{ ...styles.container, ...style }}>{children}</View>;
 };
 
-export { SafeContainer, Container };
+export { SafeContainer, Container, MainContainer };

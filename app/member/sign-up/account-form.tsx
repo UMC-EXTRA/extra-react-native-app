@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Container } from '@/components/Container';
 import { FormButton, MainText } from '@/components/FormComponents';
 import { Input, getRefInput, onFocusNext } from '@/components/InputComponents';
-import BackHeader from '@/components/BackHeader';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -46,8 +46,7 @@ const AccountFormScreen = () => {
   }, [bankName, accountNumber, accountHolder]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <BackHeader />
+    <BackHeaderContainer>
       <Container>
         <MainText style={{ ...styles.mainText, marginTop: getSize(46) }}>
           은행명
@@ -93,7 +92,7 @@ const AccountFormScreen = () => {
           }}
         />
       </Container>
-    </View>
+    </BackHeaderContainer>
   );
 };
 

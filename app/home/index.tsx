@@ -11,6 +11,7 @@ import { WebView } from 'react-native-webview';
 import { AntDesign } from '@expo/vector-icons';
 //import { initializeAdMob } from '@/scripts/initAds';
 //import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
+import { MainContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
 const HomeScreen = () => {
@@ -24,12 +25,7 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#000',
-      }}
-    >
+    <MainContainer>
       <View style={styles.header}>
         <View style={styles.menuContainer}>
           <View style={styles.inputContainer}>
@@ -65,11 +61,10 @@ const HomeScreen = () => {
         </View>
       </View>
       <WebView
-        // 아래 링크를 수정하세요.
         source={{ uri: 'https://extra-react-webview.vercel.app/' }}
         style={styles.webView}
       />
-    </View>
+    </MainContainer>
   );
 };
 
@@ -77,7 +72,6 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     height: getSize(261),
-    backgroundColor: '#000',
   },
   menuContainer: {
     marginTop: getSize(112),

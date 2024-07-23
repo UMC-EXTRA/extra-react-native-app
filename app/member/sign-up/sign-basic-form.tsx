@@ -10,7 +10,7 @@ import {
 import React, { useState, useEffect, useRef } from 'react';
 import { router } from 'expo-router';
 import SelectDropdown from 'react-native-select-dropdown';
-import { Container } from '@/components/Container';
+
 import { MainText, SubText, FormButton } from '@/components/FormComponents';
 import {
   Input,
@@ -19,9 +19,11 @@ import {
   InputStyle,
   InputTextStyle,
 } from '@/components/InputComponents';
+import { Container } from '@/components/Container';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
-import BackHeader from '@/components/BackHeader';
+
 import { useAppDispatch } from '@/redux/hooks';
 import { setBasicData } from '@/redux/signUpSlice';
 
@@ -75,8 +77,7 @@ const BasicFormScreen = () => {
   }, [email, phone, name, birthday, sex, home]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#000' }}>
-      <BackHeader />
+    <BackHeaderContainer>
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <ScrollView
           style={{ flex: 1 }}
@@ -208,7 +209,7 @@ const BasicFormScreen = () => {
           </KeyboardAvoidingView>
         </ScrollView>
       </Pressable>
-    </View>
+    </BackHeaderContainer>
   );
 };
 
