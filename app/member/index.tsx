@@ -36,6 +36,11 @@ const MemberScreen = () => {
           }
           text="관리자"
         />
+        <NextLinkButton
+          style={{ marginTop: getSize(20) }}
+          onPress={() => router.replace('/home')}
+          text="홈화면"
+        />
       </View>
     </SafeContainer>
   );
