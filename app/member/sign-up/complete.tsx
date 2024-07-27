@@ -5,13 +5,16 @@ import { useEffect } from 'react';
 
 import getSize from '@/scripts/getSize';
 
-import { useAppSelector } from '@/redux/hooks';
+import { resetState } from '@/redux/signUp/signUpSlice';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 
 const Complete = () => {
   const type = useAppSelector(state => state.profile.type);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setTimeout(() => {
+      dispatch(resetState());
       router.replace(`/${type}`);
     }, 2000);
   }, []);
