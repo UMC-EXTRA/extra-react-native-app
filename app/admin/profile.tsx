@@ -2,12 +2,15 @@ import { Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
-const ChatScreen = () => {
+const ProfileScreen = () => {
   return (
-    <BackHeaderContainer title="채팅" onPress={() => router.navigate('/home')}>
-      <Text>Chat Page</Text>
+    <BackHeaderContainer
+      title="마이페이지"
+      onPress={() => router.navigate('/admin')}
+    >
+      <Text>Profile Page</Text>
     </BackHeaderContainer>
   );
 };
 
-export default ChatScreen;
+export default ProfileScreen;

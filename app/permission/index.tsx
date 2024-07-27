@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
+import QRCode from 'react-native-qrcode-svg';
 
 import colors from '@/constants/Colors';
 import { Container } from '@/components/Container';
@@ -85,7 +86,18 @@ const PermissionTestScreen = () => {
       <RequestButton
         text="카메라 켜기"
         onPress={() => {
-          router.push('/permission/camera');
+          router.push('/user/manage/camera');
+        }}
+      />
+      <QRCode
+        value="name:이건, 나이:24"
+        color="white"
+        backgroundColor="black"
+      />
+      <RequestButton
+        text="QR 스캔"
+        onPress={() => {
+          router.push('/admin/manage/clockIn');
         }}
       />
     </Container>

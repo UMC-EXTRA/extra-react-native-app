@@ -1,13 +1,12 @@
-import { View } from 'react-native';
 import WebView from 'react-native-webview';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
-const RecruitScreen = () => {
+const ManageScreen = () => {
   return (
     <BackHeaderContainer
-      title="지원 현황"
-      onPress={() => router.navigate('/home')}
+      title="촬영 관리"
+      onPress={() => router.navigate('/user')}
     >
       <WebView
         // 아래 링크를 수정하세요.
@@ -18,4 +17,4 @@ const RecruitScreen = () => {
   );
 };
 
-export default RecruitScreen;
+export default ManageScreen;

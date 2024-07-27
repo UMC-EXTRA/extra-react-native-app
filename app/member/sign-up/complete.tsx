@@ -8,7 +8,7 @@ import getSize from '@/scripts/getSize';
 const Complete = () => {
   useEffect(() => {
     setTimeout(() => {
-      router.replace('/home');
+      router.replace('/user');
     }, 2000);
   }, []);
 

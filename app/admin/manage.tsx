@@ -1,12 +1,11 @@
-import { View } from 'react-native';
 import WebView from 'react-native-webview';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
-const ScheduleScreen = () => {
+const ManageScreen = () => {
   return (
     <BackHeaderContainer
-      title="스케줄표"
+      title="현장 관리"
       onPress={() => router.navigate('/home')}
     >
       <WebView
@@ -18,4 +17,4 @@ const ScheduleScreen = () => {
   );
 };
 
-export default ScheduleScreen;
+export default ManageScreen;

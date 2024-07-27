@@ -5,8 +5,8 @@ import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 const ProfileScreen = () => {
   return (
     <BackHeaderContainer
-      title="프로필"
-      onPress={() => router.navigate('/home')}
+      title="마이페이지"
+      onPress={() => router.navigate('/user')}
     >
       <Text>Profile Page</Text>
     </BackHeaderContainer>
