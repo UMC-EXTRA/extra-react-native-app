@@ -1,18 +1,13 @@
-import { View } from 'react-native';
 import { router } from 'expo-router';
 
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
-import {
-  MainText,
-  MainLightText,
-  NextLinkButton,
-  BackLinkButton,
-} from '@/components/FormComponents';
+import { NextLinkButton, BackLinkButton } from '@/components/ButtonComponents';
+import { MainText, MainLightText } from '@/components/TextComponents';
 import { Container } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { resetState } from '@/redux/signUpSlice';
+import { resetState } from '@/redux/signUp/signUpSlice';
 
 const SignUpScreen = () => {
   const dispatch = useAppDispatch();

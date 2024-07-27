@@ -1,14 +1,18 @@
 import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { SafeContainer } from '@/components/Container';
-import { MainText, NextLinkButton } from '@/components/FormComponents';
+import { NextLinkButton } from '@/components/ButtonComponents';
+import { MainText } from '@/components/TextComponents';
 import getSize from '@/scripts/getSize';
-
+import { initType } from '@/redux/profile/profileSlice';
+import { useAppDispatch } from '@/redux/hooks';
 /*
   App first page
   - Select user type
 */
 const MemberScreen = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <SafeContainer>
       <View style={styles.mainTextContainer}>
@@ -18,22 +22,18 @@ const MemberScreen = () => {
       </View>
       <View style={styles.linkContainer}>
         <NextLinkButton
-          onPress={() =>
-            router.push({
-              pathname: '/member/login/[type]',
-              params: { type: 'user' },
-            })
-          }
+          onPress={() => {
+            dispatch(initType('user'));
+            router.push('/member/login');
+          }}
           style={{ marginBottom: getSize(20) }}
           text="보조출연자"
         />
         <NextLinkButton
-          onPress={() =>
-            router.push({
-              pathname: '/member/login/[type]',
-              params: { type: 'admin' },
-            })
-          }
+          onPress={() => {
+            dispatch(initType('admin'));
+            router.push('/member/login');
+          }}
           text="관리자"
         />
         <NextLinkButton

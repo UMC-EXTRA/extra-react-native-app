@@ -1,5 +1,4 @@
 import {
-  View,
   Pressable,
   Keyboard,
   StyleSheet,
@@ -8,24 +7,28 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { Container } from '@/components/Container';
-import { MainText, SubText, FormButton } from '@/components/FormComponents';
+import { MainText, SubText } from '@/components/TextComponents';
+import { FormButton } from '@/components/ButtonComponents';
 import {
   Input,
   InputStyle,
   InputTextStyle,
+  SelectInput,
 } from '@/components/InputComponents';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import getSize from '@/scripts/getSize';
-import colors from '@/constants/Colors';
 import TermModal from '@/components/TermModal';
 
-import type { TattoState } from '@/redux/stateTypes';
-import tattoNames from '@/redux/stateTypes';
+import type { TattoState } from '@/redux/signUp/stateTypes';
+import { tattoNames, isUserState } from '@/redux/signUp/stateTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { initTerms, setPhysicalData } from '@/redux/signUpSlice';
+import { setPhysicalData } from '@/redux/signUp/signUpSlice';
+
+import * as Permissions from '@/scripts/permission';
+
+import { getTokens } from '@/scripts/tokenUtils';
 
 const PhysicalFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -38,51 +41,8 @@ const PhysicalFormScreen = () => {
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
-    dispatch(
-      initTerms({
-        terms: [
-          {
-            id: 1,
-            title: '이용약관 동의',
-            content: '내용내용내용내용내용내용내용내용',
-            agree: false,
-            optional: false,
-          },
-          {
-            id: 2,
-            title: '개인정보 수집 및 이용 동의',
-            content: '내용내용내용내용내용내용내용내용',
-            agree: false,
-            optional: false,
-          },
-          {
-            id: 3,
-            title: '위치정보 이용 동의',
-            content: '내용내용내용내용내용내용내용내용',
-            agree: false,
-            optional: false,
-          },
-          {
-            id: 4,
-            title: '개인정보 유효기간 탈퇴 시로 지정',
-            content: '내용내용내용내용내용내용내용내용',
-            agree: false,
-            optional: true,
-          },
-          {
-            id: 5,
-            title: '홍보성 정보 메일, SMS 수신동의',
-            content: '내용내용내용내용내용내용내용내용',
-            agree: false,
-            optional: true,
-          },
-        ],
-      }),
-    );
-  }, []);
-
-  useEffect(() => {
     if (
+      isUserState(signUp) &&
       height.length > 0 &&
       weight.length > 0 &&
       signUp.enteredTatto &&
@@ -91,13 +51,7 @@ const PhysicalFormScreen = () => {
     )
       setComplete(true);
     else setComplete(false);
-  }, [
-    height,
-    weight,
-    signUp.enteredTatto,
-    signUp.enteredAccount,
-    termComplete,
-  ]);
+  }, [height, weight, signUp, termComplete]);
 
   return (
     <BackHeaderContainer>
@@ -135,59 +89,33 @@ const PhysicalFormScreen = () => {
             onChangeText={setWeight}
             keyboardType="numeric"
           />
-          <View
-            style={{
-              ...InputStyle,
-              ...styles.selectInput,
-            }}
-          >
-            <Text style={InputTextStyle}>
-              {signUp.enteredTatto ? (
-                signUp.hasTatto ? (
-                  `문신 있음 (${Object.entries(tattoNames)
+          <SelectInput
+            condition={isUserState(signUp) && signUp.enteredTatto}
+            value={
+              isUserState(signUp) && signUp.enteredTatto && signUp.hasTatto
+                ? `문신 있음 (${Object.entries(tattoNames)
                     .filter(
                       ([key, value]) =>
                         signUp.tatto && signUp.tatto[key as keyof TattoState],
                     )
                     .map(([, value]) => value)
                     .join(', ')})`
-                ) : (
-                  `문신 없음`
-                )
-              ) : (
-                <Text style={{ color: colors.placeholder }}>
-                  문신 여부를 입력해주세요.
-                </Text>
-              )}
-            </Text>
-            <TouchableOpacity
-              onPress={() => router.push('/member/sign-up/tatto-form')}
-            >
-              <AntDesign name="caretright" size={getSize(20)} color="white" />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              ...InputStyle,
-              ...styles.selectInput,
-              marginBottom: getSize(41),
-            }}
-          >
-            <Text style={InputTextStyle}>
-              {signUp.enteredAccount ? (
-                signUp.account.bankName + ' ' + signUp.account.accountNumber
-              ) : (
-                <Text style={{ color: colors.placeholder }}>
-                  계좌번호를 입력해주세요.
-                </Text>
-              )}
-            </Text>
-            <TouchableOpacity
-              onPress={() => router.push('/member/sign-up/account-form')}
-            >
-              <AntDesign name="caretright" size={getSize(20)} color="white" />
-            </TouchableOpacity>
-          </View>
+                : `문신 없음`
+            }
+            placeholder="문신 여부를 입력해주세요."
+            onPress={() => router.push('/member/sign-up/tatto-form')}
+          />
+          <SelectInput
+            condition={isUserState(signUp) && signUp.enteredAccount}
+            value={
+              isUserState(signUp) && signUp.enteredAccount
+                ? `${signUp.account.bankName + ' ' + signUp.account.accountNumber}`
+                : ''
+            }
+            placeholder="계좌번호를 입력해주세요."
+            onPress={() => router.push('/member/sign-up/account-form')}
+            style={{ marginBottom: getSize(41) }}
+          />
           <TouchableOpacity
             style={{
               ...InputStyle,
@@ -200,8 +128,32 @@ const PhysicalFormScreen = () => {
           <FormButton
             active={complete}
             onPress={() => {
-              dispatch(setPhysicalData({ height, weight }));
-              router.push('/member/sign-up/complete');
+              dispatch(
+                setPhysicalData({
+                  height: Number(height),
+                  weight: Number(weight),
+                }),
+              );
+              Permissions.requestLocationPermission().then(result => {
+                if (result) {
+                  Permissions.requestCameraPermission().then(result => {
+                    if (!result) {
+                      Permissions.alertForOpeningSettings(
+                        '푸시 알림 거부됨',
+                        '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                      );
+                    }
+                    // getTokens(signUp.email, signUp.password, 'user').then(
+                    //   result => {
+                    //     if (result) {
+                    //       router.push('/member/sign-up/complete');
+                    //     }
+                    //   },
+                    // );
+                    router.push('/member/sign-up/complete');
+                  });
+                }
+              });
             }}
             text="다음"
           />

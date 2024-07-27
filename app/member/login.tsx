@@ -8,16 +8,23 @@ import {
   Keyboard,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useLocalSearchParams, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
 import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
+
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { initType } from '@/redux/signUp/signUpSlice';
+
 /*
   Login page
   - Login with id and password
   - Social login buttons
 */
 const LoginScreen = () => {
+  const type = useAppSelector(state => state.profile.type);
+  const dispatch = useAppDispatch();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
@@ -34,8 +41,6 @@ const LoginScreen = () => {
       ref_input[index].current?.blur();
     }
   };
-  // user type (user, admin)
-  const { type } = useLocalSearchParams();
 
   // check if id and password are entered
   useEffect(() => {
@@ -120,6 +125,7 @@ const LoginScreen = () => {
             <View style={styles.divisionBar} />
             <TouchableOpacity
               onPress={() => {
+                dispatch(initType(type));
                 router.push('/member/sign-up');
               }}
             >

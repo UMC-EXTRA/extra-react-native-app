@@ -1,15 +1,17 @@
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
 
 import { Container } from '@/components/Container';
-import { FormButton, MainText } from '@/components/FormComponents';
+import { FormButton } from '@/components/ButtonComponents';
+import { MainText } from '@/components/TextComponents';
 import { Input, getRefInput, onFocusNext } from '@/components/InputComponents';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setAccountData } from '@/redux/signUpSlice';
+import { isUserState } from '@/redux/signUp/stateTypes';
+import { setAccountData } from '@/redux/signUp/signUpSlice';
 
 const AccountFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -26,12 +28,12 @@ const AccountFormScreen = () => {
   };
 
   useEffect(() => {
-    if (signUp.enteredAccount && signUp.account) {
+    if (isUserState(signUp) && signUp.enteredAccount) {
       setBankName(signUp.account.bankName);
       setAccountNumber(signUp.account.accountNumber);
       setAccountHolder(signUp.account.accountHolder);
     }
-  }, [signUp.enteredAccount, signUp.account]);
+  }, [signUp]);
 
   useEffect(() => {
     if (

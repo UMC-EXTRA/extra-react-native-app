@@ -11,30 +11,34 @@ import React, { useState, useEffect, useRef } from 'react';
 import { router } from 'expo-router';
 import SelectDropdown from 'react-native-select-dropdown';
 
-import { MainText, SubText, FormButton } from '@/components/FormComponents';
+import { FormButton } from '@/components/ButtonComponents';
+import { MainText, SubText } from '@/components/TextComponents';
 import {
   Input,
   getRefInput,
   onFocusNext,
   InputStyle,
   InputTextStyle,
+  SelectInput,
 } from '@/components/InputComponents';
 import { Container } from '@/components/Container';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 
-import { useAppDispatch } from '@/redux/hooks';
-import { setBasicData } from '@/redux/signUpSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { isUserState } from '@/redux/signUp/stateTypes';
+import { setBasicData } from '@/redux/signUp/signUpSlice';
 
 const BasicFormScreen = () => {
+  const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [sex, setSex] = useState<null | Boolean>(null);
+  const [sex, setSex] = useState<null | boolean>(null);
   const [home, setHome] = useState('');
   const [complete, setComplete] = useState(false);
 
@@ -61,19 +65,28 @@ const BasicFormScreen = () => {
     scrollViewRef.current?.scrollTo({ y: offset, animated: true });
   };
 
-  useEffect(() => {
+  const checkValidation = () => {
+    return true;
+  };
+
+  const checkComplete = () => {
     if (
       email.length > 0 &&
       phone.length > 0 &&
       name.length > 0 &&
       birthday.length &&
       sex != null &&
+      isUserState(signUp) &&
       home.length > 0
     ) {
-      setComplete(true);
+      return true;
     } else {
-      setComplete(false);
+      return false;
     }
+  };
+
+  useEffect(() => {
+    setComplete(checkComplete());
   }, [email, phone, name, birthday, sex, home]);
 
   return (
@@ -130,7 +143,6 @@ const BasicFormScreen = () => {
               />
               <Input
                 placeholder="이름을 입력해주세요."
-                inputMode="tel"
                 value={name}
                 onChangeText={setName}
                 ref={ref_input[2]}
@@ -139,7 +151,6 @@ const BasicFormScreen = () => {
               />
               <Input
                 placeholder="생일을 입력해주세요. 예)19901010"
-                inputMode="tel"
                 keyboardType="number-pad"
                 value={birthday}
                 onChangeText={setBirthday}
@@ -190,17 +201,19 @@ const BasicFormScreen = () => {
               <FormButton
                 active={complete}
                 onPress={() => {
-                  dispatch(
-                    setBasicData({
-                      email,
-                      phone,
-                      name,
-                      sex,
-                      birthday,
-                      home,
-                    }),
-                  );
-                  router.push('/member/sign-up/sign-physical-form');
+                  if (checkComplete()) {
+                    dispatch(
+                      setBasicData({
+                        email,
+                        phone,
+                        name,
+                        sex,
+                        birthday,
+                        home,
+                      }),
+                    );
+                    router.push('/member/sign-up/user-physical-form');
+                  }
                 }}
                 text="다음"
                 style={{ marginTop: getSize(63), marginBottom: getSize(20) }}

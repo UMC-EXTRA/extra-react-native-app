@@ -1,11 +1,14 @@
-import { View } from 'react-native';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import { Container } from '@/components/Container';
-import { MainText, NextLinkButton } from '@/components/FormComponents';
+import { NextLinkButton } from '@/components/ButtonComponents';
+import { MainText } from '@/components/TextComponents';
 import getSize from '@/scripts/getSize';
+import { useAppSelector } from '@/redux/hooks';
 
 const AuthSucessScreen = () => {
+  const type = useAppSelector(state => state.signUp.type);
+
   return (
     <BackHeaderContainer>
       <Container style={{ paddingTop: getSize(219) }}>
@@ -14,7 +17,10 @@ const AuthSucessScreen = () => {
         </MainText>
         <NextLinkButton
           style={{ marginTop: getSize(35) }}
-          onPress={() => router.push('/member/sign-up/sign-basic-form')}
+          onPress={() => {
+            if (type === 'user') router.push('/member/sign-up/user-basic-form');
+            if (type === 'admin') router.push('/member/sign-up/admin-form');
+          }}
           text="회원가입 하러가기"
         />
       </Container>

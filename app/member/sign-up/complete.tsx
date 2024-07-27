@@ -5,10 +5,14 @@ import { useEffect } from 'react';
 
 import getSize from '@/scripts/getSize';
 
+import { useAppSelector } from '@/redux/hooks';
+
 const Complete = () => {
+  const type = useAppSelector(state => state.profile.type);
+
   useEffect(() => {
     setTimeout(() => {
-      router.replace('/user');
+      router.replace(`/${type}`);
     }, 2000);
   }, []);
 
@@ -34,8 +38,8 @@ const Complete = () => {
         </Svg>
       )}
       <Text style={styles.text}>
-        회원가입이 완료되었어요!{'\n\n'}이제 EXTRA와 함께{'\n'}배우님이
-        되어보세요 🤩
+        회원가입이 완료되었어요!{'\n\n'}이제 EXTRA와 함께{'\n'}
+        {type === 'user' ? '배우' : '감독'}님이 되어보세요 🤩
       </Text>
       <Svg
         style={{
