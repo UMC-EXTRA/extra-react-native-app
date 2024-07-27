@@ -12,7 +12,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { SafeContainer } from '@/components/Container';
-import { MainText } from '@/components/FormComponents';
+import { MainText } from '@/components/TextComponents';
 import getSize from '@/scripts/getSize';
 
 import * as Permissions from '@/scripts/permission';
@@ -33,7 +33,7 @@ const QRScanner = ({ title, onScanned }: QRScannerProps) => {
     width: 0,
     height: 0,
   });
-  const scanAreaRef = useRef(null);
+  const scanAreaRef = useRef<View>(null);
 
   const onScanAreaLayout = () => {
     if (!hasPermission) return;

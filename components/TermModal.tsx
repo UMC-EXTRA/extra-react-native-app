@@ -7,15 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
-import { FormButton } from '@/components/FormComponents';
+import { FormButton } from '@/components/ButtonComponents';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-import { TermState } from '@/redux/stateTypes';
-import { setTermData } from '@/redux/signUpSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import type { TermState } from '@/redux/profile/stateTypes';
+import { setTermData } from '@/redux/signUp/signUpSlice';
+import { initTerms } from '@/redux/profile/profileSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 interface CheckBoxProps {
   checked: boolean;
@@ -49,33 +50,69 @@ interface Props {
 
 // Modal for agreement of terms
 const TermModal = ({ setDisplay, complete, setComplete }: Props) => {
-  const terms: TermState = useAppSelector(state => state.signUp.terms);
   const dispatch = useAppDispatch();
 
+  const [terms, setTerms] = useState<TermState>([]);
   const [allChecked, setAllChecked] = useState(false);
-  const [checked, setChecked] = useState<boolean[]>(
-    Array(terms.length).fill(false),
-  );
+  const [checked, setChecked] = useState<boolean[]>([]);
 
   const animation = useRef(new Animated.Value(getSize(-477))).current;
 
-  useEffect(() => {
+  const initModalState = useCallback(() => {
     modalAnimation(false);
+    setTerms([
+      {
+        id: 1,
+        title: '이용약관 동의',
+        content: '내용내용내용내용내용내용내용내용',
+        agree: false,
+        optional: false,
+      },
+      {
+        id: 2,
+        title: '개인정보 수집 및 이용 동의',
+        content: '내용내용내용내용내용내용내용내용',
+        agree: false,
+        optional: false,
+      },
+      {
+        id: 3,
+        title: '위치정보 이용 동의',
+        content: '내용내용내용내용내용내용내용내용',
+        agree: false,
+        optional: false,
+      },
+      {
+        id: 4,
+        title: '개인정보 유효기간 탈퇴 시로 지정',
+        content: '내용내용내용내용내용내용내용내용',
+        agree: false,
+        optional: true,
+      },
+      {
+        id: 5,
+        title: '홍보성 정보 메일, SMS 수신동의',
+        content: '내용내용내용내용내용내용내용내용',
+        agree: false,
+        optional: true,
+      },
+    ]);
+    setChecked(Array(5).fill(false));
+  }, []);
+
+  useEffect(() => {
+    initModalState();
   }, []);
 
   useEffect(() => {
     if (checked.length > 0) {
       let all = true;
       let requireChecked = true;
-      for (let i = 0; i < checked.length; i++) {
+      for (let i = 0; i < terms.length; i++) {
         if (checked[i] === false) {
           all = false;
         }
-        if (
-          terms[i] !== undefined &&
-          !terms[i].optional &&
-          checked[i] === false
-        ) {
+        if (!terms[i].optional && checked[i] === false) {
           requireChecked = false;
         }
       }
@@ -167,21 +204,15 @@ const TermModal = ({ setDisplay, complete, setComplete }: Props) => {
             onPress={() => {
               dispatch(
                 setTermData({
-                  terms:
-                    terms !== undefined
-                      ? terms.map((term, index) => {
-                          if (term !== undefined)
-                            return {
-                              id: term.id,
-                              title: term.title,
-                              content: term.content,
-                              agree: checked[index],
-                              optional: term.optional,
-                            };
-                        })
-                      : [],
+                  terms: terms
+                    .filter(term => term !== undefined)
+                    .map((term, index) => ({
+                      id: term!.id,
+                      agree: checked[index],
+                    })),
                 }),
               );
+              dispatch(initTerms({ terms }));
               modalAnimation(true);
             }}
             text="다음"

@@ -5,6 +5,13 @@ import * as Location from 'expo-location';
 import { Camera } from 'expo-camera';
 import * as IntentLauncher from 'expo-intent-launcher';
 
+export function alertForOpeningSettings(title: string, message: string) {
+  Alert.alert(title, message, [
+    { text: '취소', style: 'cancel' },
+    { text: '설정으로 이동', onPress: openSettings },
+  ]);
+}
+
 export async function requestPushNotificationPermission(): Promise<boolean> {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
@@ -21,13 +28,9 @@ export async function requestPushNotificationPermission(): Promise<boolean> {
 export async function requestLocationPermission(): Promise<boolean> {
   const { status } = await Location.requestForegroundPermissionsAsync();
   if (status !== 'granted') {
-    Alert.alert(
+    alertForOpeningSettings(
       '권한 필요',
       '이 앱을 사용하기 위해서는 위치 권한이 필요합니다. 설정에서 권한을 활성화해주세요.',
-      [
-        { text: '취소', style: 'cancel' },
-        { text: '설정으로 이동', onPress: openSettings },
-      ],
     );
     return false;
   }
@@ -37,13 +40,9 @@ export async function requestLocationPermission(): Promise<boolean> {
 export async function requestCameraPermission(): Promise<boolean> {
   const { status } = await Camera.requestCameraPermissionsAsync();
   if (status !== 'granted') {
-    Alert.alert(
+    alertForOpeningSettings(
       '권한 필요',
       '해당 기능은 카메라 권한이 필요합니다. 설정에서 권한을 활성화해주세요.',
-      [
-        { text: '취소', style: 'cancel' },
-        { text: '설정으로 이동', onPress: openSettings },
-      ],
     );
     return false;
   }
@@ -59,26 +58,18 @@ export async function togglePushNotificationPermission(
     if (status != 'granted') {
       return true;
     }
-    Alert.alert(
+    alertForOpeningSettings(
       '알림 비활성화',
       '알림을 비활성화하려면 설정에서 수동으로 변경해야 합니다. 설정으로 이동하시겠습니까?',
-      [
-        { text: '취소', style: 'cancel' },
-        { text: '설정으로 이동', onPress: openSettings },
-      ],
     );
     return false;
   } else {
     if (status == 'granted') {
       return true;
     }
-    Alert.alert(
+    alertForOpeningSettings(
       '알림 활성화',
       '알림을 활성화하려면 설정에서 수동으로 변경해야 합니다. 설정으로 이동하시겠습니까?',
-      [
-        { text: '취소', style: 'cancel' },
-        { text: '설정으로 이동', onPress: openSettings },
-      ],
     );
     return false;
   }

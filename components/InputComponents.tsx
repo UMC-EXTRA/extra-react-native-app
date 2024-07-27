@@ -1,8 +1,17 @@
 import { useRef, forwardRef } from 'react';
-import { TextInput, StyleSheet, TextInputProps } from 'react-native';
+import {
+  TextInput,
+  StyleSheet,
+  TextInputProps,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
-
+import { LinearGradient } from 'expo-linear-gradient';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { MainText } from '@/components/TextComponents';
 /**
  * Get ref_input array
  * @param length length of ref_input: number
@@ -56,6 +65,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Bold',
     fontWeight: '700',
   },
+  selectInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  gradientSelectInput: {
+    width: getSize(176),
+    height: getSize(98),
+    borderRadius: getSize(13),
+  },
+  linearGradient: {
+    flex: 1,
+    borderRadius: getSize(13),
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: getSize(10),
+    backgroundColor: '#000',
+    margin: 3,
+  },
 });
 
 // Input component type
@@ -98,7 +129,86 @@ const Input = forwardRef<TextInput, InputProps>(
   },
 );
 
+interface SelectInputProps {
+  condition: boolean;
+  value: string;
+  placeholder: string;
+  onPress: () => void;
+  style?: object;
+}
+
+const SelectInput = ({
+  condition,
+  value,
+  placeholder,
+  onPress,
+  style = {},
+}: SelectInputProps) => {
+  return (
+    <View
+      style={{
+        ...styles.input,
+        ...styles.selectInput,
+        ...style,
+      }}
+    >
+      <Text style={styles.inputText}>
+        {condition ? (
+          value
+        ) : (
+          <Text style={{ color: colors.placeholder }}>{placeholder}</Text>
+        )}
+      </Text>
+      <TouchableOpacity onPress={onPress}>
+        <AntDesign name="caretright" size={getSize(20)} color="white" />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+interface GradientSelectInputProps {
+  value: boolean;
+  setValue: () => void;
+  placeholder: string;
+  style?: object;
+}
+
+const GradientSelectInput = ({
+  value,
+  setValue,
+  placeholder,
+  style = {},
+}: GradientSelectInputProps) => {
+  return (
+    <TouchableOpacity
+      onPress={() => setValue()}
+      style={{
+        ...styles.gradientSelectInput,
+        ...(!value && { backgroundColor: '#656565' }),
+        ...style,
+      }}
+    >
+      {value ? (
+        <LinearGradient
+          colors={['#fff', colors.highlight]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.linearGradient}
+        >
+          <View style={styles.textContainer}>
+            <MainText>{placeholder}</MainText>
+          </View>
+        </LinearGradient>
+      ) : (
+        <View style={styles.textContainer}>
+          <MainText>{placeholder}</MainText>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+};
+
 export const InputStyle = styles.input;
 export const InputTextStyle = styles.inputText;
-export { Input };
+export { Input, SelectInput, GradientSelectInput };
 export { getRefInput, onFocusNext };
