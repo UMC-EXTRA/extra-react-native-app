@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { CameraView, BarcodeScanningResult } from 'expo-camera';
 import { Image } from 'expo-image';
@@ -20,12 +14,14 @@ import * as Permissions from '@/scripts/permission';
 interface QRScannerProps {
   title: string;
   onScanned: (data: string) => void;
+  onPress?: () => void;
 }
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
-const QRScanner = ({ title, onScanned }: QRScannerProps) => {
+const QRScanner = ({
+  title,
+  onScanned,
+  onPress = () => router.navigate('/admin/manage/detail'),
+}: QRScannerProps) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanAreaLayout, setScanAreaLayout] = useState({
     x: 0,
@@ -68,10 +64,10 @@ const QRScanner = ({ title, onScanned }: QRScannerProps) => {
   }, []);
 
   return (
-    <SafeContainer style={{ alignItems: 'stretch' }}>
+    <SafeContainer>
       <View style={styles.scannerHeader}>
         <MainText>{title}</MainText>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={onPress}>
           <Image
             source={require('@/assets/images/icons/Multiply.png')}
             style={{ width: getSize(31), height: getSize(31) }}

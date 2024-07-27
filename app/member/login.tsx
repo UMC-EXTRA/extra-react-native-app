@@ -52,7 +52,7 @@ const LoginScreen = () => {
   }, [id, password]);
 
   return (
-    <SafeContainer>
+    <SafeContainer style={{ alignItems: 'center' }}>
       {/* hide keyboard when pressed */}
       <Pressable
         onPress={Keyboard.dismiss}

@@ -1,15 +1,21 @@
+import { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { WebView } from 'react-native-webview';
+import CustomWebView from '@/components/CustomWebView';
 import { MainContainer } from '@/components/Container';
 import HomeHeader from '@/components/HomeHeader';
 
 const HomeScreen = () => {
+  const onMessage = useCallback((event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    console.log(data);
+  }, []);
+
   return (
     <MainContainer>
       <HomeHeader />
-      <WebView
-        source={{ uri: 'https://extra-react-webview.vercel.app/' }}
-        style={styles.webView}
+      <CustomWebView
+        uri="https://extra-react-webview.vercel.app"
+        onMessage={onMessage}
       />
     </MainContainer>
   );

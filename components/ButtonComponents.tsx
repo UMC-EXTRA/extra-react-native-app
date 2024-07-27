@@ -2,6 +2,8 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
+import { MainText } from '@/components/TextComponents';
+import { FontAwesome } from '@expo/vector-icons';
 
 interface Props {
   style?: object;
@@ -21,6 +23,14 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     fontSize: getSize(17),
     lineHeight: getSize(22),
+  },
+  manageButton: {
+    width: getSize(178),
+    height: getSize(100),
+    borderRadius: getSize(20),
+    backgroundColor: colors.grayBackground,
+    marginBottom: getSize(30),
+    position: 'relative',
   },
 });
 
@@ -109,4 +119,43 @@ const FormButton = ({ onPress, text, active, style = {} }: FormButtonProps) => {
   );
 };
 
-export { NextLinkButton, BackLinkButton, FormButton };
+interface ManageButtonProps {
+  onPress: () => void;
+  text: string;
+  style?: object;
+}
+
+const ManageButton = ({ onPress, text, style = {} }: ManageButtonProps) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        ...styles.manageButton,
+        ...style,
+      }}
+    >
+      <MainText
+        style={{
+          fontSize: getSize(24),
+          position: 'absolute',
+          top: getSize(20),
+          left: getSize(20),
+        }}
+      >
+        {text}
+      </MainText>
+      <FontAwesome
+        style={{
+          position: 'absolute',
+          bottom: getSize(18),
+          right: getSize(18),
+        }}
+        name="angle-right"
+        size={getSize(25)}
+        color="white"
+      />
+    </TouchableOpacity>
+  );
+};
+
+export { NextLinkButton, BackLinkButton, FormButton, ManageButton };

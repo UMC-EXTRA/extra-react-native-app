@@ -13,4 +13,5 @@ export default {
   inactiveText: '#ADADAD',
   disabled: '#575757',
   placeholder: '#696969',
+  grayBackground: '#302E34',
 };

@@ -4,13 +4,14 @@
     "slug": "extra-react-native-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "backgroundColor": "#000000",
     "icon": "./assets/images/logo.png",
     "scheme": "extra",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
@@ -19,14 +20,15 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
       "package": "com.extra.reactnative.app"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "backgroundColor": "#000000"
     },
     "react-native-google-mobile-ads": {
       "android_app_id": "ca-app-pub-7847773430575106~1847246477",
@@ -83,7 +85,7 @@
         "zq492l623r.skadnetwork",
         "3rd42ekr43.skadnetwork",
         "3qcr597p9d.skadnetwork"
-      ]    
+      ]
     },
     "plugins": [
       "expo-router",

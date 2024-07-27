@@ -1,18 +1,22 @@
-import { View } from 'react-native';
-import WebView from 'react-native-webview';
+import { useCallback } from 'react';
+import CustomWebView from '@/components/CustomWebView';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
 const ScheduleScreen = () => {
+  const onMessage = useCallback((event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    console.log(data);
+  }, []);
+
   return (
     <BackHeaderContainer
       title="스케줄표"
       onPress={() => router.navigate('/user')}
     >
-      <WebView
-        // 아래 링크를 수정하세요.
-        source={{ uri: 'https://extra-react-webview.vercel.app' }}
-        style={{ flex: 1 }}
+      <CustomWebView
+        uri="https://extra-react-webview.vercel.app"
+        onMessage={onMessage}
       />
     </BackHeaderContainer>
   );

@@ -3,7 +3,7 @@ import QRScanner from '@/components/QRScanner';
 const ClockInScreen = () => {
   return (
     <QRScanner
-      title="출석"
+      title="출근"
       onScanned={data => {
         console.log(data);
       }}

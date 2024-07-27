@@ -16,9 +16,7 @@ interface Props {
 
 const SafeContainer = ({ children, style = {} }: Props) => {
   return (
-    <SafeAreaView
-      style={{ ...styles.container, alignItems: 'center', ...style }}
-    >
+    <SafeAreaView style={{ ...styles.container, ...style }}>
       {children}
     </SafeAreaView>
   );

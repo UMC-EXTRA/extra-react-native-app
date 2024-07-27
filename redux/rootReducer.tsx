@@ -4,6 +4,7 @@ import AsyncStore from '@react-native-async-storage/async-storage';
 
 import signUpReducer from './signUp/signUpSlice';
 import profileReducer from './profile/profileSlice';
+import manageReducer from './manage/manageSlice';
 
 const signUpConfig = {
   key: 'signUp',
@@ -20,7 +21,7 @@ const profileConfig = {
 const manageConfig = {
   key: 'manage',
   storage: AsyncStore,
-  whitelist: ['manage'],
+  whitelist: ['manage', 'noticeId'],
 };
 
 const chatConfig = {
@@ -32,7 +33,7 @@ const chatConfig = {
 const rootReducer = combineReducers({
   signUp: persistReducer(signUpConfig, signUpReducer),
   profile: persistReducer(profileConfig, profileReducer),
-  //  manage: persistReducer(manageConfig, manageReducer),
+  manage: persistReducer(manageConfig, manageReducer),
   //  chat: persistReducer(chatConfig, chatReducer),
 });
 
