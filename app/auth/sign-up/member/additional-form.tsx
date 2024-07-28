@@ -22,7 +22,7 @@ import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
 import type { TattoState } from '@/redux/signUp/stateTypes';
-import { tattoNames, isUserState } from '@/redux/signUp/stateTypes';
+import { tattoNames, isMemberSignUpState } from '@/redux/signUp/stateTypes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setPhysicalData } from '@/redux/signUp/signUpSlice';
 
@@ -42,7 +42,7 @@ const PhysicalFormScreen = () => {
 
   useEffect(() => {
     if (
-      isUserState(signUp) &&
+      isMemberSignUpState(signUp) &&
       height.length > 0 &&
       weight.length > 0 &&
       signUp.enteredTatto &&
@@ -90,9 +90,11 @@ const PhysicalFormScreen = () => {
             keyboardType="numeric"
           />
           <SelectInput
-            condition={isUserState(signUp) && signUp.enteredTatto}
+            condition={isMemberSignUpState(signUp) && signUp.enteredTatto}
             value={
-              isUserState(signUp) && signUp.enteredTatto && signUp.hasTatto
+              isMemberSignUpState(signUp) &&
+              signUp.enteredTatto &&
+              signUp.hasTatto
                 ? `문신 있음 (${Object.entries(tattoNames)
                     .filter(
                       ([key, value]) =>
@@ -103,17 +105,19 @@ const PhysicalFormScreen = () => {
                 : `문신 없음`
             }
             placeholder="문신 여부를 입력해주세요."
-            onPress={() => router.push('/member/sign-up/tatto-form')}
+            onPress={() =>
+              router.push('/auth/sign-up/member/tatto-select-form')
+            }
           />
           <SelectInput
-            condition={isUserState(signUp) && signUp.enteredAccount}
+            condition={isMemberSignUpState(signUp) && signUp.enteredAccount}
             value={
-              isUserState(signUp) && signUp.enteredAccount
+              isMemberSignUpState(signUp) && signUp.enteredAccount
                 ? `${signUp.account.bankName + ' ' + signUp.account.accountNumber}`
                 : ''
             }
             placeholder="계좌번호를 입력해주세요."
-            onPress={() => router.push('/member/sign-up/account-form')}
+            onPress={() => router.push('/auth/sign-up/member/account-form')}
             style={{ marginBottom: getSize(41) }}
           />
           <TouchableOpacity
@@ -150,7 +154,7 @@ const PhysicalFormScreen = () => {
                     //     }
                     //   },
                     // );
-                    router.push('/member/sign-up/complete');
+                    router.push('/auth/sign-up/complete');
                   });
                 }
               });

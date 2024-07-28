@@ -3,7 +3,7 @@ import CustomWebView from '@/components/CustomWebView';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
-const ScheduleScreen = () => {
+const ManageScreen = () => {
   const onMessage = useCallback((event: any) => {
     const data = JSON.parse(event.nativeEvent.data);
     console.log(data);
@@ -11,8 +11,8 @@ const ScheduleScreen = () => {
 
   return (
     <BackHeaderContainer
-      title="스케줄표"
-      onPress={() => router.navigate('/user')}
+      title="촬영 관리"
+      onPress={() => router.navigate('/member')}
     >
       <CustomWebView
         uri="https://extra-react-webview.vercel.app"
@@ -22,4 +22,4 @@ const ScheduleScreen = () => {
   );
 };
 
-export default ScheduleScreen;
+export default ManageScreen;

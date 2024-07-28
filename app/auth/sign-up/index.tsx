@@ -23,7 +23,7 @@ const SignUpScreen = () => {
           진행해주세요.
         </MainLightText>
         <NextLinkButton
-          onPress={() => router.push('/member/sign-up/auth-success')}
+          onPress={() => router.push('/auth/sign-up/auth-success')}
           text="본인 인증하기"
           style={{ marginTop: getSize(57) }}
         />

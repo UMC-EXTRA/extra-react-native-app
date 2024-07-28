@@ -6,7 +6,7 @@ const ProfileScreen = () => {
   return (
     <BackHeaderContainer
       title="마이페이지"
-      onPress={() => router.navigate('/user')}
+      onPress={() => router.navigate('/member')}
     >
       <Text>Profile Page</Text>
     </BackHeaderContainer>

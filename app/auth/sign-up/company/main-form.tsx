@@ -28,7 +28,7 @@ import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isAdminState } from '@/redux/signUp/stateTypes';
+import { isCompanySignUpState } from '@/redux/signUp/stateTypes';
 import { setBasicData } from '@/redux/signUp/signUpSlice';
 
 const BasicFormScreen = () => {
@@ -78,7 +78,7 @@ const BasicFormScreen = () => {
       name.length > 0 &&
       birthday.length &&
       sex != null &&
-      isAdminState(signUp) &&
+      isCompanySignUpState(signUp) &&
       signUp.enteredCompany
     ) {
       return true;
@@ -192,14 +192,18 @@ const BasicFormScreen = () => {
                 }}
               />
               <SelectInput
-                condition={isAdminState(signUp) && signUp.enteredCompany}
+                condition={
+                  isCompanySignUpState(signUp) && signUp.enteredCompany
+                }
                 value={
-                  isAdminState(signUp) && signUp.enteredCompany
+                  isCompanySignUpState(signUp) && signUp.enteredCompany
                     ? signUp.company
                     : ''
                 }
                 placeholder="소속된 회사를 등록해주세요."
-                onPress={() => router.push('/member/sign-up/company-form')}
+                onPress={() =>
+                  router.push('/auth/sign-up/company/company-select-form')
+                }
                 style={{ marginBottom: 0 }}
               />
               <FormButton
@@ -209,7 +213,7 @@ const BasicFormScreen = () => {
                     dispatch(
                       setBasicData({ email, phone, name, sex, birthday }),
                     );
-                    router.push('/member/sign-up/complete');
+                    router.push('/auth/sign-up/complete');
                   } else {
                     setDisplay(true);
                   }

@@ -113,12 +113,12 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.navigationButtonContainer}>
-            <TouchableOpacity onPress={() => router.push('/member/find-id')}>
+            <TouchableOpacity onPress={() => router.push('/auth/find-id')}>
               <Text style={styles.navigationButtonText}>아이디 찾기</Text>
             </TouchableOpacity>
             <View style={styles.divisionBar} />
             <TouchableOpacity
-              onPress={() => router.push('/member/find-password')}
+              onPress={() => router.push('/auth/find-password')}
             >
               <Text style={styles.navigationButtonText}>비밀번호 찾기</Text>
             </TouchableOpacity>
@@ -126,7 +126,7 @@ const LoginScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 dispatch(initType(type));
-                router.push('/member/sign-up');
+                router.push('/auth/sign-up');
               }}
             >
               <Text style={styles.navigationButtonText}>회원가입</Text>

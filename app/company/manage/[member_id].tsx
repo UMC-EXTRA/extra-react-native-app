@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
+import { WebView } from 'react-native-webview';
 import CustomWebView from '@/components/CustomWebView';
 import { SafeContainer } from '@/components/Container';
 
 const RecruitScreen = () => {
-  const webviewRef = useRef(null);
-  const { userId } = useLocalSearchParams();
+  const webviewRef = useRef<WebView>(null);
+  const { member_id } = useLocalSearchParams();
 
   useEffect(() => {
     if (webviewRef.current) {
-      webviewRef.current.postMessage(JSON.stringify({ userId }));
+      webviewRef.current.postMessage(JSON.stringify({ member_id }));
     }
   }, []);
 

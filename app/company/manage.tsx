@@ -1,5 +1,5 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { router } from 'expo-router';
 import { SafeContainer } from '@/components/Container';
 import { MainText } from '@/components/TextComponents';
@@ -7,16 +7,21 @@ import CustomWebView from '@/components/CustomWebView';
 import getSize from '@/scripts/getSize';
 import { AntDesign } from '@expo/vector-icons';
 
-import { initManageState } from '@/redux/manage/manageSlice';
-import { useDispatch } from 'react-redux';
+import { initManageState, setNoticeId } from '@/redux/manage/manageSlice';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 
 const ManageScreen = () => {
-  const dispatch = useDispatch();
+  const manage = useAppSelector(state => state.manage);
+  const dispatch = useAppDispatch();
 
   const onMessage = useCallback((event: any) => {
     const data = JSON.parse(event.nativeEvent.data);
-    dispatch(initManageState(data));
-    router.push('/admin/manage/detail');
+    dispatch(setNoticeId(data.noticeId));
+    router.push('/company/manage/detail');
+  }, []);
+
+  useEffect(() => {
+    dispatch(initManageState({ type: 'company' }));
   }, []);
 
   return (
@@ -24,7 +29,7 @@ const ManageScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backLinkButton}
-          onPress={() => router.navigate('/admin')}
+          onPress={() => router.navigate('/company')}
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>

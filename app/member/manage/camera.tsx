@@ -1,5 +1,5 @@
 import CameraComponent from '@/components/CameraComponent';
 
 export default function CameraScreen() {
-  return <CameraComponent />;
+  return <CameraComponent backLink="/member/manage" />;
 }

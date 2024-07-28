@@ -42,7 +42,8 @@ const Complete = () => {
       )}
       <Text style={styles.text}>
         회원가입이 완료되었어요!{'\n\n'}이제 EXTRA와 함께{'\n'}
-        {type === 'user' ? '배우' : '감독'}님이 되어보세요 🤩
+        {type === 'member' && '배우'}
+        {type === 'company' && '감독'}님이 되어보세요 🤩
       </Text>
       <Svg
         style={{

@@ -14,66 +14,55 @@ import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-type UserState = {
-  id: number;
-  name: string;
-  role: string;
-  attendance: boolean;
-};
+import type { Members } from '@/redux/manage/stateTypes';
+import { isCompanyManageState } from '@/redux/manage/stateTypes';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { initMemberList } from '@/redux/manage/manageSlice';
 
-const UserListScreen = () => {
+const MemberListScreen = () => {
+  const manage = useAppSelector(state => state.manage);
+  const dispatch = useAppDispatch();
+
+  const sortItems = ['역할별', '성별', '나이별'];
+
   const [clicked, setClicked] = useState(false);
-  const [filter, setFilter] = useState('');
-  const [filterItems, setFilterItems] = useState<string[]>([]);
+  const [sorted, setSorted] = useState(sortItems[0]);
   const [search, setSearch] = useState('');
-  const [users, setUsers] = useState<UserState[]>([]);
+  const [members, setMembers] = useState<Members>([]);
 
-  const userData = [
-    {
-      id: 1,
-      name: '김철수',
-      role: '학생',
-      attendance: true,
-    },
-    {
-      id: 2,
-      name: '이영희',
-      role: '교수',
-      attendance: true,
-    },
-    {
-      id: 3,
-      name: '박민수',
-      role: '학생',
-      attendance: false,
-    },
-    {
-      id: 4,
-      name: '홍길동',
-      role: '교수',
-      attendance: true,
-    },
-  ];
-
-  const changeFilter = (item: string) => {
-    setFilter(item);
-    setClicked(false);
-    if (item === '') {
-      setUsers(userData);
-    } else {
-      const filteredUsers = userData.filter(user => user.role === item);
-      setUsers(filteredUsers);
+  useEffect(() => {
+    if (isCompanyManageState(manage)) {
+      setMembers(manage.members);
     }
-  };
+  }, [manage]);
 
   useEffect(() => {
-    setFilterItems(['학생', '교수']);
-    setUsers(userData);
-  }, []);
+    if (isCompanyManageState(manage)) {
+      let sortedMembers = [...manage.members];
+      sortedMembers = sortedMembers.sort((a, b) => {
+        if (sorted === '역할별') {
+          return a.role.localeCompare(b.role);
+        }
+        if (sorted === '성별') {
+          return Number(a.sex) - Number(b.sex);
+        }
+        if (sorted == '나이별') {
+          return a.age - b.age;
+        }
+        return 0;
+      });
+      setMembers(sortedMembers);
+    }
+  }, [sorted]);
 
   useEffect(() => {
-    const filteredUsers = userData.filter(user => user.name.includes(search));
-    setUsers(filteredUsers);
+    if (isCompanyManageState(manage)) {
+      let filteredMembers = [...manage.members];
+      filteredMembers = filteredMembers.filter(data =>
+        data.name.includes(search),
+      );
+      setMembers(filteredMembers);
+    }
   }, [search]);
 
   return (
@@ -81,7 +70,7 @@ const UserListScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backLinkButton}
-          onPress={() => router.navigate('/admin/manage/detail')}
+          onPress={() => router.navigate('/company/manage/detail')}
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
@@ -97,23 +86,14 @@ const UserListScreen = () => {
           ) : (
             <Octicons name="triangle-down" size={getSize(20)} color="white" />
           )}
-          <MainText style={{ fontSize: getSize(18) }}>
-            {filter || '역할별'}
-          </MainText>
+          <MainText style={{ fontSize: getSize(18) }}>{sorted}</MainText>
           {clicked && (
             <View style={styles.filterDropdown}>
-              <TouchableOpacity
-                onPress={() => {
-                  changeFilter('');
-                }}
-                style={styles.filterItemContainer}
-              >
-                <MainText style={{ fontSize: getSize(18) }}>전체</MainText>
-              </TouchableOpacity>
-              {filterItems.map((item, index) => (
+              {sortItems.map((item, index) => (
                 <TouchableOpacity
                   onPress={() => {
-                    changeFilter(item);
+                    setSorted(item);
+                    setClicked(false);
                   }}
                   key={index}
                   style={styles.filterItemContainer}
@@ -137,14 +117,14 @@ const UserListScreen = () => {
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.listContainer}>
-        {users.map(user => (
+        {members.map(data => (
           <TouchableOpacity
-            key={user.id}
+            key={data.id}
             style={styles.listItemContainer}
             onPress={() =>
               router.navigate({
-                pathname: '/admin/manage/[userId]',
-                params: { userId: user.id },
+                pathname: '/company/manage/[member_id]',
+                params: { memberId: data.id },
               })
             }
           >
@@ -158,12 +138,12 @@ const UserListScreen = () => {
                 textAlign: 'left',
               }}
             >
-              {user.name}/{user.role}
+              {data.name}/{data.role}
             </MainText>
             <View
               style={{
                 ...styles.statusDot,
-                backgroundColor: user.attendance ? '#35EB17' : '#E00338',
+                backgroundColor: data.clockIn ? '#35EB17' : '#E00338',
               }}
             />
             <Image
@@ -276,4 +256,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserListScreen;
+export default MemberListScreen;

@@ -10,7 +10,7 @@ import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isUserState } from '@/redux/signUp/stateTypes';
+import { isMemberSignUpState } from '@/redux/signUp/stateTypes';
 import { setAccountData } from '@/redux/signUp/signUpSlice';
 
 const AccountFormScreen = () => {
@@ -28,7 +28,7 @@ const AccountFormScreen = () => {
   };
 
   useEffect(() => {
-    if (isUserState(signUp) && signUp.enteredAccount) {
+    if (isMemberSignUpState(signUp) && signUp.enteredAccount) {
       setBankName(signUp.account.bankName);
       setAccountNumber(signUp.account.accountNumber);
       setAccountHolder(signUp.account.accountHolder);

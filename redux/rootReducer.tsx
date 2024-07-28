@@ -21,7 +21,7 @@ const profileConfig = {
 const manageConfig = {
   key: 'manage',
   storage: AsyncStore,
-  whitelist: ['manage', 'noticeId'],
+  whitelist: ['manage', 'noticeId', 'type', 'clockInTime', 'clockOutTime'],
 };
 
 const chatConfig = {

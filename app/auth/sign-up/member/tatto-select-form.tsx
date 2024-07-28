@@ -11,7 +11,7 @@ import getSize from '@/scripts/getSize';
 import { setTattoData } from '@/redux/signUp/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { TattoState } from '@/redux/signUp/stateTypes';
-import { tattoNames, isUserState } from '@/redux/signUp/stateTypes';
+import { tattoNames, isMemberSignUpState } from '@/redux/signUp/stateTypes';
 
 const TattoFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -32,7 +32,7 @@ const TattoFormScreen = () => {
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
-    if (isUserState(signUp) && signUp.enteredTatto) {
+    if (isMemberSignUpState(signUp) && signUp.enteredTatto) {
       setComplete(true);
       setHasTatto(signUp.hasTatto);
       setTatto(signUp.tatto);

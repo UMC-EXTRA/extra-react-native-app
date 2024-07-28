@@ -1,30 +1,25 @@
 import { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
 import CustomWebView from '@/components/CustomWebView';
-import { MainContainer } from '@/components/Container';
-import HomeHeader from '@/components/HomeHeader';
+import { router } from 'expo-router';
+import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
-const HomeScreen = () => {
+const ScheduleScreen = () => {
   const onMessage = useCallback((event: any) => {
     const data = JSON.parse(event.nativeEvent.data);
     console.log(data);
   }, []);
 
   return (
-    <MainContainer>
-      <HomeHeader />
+    <BackHeaderContainer
+      title="스케줄표"
+      onPress={() => router.navigate('/member')}
+    >
       <CustomWebView
         uri="https://extra-react-webview.vercel.app"
         onMessage={onMessage}
       />
-    </MainContainer>
+    </BackHeaderContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  webView: {
-    flex: 1,
-  },
-});
-
-export default HomeScreen;
+export default ScheduleScreen;

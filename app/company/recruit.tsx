@@ -10,7 +10,10 @@ const RecruitScreen = () => {
   }, []);
 
   return (
-    <BackHeaderContainer title="공고" onPress={() => router.navigate('/admin')}>
+    <BackHeaderContainer
+      title="공고"
+      onPress={() => router.navigate('/company')}
+    >
       <CustomWebView
         uri="https://extra-react-webview.vercel.app"
         onMessage={onMessage}

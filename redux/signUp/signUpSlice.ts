@@ -4,8 +4,8 @@ import type {
   AccountState,
   TermState,
   SignUpState,
-  UserState,
-  AdminState,
+  MemberSignUpState,
+  CompanySignUpState,
 } from './stateTypes';
 
 const initialState: SignUpState = {
@@ -18,8 +18,8 @@ const initialState: SignUpState = {
   phone: '',
 };
 
-const userInitState: UserState = {
-  type: 'user',
+const memberInitState: MemberSignUpState = {
+  type: 'member',
   email: '',
   password: '',
   name: '',
@@ -51,8 +51,8 @@ const userInitState: UserState = {
   terms: [],
 };
 
-const adminInitState: AdminState = {
-  type: 'admin',
+const companyInitState: CompanySignUpState = {
+  type: 'company',
   email: '',
   password: '',
   name: '',
@@ -68,11 +68,11 @@ const signUpSlice = createSlice({
   initialState,
   reducers: {
     initType: (state, action) => {
-      if (action.payload === 'user') {
-        return { ...userInitState };
+      if (action.payload === 'member') {
+        return { ...memberInitState };
       }
-      if (action.payload === 'admin') {
-        return { ...adminInitState };
+      if (action.payload === 'company') {
+        return { ...companyInitState };
       }
     },
     setBasicData: (
@@ -89,47 +89,47 @@ const signUpSlice = createSlice({
       state.name = action.payload.name;
       state.sex = action.payload.sex;
       state.birthday = action.payload.birthday;
-      if (state.type === 'user' && action.payload.home) {
-        (state as UserState).home = action.payload.home;
+      if (state.type === 'member' && action.payload.home) {
+        (state as MemberSignUpState).home = action.payload.home;
       }
     },
     setPhysicalData: (
       state,
       action: PayloadAction<{ height: number; weight: number }>,
     ) => {
-      if (state.type === 'user') {
-        (state as UserState).height = action.payload.height;
-        (state as UserState).weight = action.payload.weight;
+      if (state.type === 'member') {
+        (state as MemberSignUpState).height = action.payload.height;
+        (state as MemberSignUpState).weight = action.payload.weight;
       }
     },
     setTattoData: (
       state,
       action: PayloadAction<{ hasTatto: boolean; tatto: TattoState }>,
     ) => {
-      if (state.type === 'user') {
-        (state as UserState).enteredTatto = true;
-        (state as UserState).hasTatto = action.payload.hasTatto;
-        (state as UserState).tatto = action.payload.tatto;
+      if (state.type === 'member') {
+        (state as MemberSignUpState).enteredTatto = true;
+        (state as MemberSignUpState).hasTatto = action.payload.hasTatto;
+        (state as MemberSignUpState).tatto = action.payload.tatto;
       }
     },
     setAccountData: (
       state,
       action: PayloadAction<{ account: AccountState }>,
     ) => {
-      if (state.type === 'user') {
-        (state as UserState).enteredAccount = true;
-        (state as UserState).account = action.payload.account;
+      if (state.type === 'member') {
+        (state as MemberSignUpState).enteredAccount = true;
+        (state as MemberSignUpState).account = action.payload.account;
       }
     },
     setCompanyData: (state, action: PayloadAction<{ company: string }>) => {
-      if (state.type === 'admin') {
-        (state as AdminState).enteredCompany = true;
-        (state as AdminState).company = action.payload.company;
+      if (state.type === 'company') {
+        (state as CompanySignUpState).enteredCompany = true;
+        (state as CompanySignUpState).company = action.payload.company;
       }
     },
     setTermData: (state, action: PayloadAction<TermState>) => {
-      if (state.type === 'user') {
-        (state as UserState).terms = action.payload;
+      if (state.type === 'member') {
+        (state as MemberSignUpState).terms = action.payload;
       }
     },
     resetState: state => {

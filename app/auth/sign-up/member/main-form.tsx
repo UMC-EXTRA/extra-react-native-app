@@ -27,7 +27,7 @@ import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isUserState } from '@/redux/signUp/stateTypes';
+import { isMemberSignUpState } from '@/redux/signUp/stateTypes';
 import { setBasicData } from '@/redux/signUp/signUpSlice';
 
 const BasicFormScreen = () => {
@@ -76,7 +76,7 @@ const BasicFormScreen = () => {
       name.length > 0 &&
       birthday.length &&
       sex != null &&
-      isUserState(signUp) &&
+      isMemberSignUpState(signUp) &&
       home.length > 0
     ) {
       return true;
@@ -212,7 +212,7 @@ const BasicFormScreen = () => {
                         home,
                       }),
                     );
-                    router.push('/member/sign-up/user-physical-form');
+                    router.push('/auth/sign-up/member/additional-form');
                   }
                 }}
                 text="다음"

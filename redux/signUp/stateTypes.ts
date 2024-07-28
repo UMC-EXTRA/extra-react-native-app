@@ -45,8 +45,8 @@ interface SignUpState {
   phone: string;
 }
 
-interface UserState extends SignUpState {
-  type: 'user';
+interface MemberSignUpState extends SignUpState {
+  type: 'member';
   home: string;
   height: number;
   weight: number;
@@ -58,24 +58,25 @@ interface UserState extends SignUpState {
   terms: TermState;
 }
 
-interface AdminState extends SignUpState {
-  type: 'admin';
+interface CompanySignUpState extends SignUpState {
+  type: 'company';
   enteredCompany: boolean;
   company: string;
 }
 
-const isUserState = (state: SignUpState): state is UserState =>
-  state.type === 'user';
+const isMemberSignUpState = (state: SignUpState): state is MemberSignUpState =>
+  state.type === 'member';
 
-const isAdminState = (state: SignUpState): state is AdminState =>
-  state.type === 'admin';
+const isCompanySignUpState = (
+  state: SignUpState,
+): state is CompanySignUpState => state.type === 'company';
 
 export type {
   TattoState,
   AccountState,
   TermState,
   SignUpState,
-  UserState,
-  AdminState,
+  MemberSignUpState,
+  CompanySignUpState,
 };
-export { tattoNames, isUserState, isAdminState };
+export { tattoNames, isMemberSignUpState, isCompanySignUpState };

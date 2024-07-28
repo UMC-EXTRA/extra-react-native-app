@@ -10,7 +10,7 @@ import getSize from '@/scripts/getSize';
 
 import { setCompanyData } from '@/redux/signUp/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isAdminState } from '@/redux/signUp/stateTypes';
+import { isCompanySignUpState } from '@/redux/signUp/stateTypes';
 
 const TattoFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -24,7 +24,7 @@ const TattoFormScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (isAdminState(signUp) && signUp.enteredCompany) {
+    if (isCompanySignUpState(signUp) && signUp.enteredCompany) {
       setCompany(signUp.company);
     }
   }, [signUp]);

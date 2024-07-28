@@ -11,7 +11,12 @@ import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import * as Permissions from '@/scripts/permission';
 
-const CameraComponent = () => {
+interface CameraComponentProps {
+  backLink: string;
+  onConfirm: () => void;
+}
+
+const CameraComponent = ({ backLink, onConfirm }: CameraComponentProps) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
@@ -19,6 +24,11 @@ const CameraComponent = () => {
   const [type, setType] = useState<CameraType>('back');
 
   const cameraRef = useRef<CameraView>(null);
+
+  const resetCamera = () => {
+    setPreviewVisible(false);
+    setCapturedImage(null);
+  };
 
   const takePictureHandler = async () => {
     // cameraRef가 없으면 해당 함수가 실행되지 않게 가드
@@ -77,7 +87,10 @@ const CameraComponent = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconButton}
-          onPress={() => router.back()}
+          onPress={() => {
+            resetCamera();
+            router.navigate(backLink);
+          }}
         >
           <Image
             source={require('@/assets/images/icons/Multiply.png')}
@@ -108,7 +121,13 @@ const CameraComponent = () => {
                   style={styles.takeButtonImage}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.cameraButton} onPress={() => {}}>
+              <TouchableOpacity
+                style={styles.cameraButton}
+                onPress={() => {
+                  resetCamera();
+                  onConfirm();
+                }}
+              >
                 <Feather name="upload" size={getSize(25)} color="black" />
               </TouchableOpacity>
             </View>

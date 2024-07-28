@@ -17,10 +17,7 @@ const AuthSucessScreen = () => {
         </MainText>
         <NextLinkButton
           style={{ marginTop: getSize(35) }}
-          onPress={() => {
-            if (type === 'user') router.push('/member/sign-up/user-basic-form');
-            if (type === 'admin') router.push('/member/sign-up/admin-form');
-          }}
+          onPress={() => router.push(`/auth/sign-up/${type}/main-form`)}
           text="회원가입 하러가기"
         />
       </Container>

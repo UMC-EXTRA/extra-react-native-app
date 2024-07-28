@@ -20,7 +20,7 @@ interface QRScannerProps {
 const QRScanner = ({
   title,
   onScanned,
-  onPress = () => router.navigate('/admin/manage/detail'),
+  onPress = () => router.navigate('/company/manage/detail'),
 }: QRScannerProps) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanAreaLayout, setScanAreaLayout] = useState({
