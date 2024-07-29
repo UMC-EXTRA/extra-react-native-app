@@ -24,6 +24,8 @@ const tabConfig: TabConfigType = {
   },
 };
 
+const inVisiblePaths = ['/company/manage/chat'];
+
 export default function AdminLayout() {
-  return <TabsLayout tabConfig={tabConfig} />;
+  return <TabsLayout tabConfig={tabConfig} inVisiblePaths={inVisiblePaths} />;
 }

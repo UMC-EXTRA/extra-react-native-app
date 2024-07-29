@@ -129,7 +129,7 @@ const DetailScreen = () => {
         <ManageButton
           text="채팅"
           onPress={() => {
-            console.log('출석');
+            router.push('/company/manage/chat');
           }}
         />
       </View>

@@ -2,6 +2,7 @@ import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import { MainContainer } from '@/components/Container';
+import { MainText } from '@/components/TextComponents';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
@@ -16,7 +17,11 @@ const BackHeader = ({ title = null, onPress = () => router.back() }: Props) => {
       <TouchableOpacity style={styles.backButton} onPress={onPress}>
         <FontAwesome name="angle-left" size={getSize(40)} color="white" />
       </TouchableOpacity>
-      {title && <Text style={styles.headerTitle}>{title}</Text>}
+      {title && (
+        <MainText style={{ fontSize: getSize(24), lineHeight: getSize(95) }}>
+          {title}
+        </MainText>
+      )}
     </View>
   );
 };
@@ -56,14 +61,6 @@ const styles = StyleSheet.create({
     paddingLeft: getSize(34),
     width: getSize(100),
     justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: getSize(24),
-    fontWeight: '900',
-    fontFamily: 'Inter',
-    color: 'white',
-    textAlign: 'center',
-    lineHeight: getSize(95),
   },
 });
 

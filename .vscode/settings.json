@@ -1,0 +1,4 @@
+{
+  "terminal.integrated.customGlyphs": true,
+  "terminal.integrated.gpuAcceleration": "on"
+}

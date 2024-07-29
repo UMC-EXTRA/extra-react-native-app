@@ -14,9 +14,10 @@ type TabConfigType = {
 
 interface TabsLayoutProps {
   tabConfig: TabConfigType;
+  inVisiblePaths?: string[];
 }
 
-const TabsLayout = ({ tabConfig }: TabsLayoutProps) => {
+const TabsLayout = ({ tabConfig, inVisiblePaths = [] }: TabsLayoutProps) => {
   const pathname = usePathname();
   const currentTab = pathname.split('/')[2];
 
@@ -31,6 +32,7 @@ const TabsLayout = ({ tabConfig }: TabsLayoutProps) => {
         tabBarStyle: {
           backgroundColor: colors.tabBarBackground,
           height: getSize(160),
+          display: inVisiblePaths.includes(pathname) ? 'none' : 'flex',
         },
         tabBarLabelStyle: {
           fontFamily: 'Inter-Bold',
