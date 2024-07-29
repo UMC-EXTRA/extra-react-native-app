@@ -8,10 +8,9 @@ import getSize from '@/scripts/getSize';
 import { AntDesign } from '@expo/vector-icons';
 
 import { initManageState, setNoticeId } from '@/redux/manage/manageSlice';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 
 const ManageScreen = () => {
-  const manage = useAppSelector(state => state.manage);
   const dispatch = useAppDispatch();
 
   const onMessage = useCallback((event: any) => {

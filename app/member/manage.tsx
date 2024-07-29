@@ -1,17 +1,25 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import CustomWebView from '@/components/CustomWebView';
 import { router } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { useAppDispatch } from '@/redux/hooks';
+import { initManageState, setNoticeId } from '@/redux/manage/manageSlice';
 
 const ManageScreen = () => {
+  const dispatch = useAppDispatch();
+
   const onMessage = useCallback((event: any) => {
     const { type, data } = JSON.parse(event.nativeEvent.data);
     if (type === 'manageNotice') {
-      router.push({
-        pathname: '/member/manage/detail',
-        params: { notice_id: data.notice_id },
-      });
+      dispatch(setNoticeId(data.notice_id));
+      router.push('/member/manage/detail');
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      dispatch(initManageState({ type: 'member' }));
+    };
   }, []);
 
   return (

@@ -10,13 +10,13 @@ const HomeScreen = () => {
     const { type, data } = JSON.parse(event.nativeEvent.data);
     if (type === 'selectList') {
       router.push({
-        pathname: '/member/home/detail',
+        pathname: '/member/home/[notice_id]',
         params: { notice_id: data.notice_id },
       });
     }
     if (type === 'selectDate') {
       router.push({
-        pathname: '/member/home/date-detail',
+        pathname: '/member/home/[date]',
         params: { date: data.date },
       });
     }

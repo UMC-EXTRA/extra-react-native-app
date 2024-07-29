@@ -4,14 +4,13 @@ import { WebView } from 'react-native-webview';
 import CustomWebView from '@/components/CustomWebView';
 import { SafeContainer } from '@/components/Container';
 
-const RecruitScreen = () => {
+const MemberIdScreen = () => {
   const webviewRef = useRef<WebView>(null);
   const { member_id } = useLocalSearchParams();
 
   useEffect(() => {
-    if (webviewRef.current) {
-      webviewRef.current.postMessage(JSON.stringify({ member_id }));
-    }
+    const message = { member_id };
+    webviewRef.current?.postMessage(JSON.stringify(message));
   }, []);
 
   const onMessage = useCallback((event: any) => {
@@ -30,4 +29,4 @@ const RecruitScreen = () => {
   );
 };
 
-export default RecruitScreen;
+export default MemberIdScreen;

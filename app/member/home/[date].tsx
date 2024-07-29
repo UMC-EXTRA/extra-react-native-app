@@ -1,17 +1,26 @@
-import { useCallback } from 'react';
-import { router } from 'expo-router';
+import { useCallback, useEffect, useRef } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
 import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { WebView } from 'react-native-webview';
 import CustomWebView from '@/components/CustomWebView';
 
-const DateDetailScreen = () => {
+const DateScreen = () => {
+  const webviewRef = useRef<WebView>(null);
+  const { date } = useLocalSearchParams();
+
   const onMessage = useCallback((event: any) => {
     const { type, data } = JSON.parse(event.nativeEvent.data);
     if (type === 'selectNotice') {
       router.push({
-        pathname: '/member/home/detail',
+        pathname: '/member/home/[notice_id]',
         params: { notice_id: data.notice_id },
       });
     }
+  }, []);
+
+  useEffect(() => {
+    const message = { date };
+    webviewRef.current?.postMessage(JSON.stringify(message));
   }, []);
 
   return (
@@ -24,4 +33,4 @@ const DateDetailScreen = () => {
   );
 };
 
-export default DateDetailScreen;
+export default DateScreen;

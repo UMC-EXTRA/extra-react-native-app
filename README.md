@@ -128,47 +128,98 @@ window.addEventListener('message',(e) => onMessage(e.data) );
 document.addEventListener('message',(e) => onMessage(e.data) );
 ```
 
+### 플랫폼 구분
+
+```js
+const [platform, setPlatform] = useState('');
+
+useEffect(() => {
+  const userAgent = navigator.userAgent;
+
+  if (/android/i.test(userAgent)) setPlatform('android');
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)
+    setPlatform('ios');
+}, []);
+```
+
 ### 보조출연자 홈화면
 
-- /app/member/index
+- /member/index
 
   - 리스트 보기 -> 공고 선택 -> 공고 화면
-    - /app/member/home/detail
+    - /member/home/[notice_id]
 
   ```js
+  // Send data
   const message = { type: 'selectNotice', data: { notice_id: notice_id } };
   window.ReactNativeWebView.postMessage(JSON.stringify(message));
+
+  // Recevice data
+  const [noticeId, setNoticeId] = useState(0);
+
+  useEffect(() => {
+    // ios
+    window.addEventListener('message', e => setNoticeId(e.data.notice_id));
+
+    // android
+    document.addEventListener('message', e => setNoticeId(e.data.notice_id));
+  }, []);
   ```
 
   - 캘린더 보기 -> 날짜 선택 -> 날짜 선택 시 화면
-    - /app/member/home/date-detail
+    - /member/home/[date]
 
   ```js
+  // Send data
   const message = { type: 'selectDate', data: { date: date } };
   window.ReactNativeWebView.postMessage(JSON.stringify(message));
+
+  // Recevice data
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    // ios
+    window.addEventListener('message', e => setDate(e.data.date));
+
+    // android
+    document.addEventListener('message', e => setDate(e.data.date));
+  }, []);
   ```
 
   - 날짜 선택 시 화면 -> 공고 선택 -> 공고 화면
 
-    - /app/member/home/detail
+    - /member/home/[notice_id]
 
     ```js
+    // Send data
     const message = { type: 'selectNotice', data: { notice_id: notice_id } };
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
+
+    // Recevice data
+    const [noticeId, setNoticeId] = useState(0);
+
+    useEffect(() => {
+      // ios
+      window.addEventListener('message', e => setNoticeId(e.data.notice_id));
+
+      // android
+      document.addEventListener('message', e => setNoticeId(e.data.notice_id));
+    }, []);
     ```
 
   - 공고 화면 & 날짜 선택 시 화면 -> 뒤로가기 버튼 -> 홈화면
-    ```js
-    const message = { type: 'back', data: {} };
-    window.ReactNativeWebView.postMessage(JSON.stringify(message));
-    ```
+
+  ```js
+  const message = { type: 'back', data: {} };
+  window.ReactNativeWebView.postMessage(JSON.stringify(message));
+  ```
 
 ### 보조출연자 촬영관리
 
-- /app/member/manage
+- /member/manage
 
   - 촬영 관리 -> 공고 클릭 -> 관리 화면
-    - /app/member/manage/detail
+    - /member/manage/detail
     ```js
     const message = { type: 'manageNotice', data: { notice_id: notice_id } };
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
@@ -176,16 +227,31 @@ document.addEventListener('message',(e) => onMessage(e.data) );
 
 ### 업체 공고
 
-- /app/company/notice
+- /company/notice
 
   - 공고 -> 공고 클릭 -> 공고 화면
-    - /app/company/notice/detail
+
+    - /company/notice/[notice_id]
+
     ```js
+    // Send data
     const message = { type: 'selectNotice', data: { notice_id: notice_id } };
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
+
+    // Recevice data
+    const [noticeId, setNoticeId] = useState(0);
+
+    useEffect(() => {
+      // ios
+      window.addEventListener('message', e => setNoticeId(e.data.notice_id));
+
+      // android
+      document.addEventListener('message', e => setNoticeId(e.data.notice_id));
+    }, []);
     ```
+
   - 공고 -> 공고 새로 만들기 -> 공고 등록
-    - /app/company/notice/register
+    - /company/notice/register
     ```js
     const message = { type: 'registerNotice', data: {} };
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
