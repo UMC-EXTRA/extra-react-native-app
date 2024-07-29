@@ -2,7 +2,7 @@ import type { TabConfigType } from '@/components/TabsLayout';
 import TabsLayout from '@/components/TabsLayout';
 
 const tabConfig: TabConfigType = {
-  recruit: {
+  notice: {
     label: '공고',
     active: require('@/assets/images/icons/Document-color.png'),
     inactive: require('@/assets/images/icons/Document-gray.png'),

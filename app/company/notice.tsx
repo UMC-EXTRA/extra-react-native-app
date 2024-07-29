@@ -5,8 +5,18 @@ import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 
 const RecruitScreen = () => {
   const onMessage = useCallback((event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    console.log(data);
+    const { type, data } = JSON.parse(event.nativeEvent.data);
+    if (type === 'selectNotice') {
+      router.push({
+        pathname: '/company/notice/detail',
+        params: { notice_id: data.notice_id },
+      });
+    }
+    if (type === 'recruitNotice') {
+      router.push({
+        pathname: '/company/notice/register',
+      });
+    }
   }, []);
 
   return (

@@ -1,13 +1,25 @@
 import { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 import CustomWebView from '@/components/CustomWebView';
 import { MainContainer } from '@/components/Container';
 import HomeHeader from '@/components/HomeHeader';
 
 const HomeScreen = () => {
   const onMessage = useCallback((event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    console.log(data);
+    const { type, data } = JSON.parse(event.nativeEvent.data);
+    if (type === 'selectList') {
+      router.push({
+        pathname: '/member/home/detail',
+        params: { notice_id: data.notice_id },
+      });
+    }
+    if (type === 'selectDate') {
+      router.push({
+        pathname: '/member/home/date-detail',
+        params: { date: data.date },
+      });
+    }
   }, []);
 
   return (

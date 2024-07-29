@@ -24,6 +24,8 @@ const tabConfig: TabConfigType = {
   },
 };
 
+const inVisiblePaths = ['/member/home/date-detail'];
+
 export default function AdminLayout() {
-  return <TabsLayout tabConfig={tabConfig} />;
+  return <TabsLayout tabConfig={tabConfig} inVisiblePaths={inVisiblePaths} />;
 }
