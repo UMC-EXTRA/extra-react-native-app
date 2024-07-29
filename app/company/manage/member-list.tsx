@@ -16,12 +16,10 @@ import colors from '@/constants/Colors';
 
 import type { Members } from '@/redux/manage/stateTypes';
 import { isCompanyManageState } from '@/redux/manage/stateTypes';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { initMemberList } from '@/redux/manage/manageSlice';
+import { useAppSelector } from '@/redux/hooks';
 
 const MemberListScreen = () => {
   const manage = useAppSelector(state => state.manage);
-  const dispatch = useAppDispatch();
 
   const sortItems = ['역할별', '성별', '나이별'];
 

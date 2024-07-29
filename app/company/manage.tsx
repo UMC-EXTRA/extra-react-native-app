@@ -45,7 +45,10 @@ const ManageScreen = () => {
       >
         촬영 목록
       </MainText>
-      <CustomWebView uri="http://172.30.1.44:5173/" onMessage={onMessage} />
+      <CustomWebView
+        uri="https://extra-react-webview.vercel.app"
+        onMessage={onMessage}
+      />
     </SafeContainer>
   );
 };

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
 import { WebView } from 'react-native-webview';
 import CustomWebView from '@/components/CustomWebView';
 

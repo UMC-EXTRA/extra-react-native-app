@@ -14,4 +14,5 @@ export default {
   disabled: '#575757',
   placeholder: '#696969',
   grayBackground: '#302E34',
+  settingBackground: '#3E3E3E',
 };
