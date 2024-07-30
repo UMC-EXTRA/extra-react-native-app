@@ -1,9 +1,7 @@
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { router } from 'expo-router';
-import { AntDesign } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { SafeContainer } from '@/components/Container';
-import { MainText } from '@/components/TextComponents';
+import { SettingContainer } from '@/components/SettingComponents';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 
@@ -14,15 +12,10 @@ const ProfileScreen = () => {
   const age = 24;
 
   return (
-    <SafeContainer>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.navigate('/company')}>
-          <AntDesign name="caretleft" size={getSize(28)} color="white" />
-        </TouchableOpacity>
-        <MainText style={{ fontSize: getSize(32), marginLeft: getSize(34) }}>
-          프로필
-        </MainText>
-      </View>
+    <SettingContainer
+      title="프로필"
+      onPress={() => router.navigate('/company')}
+    >
       <View style={styles.mainProfileContainer}>
         <TouchableOpacity
           onPress={() => router.push('/company/profile/settings')}
@@ -45,18 +38,11 @@ const ProfileScreen = () => {
           </View>
         </View>
       </View>
-    </SafeContainer>
+    </SettingContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    width: '100%',
-    height: getSize(168),
-    paddingTop: getSize(92),
-    paddingLeft: getSize(46),
-    flexDirection: 'row',
-  },
   mainProfileContainer: {
     width: getSize(358),
     height: getSize(147),
