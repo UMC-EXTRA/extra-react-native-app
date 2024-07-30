@@ -19,7 +19,7 @@ import { Image } from 'expo-image';
 import { Svg, Path } from 'react-native-svg';
 
 import { MainContainer } from '@/components/Container';
-import { MainText } from '@/components/TextComponents';
+import { MainText } from '@/components/Theme/Text';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
@@ -42,14 +42,11 @@ const ChatHeader = ({
         <TouchableOpacity onPress={() => router.navigate(backLink)}>
           <FontAwesome name="angle-left" size={getSize(40)} color="white" />
         </TouchableOpacity>
-        <MainText style={{ fontSize: getSize(22), lineHeight: 'auto' }}>
-          {title}
-        </MainText>
+        <MainText size={22}>{title}</MainText>
         <MainText
+          size={22}
           style={{
-            fontSize: getSize(22),
             color: '#929292',
-            lineHeight: 'auto',
           }}
         >
           {headcount}
@@ -122,24 +119,22 @@ const ChatMenu = ({
         }}
       >
         <View style={styles.menuHeader}>
-          <MainText style={{ textAlign: 'start' }}>{title}</MainText>
+          <MainText align="left">{title}</MainText>
           <MainText
+            align="left"
+            size={18}
             style={{
-              textAlign: 'start',
-              fontSize: getSize(18),
               color: '#929292',
-              lineHeight: 'auto',
               marginBottom: getSize(5),
             }}
           >
             {headcount}명 참여중
           </MainText>
           <MainText
+            align="left"
+            size={18}
             style={{
-              textAlign: 'start',
-              fontSize: getSize(18),
               color: '#929292',
-              lineHeight: 'auto',
             }}
           >
             개설일 {createDate}

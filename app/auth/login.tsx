@@ -10,7 +10,10 @@ import {
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
+
 import { SafeContainer } from '@/components/Container';
+import { weight800, weight200, MainText } from '@/components/Theme/Text';
+import { FormButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
 
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
@@ -95,22 +98,24 @@ const LoginScreen = () => {
                 }}
               />
             </View>
-            <TouchableOpacity
-              style={{
-                ...styles.loginButton,
-                backgroundColor: valid ? '#F5C001' : '#4B4B4B',
+            <FormButton
+              width={100}
+              height={104}
+              radius={20}
+              valid={valid}
+              style={
+                {
+                  // backgroundColor: valid ? '#F5C001' : '#4B4B4B',
+                }
+              }
+              text="로그인"
+              textStyle={{
+                ...weight800,
+                fontSize: getSize(15),
+                // color: valid ? '#000' : '#7D7D7D',
               }}
-              disabled={!valid}
-            >
-              <Text
-                style={{
-                  ...styles.loginButtonText,
-                  color: valid ? '#000' : '#7D7D7D',
-                }}
-              >
-                로그인
-              </Text>
-            </TouchableOpacity>
+              onPress={() => {}}
+            />
           </View>
           <View style={styles.navigationButtonContainer}>
             <TouchableOpacity onPress={() => router.push('/auth/find-id')}>
@@ -132,7 +137,12 @@ const LoginScreen = () => {
               <Text style={styles.navigationButtonText}>회원가입</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.socialLoginTitle}>간편 로그인</Text>
+          <MainText
+            size={18}
+            style={{ marginTop: getSize(42), marginBottom: getSize(30) }}
+          >
+            간편 로그인
+          </MainText>
           <View style={styles.socialButtonContainer}>
             <TouchableOpacity
               onPress={() => alert('kakao')}
@@ -186,18 +196,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     paddingLeft: getSize(14),
   },
-  loginButton: {
-    width: getSize(100),
-    height: getSize(104),
-    borderRadius: getSize(20),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loginButtonText: {
-    fontFamily: 'Inter-Bold',
-    fontSize: getSize(15),
-    fontWeight: '800',
-  },
   navigationButtonContainer: {
     marginTop: getSize(41),
     width: getSize(328),
@@ -206,25 +204,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navigationButtonText: {
-    fontFamily: 'Inter-Light',
+    ...weight200,
     fontSize: getSize(13),
-    fontWeight: '200',
     color: '#969696',
   },
   divisionBar: {
     width: getSize(1),
     height: getSize(12),
     backgroundColor: '#969696',
-  },
-  socialLoginTitle: {
-    marginTop: getSize(42),
-    width: '100%',
-    textAlign: 'center',
-    fontSize: getSize(18),
-    fontWeight: '900',
-    fontFamily: 'Inter-ExtraBold',
-    color: '#fff',
-    marginBottom: getSize(30),
   },
   socialButtonContainer: {
     width: '100%',

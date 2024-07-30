@@ -2,7 +2,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useCallback, useEffect } from 'react';
 import { router } from 'expo-router';
 import { SafeContainer } from '@/components/Container';
-import { MainText } from '@/components/TextComponents';
+import { MainText } from '@/components/Theme/Text';
 import CustomWebView from '@/components/CustomWebView';
 import getSize from '@/scripts/getSize';
 import { AntDesign } from '@expo/vector-icons';
@@ -32,15 +32,18 @@ const ManageScreen = () => {
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
-        <MainText style={{ fontSize: getSize(30) }}>현장 관리</MainText>
+        <MainText size={30} spacing={0.3}>
+          현장 관리
+        </MainText>
         <View style={styles.diviedBar} />
       </View>
       <MainText
+        spacing={0.2}
+        align="left"
         style={{
           marginTop: getSize(38),
           marginBottom: getSize(44),
           marginLeft: getSize(32),
-          textAlign: 'left',
         }}
       >
         촬영 목록

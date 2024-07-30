@@ -11,12 +11,12 @@ import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import * as Permissions from '@/scripts/permission';
 
-interface CameraComponentProps {
+interface CameraProps {
   backLink: string;
   onConfirm: () => void;
 }
 
-const CameraComponent = ({ backLink, onConfirm }: CameraComponentProps) => {
+const Camera = ({ backLink, onConfirm }: CameraProps) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
@@ -217,4 +217,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CameraComponent;
+export default Camera;

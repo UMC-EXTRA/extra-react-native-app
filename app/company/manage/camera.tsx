@@ -1,4 +1,4 @@
-import CameraComponent from '@/components/CameraComponent';
+import Camera from '@/components/Camera';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import { isCompanyManageState } from '@/redux/manage/stateTypes';
@@ -12,7 +12,7 @@ export default function CameraScreen() {
   const { memberId } = useLocalSearchParams();
 
   return (
-    <CameraComponent
+    <Camera
       backLink="/company/manage/confirm-clothes"
       onConfirm={() => {
         if (isCompanyManageState(manage)) {

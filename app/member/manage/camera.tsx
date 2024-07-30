@@ -1,5 +1,5 @@
-import CameraComponent from '@/components/CameraComponent';
+import Camera from '@/components/Camera';
 
 export default function CameraScreen() {
-  return <CameraComponent backLink="/member/manage" />;
+  return <Camera backLink="/member/manage" onConfirm={() => {}} />;
 }

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { router } from 'expo-router';
 import CustomWebView from '@/components/CustomWebView';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { SafeContainer } from '@/components/Container';
 
 const RecruitScreen = () => {
   const onMessage = useCallback((event: any) => {
@@ -20,15 +20,12 @@ const RecruitScreen = () => {
   }, []);
 
   return (
-    <BackHeaderContainer
-      title="공고"
-      onPress={() => router.navigate('/company')}
-    >
+    <SafeContainer>
       <CustomWebView
         uri="https://extra-react-webview.vercel.app"
         onMessage={onMessage}
       />
-    </BackHeaderContainer>
+    </SafeContainer>
   );
 };
 

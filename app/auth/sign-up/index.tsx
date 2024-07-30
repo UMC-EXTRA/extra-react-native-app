@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
-import { NextLinkButton, BackLinkButton } from '@/components/ButtonComponents';
-import { MainText, MainLightText } from '@/components/TextComponents';
+import { BackHeaderContainer } from '@/components/Container';
+import { MainText, TextWeight500 } from '@/components/Theme/Text';
+import { ConfirmButton, BackLinkButton } from '@/components/Theme/Button';
 import { Container } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
@@ -15,14 +15,14 @@ const SignUpScreen = () => {
   return (
     <BackHeaderContainer>
       <Container style={{ paddingTop: getSize(136) }}>
-        <MainLightText>
+        <TextWeight500 align="center" height={41} size={20}>
           <MainText>어서오세요!</MainText>
           {'\n'}
           먼저 <MainText>본인확인</MainText>을 위해{' '}
           <MainText>휴대폰 본인인증</MainText>을{'\n'}
           진행해주세요.
-        </MainLightText>
-        <NextLinkButton
+        </TextWeight500>
+        <ConfirmButton
           onPress={() => router.push('/auth/sign-up/auth-success')}
           text="본인 인증하기"
           style={{ marginTop: getSize(57) }}

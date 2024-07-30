@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-import { BackLinkButton, NextLinkButton } from './ButtonComponents';
-import { MainText } from '@/components/TextComponents';
+import { CancelButton, ConfirmButton } from '@/components/Theme/Button';
+import { MainText } from '@/components/Theme/Text';
 
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
@@ -76,7 +76,7 @@ const ToggleButton = ({
 
 interface SetTimeModalProps {
   setDisplay: (display: boolean) => void;
-  type: string;
+  type: 'in' | 'out';
 }
 
 const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
@@ -96,7 +96,7 @@ const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
   return (
     <View style={styles.modalBackground}>
       <View style={styles.modalContainer}>
-        <MainText style={styles.title}>
+        <MainText size={30} spacing={0.3} style={{ marginTop: getSize(80) }}>
           {type == 'in' && '출근'}
           {type == 'out' && '퇴근'} 시간
         </MainText>
@@ -136,18 +136,19 @@ const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <BackLinkButton
+          <CancelButton
+            width={100}
+            height={40}
+            radius={10}
             text="취소"
             onPress={() => {
               setDisplay(false);
             }}
-            style={{
-              width: getSize(100),
-              height: getSize(40),
-              borderRadius: getSize(10),
-            }}
           />
-          <NextLinkButton
+          <ConfirmButton
+            width={100}
+            height={40}
+            radius={10}
             text="확인"
             onPress={() => {
               const time = `${moon ? hour : hour + 12}:${minute < 10 ? '0' : ''}${minute}`;
@@ -156,11 +157,6 @@ const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
               }
               setDisplay(false);
               router.push(`/company/manage/clock-${type}`);
-            }}
-            style={{
-              width: getSize(100),
-              height: getSize(40),
-              borderRadius: getSize(10),
             }}
           />
         </View>
@@ -187,10 +183,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grayBackground,
     alignItems: 'center',
     borderRadius: getSize(30),
-  },
-  title: {
-    fontSize: getSize(30),
-    marginTop: getSize(80),
   },
   divideBar: {
     width: getSize(285),

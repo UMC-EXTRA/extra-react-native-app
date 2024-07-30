@@ -11,7 +11,7 @@ import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import { LinearGradient } from 'expo-linear-gradient';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { MainText } from '@/components/TextComponents';
+import { weight200, weight700, MainText } from './Theme/Text';
 /**
  * Get ref_input array
  * @param length length of ref_input: number
@@ -43,6 +43,12 @@ const onFocusNext = (
 };
 
 const styles = StyleSheet.create({
+  subText: {
+    ...weight200,
+    width: getSize(368),
+    lineHeight: getSize(15),
+    fontSize: getSize(14),
+  },
   input: {
     backgroundColor: '#000',
     width: getSize(368),
@@ -50,20 +56,10 @@ const styles = StyleSheet.create({
     borderRadius: getSize(15),
     borderStyle: 'solid',
     borderWidth: getSize(2),
-    borderColor: '#696969',
-    color: '#fff',
-    fontSize: getSize(14),
-    fontFamily: 'Inter-Bold',
-    fontWeight: '700',
+    borderColor: colors.placeholder,
     marginBottom: 19,
     marginHorizontal: 'auto',
     paddingHorizontal: getSize(26),
-  },
-  inputText: {
-    color: '#fff',
-    fontSize: getSize(14),
-    fontFamily: 'Inter-Bold',
-    fontWeight: '700',
   },
   selectInput: {
     flexDirection: 'row',
@@ -88,6 +84,35 @@ const styles = StyleSheet.create({
     margin: 3,
   },
 });
+
+const FormMainText = () => {
+  return (
+    <>
+      <MainText
+        align="left"
+        height={41}
+        style={{
+          marginTop: getSize(29),
+          width: getSize(368),
+        }}
+      >
+        필수 정보를 입력해주세요.
+      </MainText>
+      <Text style={{ ...styles.subText, marginTop: getSize(18) }}>
+        일자리 신청에 꼭 필요한
+      </Text>
+      <Text
+        style={{
+          ...styles.subText,
+          marginTop: getSize(5),
+          marginBottom: getSize(39),
+        }}
+      >
+        정보를 입력해주세요.
+      </Text>
+    </>
+  );
+};
 
 // Input component type
 interface InputProps extends Omit<TextInputProps, 'style'> {
@@ -116,7 +141,7 @@ const Input = forwardRef<TextInput, InputProps>(
     return (
       <TextInput
         ref={ref}
-        style={{ ...styles.input, ...styles.inputText, ...style }}
+        style={[styles.input, InputTextStyle, style]}
         placeholder={placeholder}
         placeholderTextColor={colors.placeholder}
         value={value}
@@ -152,7 +177,7 @@ const SelectInput = ({
         ...style,
       }}
     >
-      <Text style={styles.inputText}>
+      <Text style={InputTextStyle}>
         {condition ? (
           value
         ) : (
@@ -209,6 +234,12 @@ const GradientSelectInput = ({
 };
 
 export const InputStyle = styles.input;
-export const InputTextStyle = styles.inputText;
-export { Input, SelectInput, GradientSelectInput };
-export { getRefInput, onFocusNext };
+export const InputTextStyle = { ...weight700, fontSize: getSize(14) };
+export {
+  getRefInput,
+  onFocusNext,
+  Input,
+  SelectInput,
+  GradientSelectInput,
+  FormMainText,
+};

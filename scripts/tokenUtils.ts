@@ -105,3 +105,8 @@ export const verityToken = async () => {
     }
   }
 };
+
+export const logout = async () => {
+  await AsyncStorage.removeItem('Tokens');
+  router.replace('/auth');
+};

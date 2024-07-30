@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeContainer } from '@/components/Container';
-import { ManageButton } from '@/components/ButtonComponents';
+import { ManageButton } from '@/components/Theme/Button';
 import SetTimeModal from '@/components/SetTimeModal';
 import getSize from '@/scripts/getSize';
 

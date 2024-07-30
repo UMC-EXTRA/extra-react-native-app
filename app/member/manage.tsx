@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import CustomWebView from '@/components/CustomWebView';
 import { router } from 'expo-router';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { BackHeaderContainer } from '@/components/Container';
 import { useAppDispatch } from '@/redux/hooks';
 import { initManageState, setNoticeId } from '@/redux/manage/manageSlice';
 

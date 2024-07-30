@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { BackHeaderContainer } from '@/components/Container';
 import { router } from 'expo-router';
 
 const DetailScreen = () => {

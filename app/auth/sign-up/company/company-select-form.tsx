@@ -2,10 +2,10 @@ import { View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { Container } from '@/components/Container';
-import { FormButton } from '@/components/ButtonComponents';
+import { FormButton } from '@/components/Theme/Button';
 
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
-import { GradientSelectInput } from '@/components/InputComponents';
+import { BackHeaderContainer } from '@/components/Container';
+import { GradientSelectInput } from '@/components/Form';
 import getSize from '@/scripts/getSize';
 
 import { setCompanyData } from '@/redux/signUp/signUpSlice';
@@ -57,7 +57,7 @@ const TattoFormScreen = () => {
           ))}
         </View>
         <FormButton
-          active={company.length > 0}
+          valid={company.length > 0}
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}
           onPress={() => {
             dispatch(setCompanyData({ company }));

@@ -3,10 +3,10 @@ import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
 
 import { Container } from '@/components/Container';
-import { FormButton } from '@/components/ButtonComponents';
-import { MainText } from '@/components/TextComponents';
-import { Input, getRefInput, onFocusNext } from '@/components/InputComponents';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { FormButton } from '@/components/Theme/Button';
+import { MainText } from '@/components/Theme/Text';
+import { Input, getRefInput, onFocusNext } from '@/components/Form';
+import { BackHeaderContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -82,7 +82,7 @@ const AccountFormScreen = () => {
         />
         <FormButton
           style={{ marginTop: getSize(264) }}
-          active={complete}
+          valid={complete}
           text="완료"
           onPress={() => {
             dispatch(
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     marginBottom: getSize(11),
     width: getSize(368),
     textAlign: 'left',
+    lineHeight: getSize(41),
   },
 });
 

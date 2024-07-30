@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { Chat } from '@/components/ChatComponents';
-import ChatContainer from '@/components/ChatComponents';
+import type { Chat } from '@/components/Chat';
+import ChatContainer from '@/components/Chat';
 
 const chatingList: Chat[] = [
   {

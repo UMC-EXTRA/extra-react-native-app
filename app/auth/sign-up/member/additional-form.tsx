@@ -9,15 +9,15 @@ import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 
 import { Container } from '@/components/Container';
-import { MainText, SubText } from '@/components/TextComponents';
-import { FormButton } from '@/components/ButtonComponents';
+import { FormMainText } from '@/components/Form';
+import { FormButton } from '@/components/Theme/Button';
 import {
   Input,
   InputStyle,
   InputTextStyle,
   SelectInput,
-} from '@/components/InputComponents';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+} from '@/components/Form';
+import { BackHeaderContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
@@ -57,26 +57,7 @@ const PhysicalFormScreen = () => {
     <BackHeaderContainer>
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
-          <MainText
-            style={{
-              marginTop: getSize(29),
-              textAlign: 'start',
-              width: getSize(368),
-            }}
-          >
-            필수 정보를 입력해주세요.
-          </MainText>
-          <SubText style={{ marginTop: getSize(18) }}>
-            일자리 신청에 꼭 필요한
-          </SubText>
-          <SubText
-            style={{
-              marginTop: getSize(5),
-              marginBottom: getSize(39),
-            }}
-          >
-            정보를 입력해주세요.
-          </SubText>
+          <FormMainText />
           <Input
             placeholder="키를 입력해주세요."
             value={height}
@@ -130,7 +111,7 @@ const PhysicalFormScreen = () => {
             <Text style={InputTextStyle}>약관 보기</Text>
           </TouchableOpacity>
           <FormButton
-            active={complete}
+            valid={complete}
             onPress={() => {
               dispatch(
                 setPhysicalData({
@@ -175,11 +156,6 @@ const PhysicalFormScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  selectInput: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   termOpenButton: {
     borderColor: '#949494',
     borderWidth: getSize(3),

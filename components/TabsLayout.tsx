@@ -35,7 +35,7 @@ const TabsLayout = ({ tabConfig, inVisiblePaths = [] }: TabsLayoutProps) => {
           display: inVisiblePaths.includes(pathname) ? 'none' : 'flex',
         },
         tabBarLabelStyle: {
-          fontFamily: 'Inter-Bold',
+          fontFamily: 'Inter-Black',
           fontWeight: '900',
           fontSize: getSize(14),
           marginTop: getSize(10),

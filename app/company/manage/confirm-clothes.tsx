@@ -9,15 +9,14 @@ import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { AntDesign, Octicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { MainText } from '@/components/TextComponents';
+import { MainText } from '@/components/Theme/Text';
 import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
 import type { Members } from '@/redux/manage/stateTypes';
 import { isCompanyManageState } from '@/redux/manage/stateTypes';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { initMemberList } from '@/redux/manage/manageSlice';
+import { useAppSelector } from '@/redux/hooks';
 
 type SortedByRoleMembers = {
   [key: string]: Members;
@@ -25,7 +24,6 @@ type SortedByRoleMembers = {
 
 const ConfirmClothesScreen = () => {
   const manage = useAppSelector(state => state.manage);
-  const dispatch = useAppDispatch();
 
   const [search, setSearch] = useState('');
   const [members, setMembers] = useState<SortedByRoleMembers>({});
@@ -65,7 +63,9 @@ const ConfirmClothesScreen = () => {
         }}
       >
         <TouchableOpacity>
-          <MainText style={{ fontSize: getSize(18) }}>예시</MainText>
+          <MainText size={14} spacing={0.14}>
+            예시
+          </MainText>
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.listScrollView}>
@@ -73,7 +73,7 @@ const ConfirmClothesScreen = () => {
           return (
             <View style={styles.listContainer} key={index}>
               <View style={styles.listHeader}>
-                <MainText>
+                <MainText spacing={0.2}>
                   {index + 1}. {role}역할
                 </MainText>
                 <View style={styles.textInputContainer}>

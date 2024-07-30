@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { BackHeaderContainer } from '@/components/Container';
 
 const FindPassWordSceen = () => {
   return (

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import CustomWebView from '@/components/CustomWebView';
 import { router } from 'expo-router';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { BackHeaderContainer } from '@/components/Container';
 
 const ScheduleScreen = () => {
   const onMessage = useCallback((event: any) => {

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { AntDesign, Octicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { MainText } from '@/components/TextComponents';
+import { MainText } from '@/components/Theme/Text';
 import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
@@ -72,7 +72,9 @@ const MemberListScreen = () => {
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
-        <MainText style={{ fontSize: getSize(30) }}>출연자 목록</MainText>
+        <MainText size={30} spacing={0.3}>
+          출연자 목록
+        </MainText>
       </View>
       <View style={styles.listHeader}>
         <TouchableOpacity

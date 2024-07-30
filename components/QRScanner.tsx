@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { SafeContainer } from '@/components/Container';
-import { MainText } from '@/components/TextComponents';
+import { MainText } from '@/components/Theme/Text';
 import getSize from '@/scripts/getSize';
 
 import * as Permissions from '@/scripts/permission';
@@ -66,7 +66,7 @@ const QRScanner = ({
   return (
     <SafeContainer>
       <View style={styles.scannerHeader}>
-        <MainText>{title}</MainText>
+        <MainText spacing={0.2}>{title}</MainText>
         <TouchableOpacity onPress={onPress}>
           <Image
             source={require('@/assets/images/icons/Multiply.png')}
@@ -91,7 +91,9 @@ const QRScanner = ({
               ref={scanAreaRef}
             >
               <Ionicons name="scan" size={getSize(300)} color="white" />
-              <MainText style={styles.scanDescription}>(QR코드 인식)</MainText>
+              <MainText spacing={0.24} style={styles.scanDescription}>
+                (QR코드 인식)
+              </MainText>
             </View>
           </CameraView>
         )}

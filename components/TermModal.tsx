@@ -9,7 +9,8 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-import { FormButton } from '@/components/ButtonComponents';
+import { weight500, weight700 } from '@/components/Theme/Text';
+import { FormButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
@@ -199,8 +200,8 @@ const TermModal = ({ setDisplay, complete, setComplete }: Props) => {
             <Text style={styles.cancelButtonText}>취소</Text>
           </TouchableOpacity>
           <FormButton
-            style={{ width: getSize(258), height: '100%' }}
-            active={complete}
+            width={258}
+            valid={complete}
             onPress={() => {
               dispatch(
                 setTermData({
@@ -253,6 +254,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
     paddingHorizontal: getSize(39),
   },
+  termTitle: {
+    ...weight500,
+    fontSize: getSize(14),
+    marginLeft: getSize(25),
+  },
   termContainer: {
     width: getSize(352),
     flexDirection: 'row',
@@ -262,19 +268,13 @@ const styles = StyleSheet.create({
   },
   termCheck: {
     marginLeft: getSize(9),
-    width: getSize(25),
-    height: getSize(25),
+    width: getSize(23),
+    height: getSize(23),
     borderRadius: getSize(5),
     borderStyle: 'solid',
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  termTitle: {
-    fontFamily: 'Inter-Medium',
-    fontSize: getSize(18),
-    fontWeight: '500',
-    marginLeft: getSize(25),
   },
   buttonContainer: {
     width: '100%',
@@ -296,10 +296,8 @@ const styles = StyleSheet.create({
     marginRight: getSize(5),
   },
   cancelButtonText: {
-    color: '#fff',
-    fontFamily: 'Inter-Bold',
+    ...weight700,
     fontSize: getSize(17),
-    fontWeight: '700',
   },
 });
 

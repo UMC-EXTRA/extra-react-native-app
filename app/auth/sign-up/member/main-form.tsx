@@ -11,18 +11,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { router } from 'expo-router';
 import SelectDropdown from 'react-native-select-dropdown';
 
-import { FormButton } from '@/components/ButtonComponents';
-import { MainText, SubText } from '@/components/TextComponents';
+import { FormButton } from '@/components/Theme/Button';
+import { FormMainText } from '@/components/Form';
 import {
   Input,
   getRefInput,
   onFocusNext,
   InputStyle,
   InputTextStyle,
-  SelectInput,
-} from '@/components/InputComponents';
+} from '@/components/Form';
 import { Container } from '@/components/Container';
-import { BackHeaderContainer } from '@/components/BackHeaderComponents';
+import { BackHeaderContainer } from '@/components/Container';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 
@@ -50,7 +49,7 @@ const BasicFormScreen = () => {
   const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const ref_input = getRefInput(6);
+  const ref_input = getRefInput(4);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
     adjustOffset(index + 1);
@@ -103,26 +102,7 @@ const BasicFormScreen = () => {
             keyboardVerticalOffset={keyboardVerticalOffset}
           >
             <Container>
-              <MainText
-                style={{
-                  marginTop: getSize(29),
-                  textAlign: 'start',
-                  width: getSize(368),
-                }}
-              >
-                필수 정보를 입력해주세요.
-              </MainText>
-              <SubText style={{ marginTop: getSize(18) }}>
-                일자리 신청에 꼭 필요한
-              </SubText>
-              <SubText
-                style={{
-                  marginTop: getSize(5),
-                  marginBottom: getSize(39),
-                }}
-              >
-                정보를 입력해주세요.
-              </SubText>
+              <FormMainText />
               <Input
                 placeholder="이메일을 입력해주세요."
                 inputMode="email"
@@ -193,13 +173,10 @@ const BasicFormScreen = () => {
                 placeholder="거주지를 입력해주세요."
                 value={home}
                 onChangeText={setHome}
-                ref={ref_input[5]}
-                onSubmitEditing={() => focusNext(5)}
-                onFocus={() => adjustOffset(5)}
                 style={{ marginBottom: 0 }}
               />
               <FormButton
-                active={complete}
+                valid={complete}
                 onPress={() => {
                   if (checkComplete()) {
                     dispatch(
