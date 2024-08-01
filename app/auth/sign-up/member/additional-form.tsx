@@ -28,7 +28,7 @@ import { setPhysicalData } from '@/redux/signUp/signUpSlice';
 
 import * as Permissions from '@/scripts/permission';
 
-import { getTokens } from '@/scripts/tokenUtils';
+import { getTokens } from '@/scripts/auth/tokenUtils';
 
 const PhysicalFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);

@@ -11,7 +11,7 @@ import { TextWeight600 } from '@/components/Theme/Text';
 import { ToggleButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
 
-import { logout } from '@/scripts/tokenUtils';
+import { logout } from '@/scripts/auth/tokenUtils';
 
 const SettingsScreen = () => {
   const email = 'abc123@naver.com';

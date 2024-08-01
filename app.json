@@ -32,7 +32,29 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraMavenRepos": [
+              "https://devrepo.kakao.com/nexus/content/groups/public/"
+            ]
+          }
+        }
+      ],
+      [
+        "@react-native-kakao/core",
+        {
+          "nativeAppKey": "cbbf469ca8cdbf5f2a12b61e516db036",
+          "android": {
+            "authCodeHandlerActivity": true
+          },
+          "ios": {
+            "handleKakaoOpenUrl": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
@@ -44,6 +66,7 @@
       "eas": {
         "projectId": "5eca2949-5865-4f3e-9cec-1f8ef827f568"
       }
-    }
+    },
+    "owner": "gunlee"
   }
 }

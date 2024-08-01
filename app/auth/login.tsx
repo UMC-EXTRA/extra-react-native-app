@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -9,12 +10,12 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useEffect, useState, useRef } from 'react';
 
 import { SafeContainer } from '@/components/Container';
 import { weight800, weight200, MainText } from '@/components/Theme/Text';
 import { FormButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
+import { signInWithKakao } from '@/scripts/auth/kakaoOAuth';
 
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { initType } from '@/redux/signUp/signUpSlice';
@@ -145,7 +146,9 @@ const LoginScreen = () => {
           </MainText>
           <View style={styles.socialButtonContainer}>
             <TouchableOpacity
-              onPress={() => alert('kakao')}
+              onPress={() => {
+                signInWithKakao();
+              }}
               style={{ ...styles.socialLoginButton, marginRight: 0 }}
             >
               <Image
