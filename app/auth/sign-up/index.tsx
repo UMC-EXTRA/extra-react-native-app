@@ -15,11 +15,11 @@ const SignUpScreen = () => {
   return (
     <BackHeaderContainer>
       <Container style={{ paddingTop: getSize(136) }}>
-        <TextWeight500 align="center" height={41} size={20}>
-          <MainText>어서오세요!</MainText>
+        <TextWeight500 align="center" size={20}>
+          <MainText height={41}>어서오세요!</MainText>
           {'\n'}
-          먼저 <MainText>본인확인</MainText>을 위해{' '}
-          <MainText>휴대폰 본인인증</MainText>을{'\n'}
+          먼저 <MainText height={41}>본인확인</MainText>을 위해{' '}
+          <MainText height={41}>휴대폰 본인인증</MainText>을{'\n'}
           진행해주세요.
         </TextWeight500>
         <ConfirmButton

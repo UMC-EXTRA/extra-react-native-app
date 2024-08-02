@@ -67,7 +67,7 @@ export const verityToken = async () => {
 
   // Connect first
   if (Token === null) {
-    router.replace('/member');
+    router.replace('/auth');
   }
   // If the token is expired, refresh the token
   else {

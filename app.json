@@ -24,12 +24,6 @@
       },
       "package": "com.extra.reactnative.app"
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png",
-      "backgroundColor": "#000000"
-    },
     "plugins": [
       "expo-router",
       "expo-font",
