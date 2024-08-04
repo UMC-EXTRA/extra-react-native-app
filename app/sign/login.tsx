@@ -15,6 +15,7 @@ import { weight800, weight200, MainText } from '@/components/Theme/Text';
 import { FormButton } from '@/components/Theme/Button';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
+import { loginKakao } from '@/scripts/authKakao';
 
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { initType } from '@/redux/signUp/signUpSlice';
@@ -145,7 +146,9 @@ const LoginScreen = () => {
           </MainText>
           <View style={styles.socialButtonContainer}>
             <TouchableOpacity
-              onPress={() => alert('kakao')}
+              onPress={() => {
+                loginKakao();
+              }}
               style={{ ...styles.socialLoginButton, marginRight: 0 }}
             >
               <Image

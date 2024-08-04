@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { Redirect, Href } from 'expo-router';
 import { useFonts } from 'expo-font';
+import { initKakao } from '@/scripts/authKakao';
+
+initKakao();
 
 const Index = () => {
   const [loaded, error] = useFonts({
