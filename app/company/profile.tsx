@@ -1,7 +1,7 @@
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import { SettingContainer } from '@/components/SettingComponents';
+import { Router } from '@/scripts/router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 
@@ -14,11 +14,11 @@ const ProfileScreen = () => {
   return (
     <SettingContainer
       title="프로필"
-      onPress={() => router.navigate('/company')}
+      onPress={() => Router.navigate('/company')}
     >
       <View style={styles.mainProfileContainer}>
         <TouchableOpacity
-          onPress={() => router.push('/company/profile/settings')}
+          onPress={() => Router.push('/company/profile/settings')}
         >
           <Image
             source={require('@/assets/images/icons/Registration.png')}

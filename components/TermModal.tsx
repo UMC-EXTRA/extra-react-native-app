@@ -113,7 +113,7 @@ const TermModal = ({ setDisplay, complete, setComplete }: Props) => {
         if (checked[i] === false) {
           all = false;
         }
-        if (!terms[i].optional && checked[i] === false) {
+        if (!terms[i]!.optional && checked[i] === false) {
           requireChecked = false;
         }
       }
@@ -204,16 +204,16 @@ const TermModal = ({ setDisplay, complete, setComplete }: Props) => {
             valid={complete}
             onPress={() => {
               dispatch(
-                setTermData({
-                  terms: terms
+                setTermData(
+                  terms
                     .filter(term => term !== undefined)
                     .map((term, index) => ({
                       id: term!.id,
                       agree: checked[index],
                     })),
-                }),
+                ),
               );
-              dispatch(initTerms({ terms }));
+              dispatch(initTerms(terms));
               modalAnimation(true);
             }}
             text="다음"

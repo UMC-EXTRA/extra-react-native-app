@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { TermState } from './stateTypes';
 
 type SliceState = {
@@ -20,8 +20,8 @@ const profileSlice = createSlice({
     initType: (state, action) => {
       state.type = action.payload;
     },
-    initTerms: (state, action) => {
-      action.payload.terms
+    initTerms: (state, action: PayloadAction<TermState>) => {
+      action.payload
         .filter((term: any) => term.optional === false)
         .forEach((term: any) => {
           state.requiredTerms.push({
@@ -32,7 +32,7 @@ const profileSlice = createSlice({
             optional: term.optional,
           });
         });
-      state.eventNoticeAgree = action.payload.terms[4].agree;
+      state.eventNoticeAgree = action.payload[4]!.agree;
     },
   },
 });

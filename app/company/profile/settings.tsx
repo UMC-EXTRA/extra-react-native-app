@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { router } from 'expo-router';
+import { TouchableOpacity, ScrollView, Alert } from 'react-native';
 
 import type { SettingListType } from '@/components/SettingComponents';
 import {
@@ -10,10 +9,14 @@ import {
 import { TextWeight600 } from '@/components/Theme/Text';
 import { ToggleButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
+import { Router } from '@/scripts/router';
+
+import { useAppSelector } from '@/redux/hooks';
 
 import { logout } from '@/scripts/tokenUtils';
 
 const SettingsScreen = () => {
+  const type = useAppSelector(state => state.profile.type);
   const email = 'abc123@naver.com';
 
   const settingList: SettingListType = useMemo(() => {
@@ -136,10 +139,7 @@ const SettingsScreen = () => {
   }, []);
 
   return (
-    <SettingContainer
-      title="설정"
-      onPress={() => router.navigate('/company/profile')}
-    >
+    <SettingContainer title="설정" onPress={() => Router.navigate('/company')}>
       <ScrollView contentContainerStyle={{ paddingBottom: getSize(30) }}>
         {settingList.map((setting, index) => (
           <SettingElement
@@ -155,15 +155,5 @@ const SettingsScreen = () => {
     </SettingContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    width: '100%',
-    height: getSize(168),
-    paddingTop: getSize(92),
-    paddingLeft: getSize(46),
-    flexDirection: 'row',
-  },
-});
 
 export default SettingsScreen;

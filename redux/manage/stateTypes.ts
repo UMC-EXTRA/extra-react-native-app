@@ -1,6 +1,6 @@
 interface ManageState {
   type: string;
-  noticeId: number;
+  jobPostId: number;
 }
 
 interface MemberManageState extends ManageState {}

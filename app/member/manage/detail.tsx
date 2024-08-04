@@ -1,6 +1,6 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { View } from 'react-native';
 import { BackHeaderContainer } from '@/components/Container';
-import { router } from 'expo-router';
+import { Router } from '@/scripts/router';
 
 const DetailScreen = () => {
   const title = 'umc 공고';
@@ -8,7 +8,7 @@ const DetailScreen = () => {
   return (
     <BackHeaderContainer
       title={title}
-      onPress={() => router.replace('/member/manage')}
+      onPress={() => Router.replace('/member/manage')}
     >
       <View></View>
     </BackHeaderContainer>

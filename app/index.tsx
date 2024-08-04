@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import { Redirect } from 'expo-router';
+import { Redirect, Href } from 'expo-router';
 import { useFonts } from 'expo-font';
 
 const Index = () => {
@@ -26,7 +26,7 @@ const Index = () => {
     return null;
   }
 
-  return <Redirect href="/auth" />;
+  return <Redirect href={'/sign' as Href} />;
 };
 
 export default Index;

@@ -13,13 +13,13 @@ import {
   Text,
   ImageSourcePropType,
 } from 'react-native';
-import { router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { Svg, Path } from 'react-native-svg';
 
 import { MainContainer } from '@/components/Container';
 import { MainText } from '@/components/Theme/Text';
+import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
@@ -39,7 +39,7 @@ const ChatHeader = ({
   return (
     <View style={styles.headerContainer}>
       <View style={{ ...styles.headerItemContainer, width: '60%' }}>
-        <TouchableOpacity onPress={() => router.navigate(backLink)}>
+        <TouchableOpacity onPress={() => Router.navigate(backLink)}>
           <FontAwesome name="angle-left" size={getSize(40)} color="white" />
         </TouchableOpacity>
         <MainText size={22}>{title}</MainText>

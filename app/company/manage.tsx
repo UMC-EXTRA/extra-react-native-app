@@ -1,22 +1,25 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useCallback, useEffect } from 'react';
-import { router } from 'expo-router';
-import { SafeContainer } from '@/components/Container';
-import { MainText } from '@/components/Theme/Text';
-import CustomWebView from '@/components/CustomWebView';
-import getSize from '@/scripts/getSize';
 import { AntDesign } from '@expo/vector-icons';
 
-import { initManageState, setNoticeId } from '@/redux/manage/manageSlice';
+import { SafeContainer } from '@/components/Container';
+import { MainText } from '@/components/Theme/Text';
+import WebViewContainer from '@/components/WebViewContainer';
+import { Router } from '@/scripts/router';
+import getSize from '@/scripts/getSize';
+
+import { initManageState, setJobPostId } from '@/redux/manage/manageSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 const ManageScreen = () => {
   const dispatch = useAppDispatch();
 
   const onMessage = useCallback((event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    dispatch(setNoticeId(data.noticeId));
-    router.push('/company/manage/detail');
+    const { type, payload } = JSON.parse(event.nativeEvent.data);
+    if (type === 'NAVIGATION') {
+      dispatch(setJobPostId(payload.params.job_post_id));
+      Router.push(payload);
+    }
   }, []);
 
   useEffect(() => {
@@ -28,7 +31,7 @@ const ManageScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backLinkButton}
-          onPress={() => router.navigate('/company')}
+          onPress={() => Router.navigate(`/company`)}
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
@@ -48,10 +51,7 @@ const ManageScreen = () => {
       >
         촬영 목록
       </MainText>
-      <CustomWebView
-        uri="https://extra-react-webview.vercel.app"
-        onMessage={onMessage}
-      />
+      <WebViewContainer uri="" onMessage={onMessage} />
     </SafeContainer>
   );
 };

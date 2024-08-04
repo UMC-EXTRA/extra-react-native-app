@@ -1,7 +1,7 @@
 //import EcrytedAsyncStorage from 'react-native-encrypted-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { isAxiosError } from 'axios';
-import { router } from 'expo-router';
+import { Router } from '@/scripts/router';
 
 const URL = `${process.env.EXPO_PUBLIC_SERVER_URL}:${process.env.EXPO_PUBLIC_SERVER_PORT}`;
 
@@ -67,7 +67,7 @@ export const verityToken = async () => {
 
   // Connect first
   if (Token === null) {
-    router.replace('/member');
+    Router.replace('/sign');
   }
   // If the token is expired, refresh the token
   else {
@@ -95,11 +95,11 @@ export const verityToken = async () => {
 
         // If all tokens are expired, log out
         if (code === 401) {
-          router.replace('/member');
+          Router.replace('/sign');
         }
         // If all tokens are not expired, log in automatically
         else {
-          router.replace(`/${Token.type}`);
+          Router.replace(`/${Token.type}`);
         }
       }
     }
@@ -108,5 +108,5 @@ export const verityToken = async () => {
 
 export const logout = async () => {
   await AsyncStorage.removeItem('Tokens');
-  router.replace('/auth');
+  Router.replace('/auth');
 };

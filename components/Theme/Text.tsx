@@ -96,7 +96,7 @@ const MainText: FC<Props> = ({
   style = {},
   size = 20,
   spacing = 0.5,
-  height = 20,
+  height,
   align = 'center',
 }) => {
   return (

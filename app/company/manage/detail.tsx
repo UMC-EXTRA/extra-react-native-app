@@ -1,10 +1,10 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { router } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeContainer } from '@/components/Container';
 import { ManageButton } from '@/components/Theme/Button';
 import SetTimeModal from '@/components/SetTimeModal';
+import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { isCompanyManageState } from '@/redux/manage/stateTypes';
@@ -17,7 +17,7 @@ const DetailScreen = () => {
   const dispatch = useAppDispatch();
 
   const [display, setDisplay] = useState(false);
-  const [type, setType] = useState('');
+  const [type, setType] = useState<'in' | 'out'>('in');
 
   const memberData = [
     {
@@ -83,7 +83,7 @@ const DetailScreen = () => {
   return (
     <SafeContainer>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.navigate('/company/manage')}>
+        <TouchableOpacity onPress={() => Router.navigate('/company/manage')}>
           <AntDesign name="caretleft" size={28} color="white" />
         </TouchableOpacity>
       </View>
@@ -91,13 +91,13 @@ const DetailScreen = () => {
         <ManageButton
           text="출석"
           onPress={() => {
-            router.push('/company/manage/attendance');
+            Router.push('/company/manage/attendance');
           }}
         />
         <ManageButton
           text="출연자 목록"
           onPress={() => {
-            router.push('/company/manage/member-list');
+            Router.push('/company/manage/member-list');
           }}
         />
         <ManageButton
@@ -123,13 +123,13 @@ const DetailScreen = () => {
         <ManageButton
           text="의상 컨펌"
           onPress={() => {
-            router.push('/company/manage/confirm-clothes');
+            Router.push('/company/manage/confirm-clothes');
           }}
         />
         <ManageButton
           text="채팅"
           onPress={() => {
-            router.push('/company/manage/chat');
+            Router.push('/company/manage/chat');
           }}
         />
       </View>

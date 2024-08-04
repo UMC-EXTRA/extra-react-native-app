@@ -43,6 +43,7 @@ interface SignUpState {
   sex: boolean;
   birthday: string;
   phone: string;
+  terms: TermState;
 }
 
 interface MemberSignUpState extends SignUpState {
@@ -55,7 +56,6 @@ interface MemberSignUpState extends SignUpState {
   tatto: TattoState;
   enteredAccount: boolean;
   account: AccountState;
-  terms: TermState;
 }
 
 interface CompanySignUpState extends SignUpState {

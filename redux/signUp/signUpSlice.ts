@@ -16,6 +16,7 @@ const initialState: SignUpState = {
   sex: false,
   birthday: '',
   phone: '',
+  terms: [],
 };
 
 const memberInitState: MemberSignUpState = {
@@ -61,6 +62,7 @@ const companyInitState: CompanySignUpState = {
   phone: '',
   enteredCompany: false,
   company: '',
+  terms: [],
 };
 
 const signUpSlice = createSlice({
@@ -128,9 +130,7 @@ const signUpSlice = createSlice({
       }
     },
     setTermData: (state, action: PayloadAction<TermState>) => {
-      if (state.type === 'member') {
-        (state as MemberSignUpState).terms = action.payload;
-      }
+      state.terms = action.payload;
     },
     resetState: state => {
       return { ...initialState };

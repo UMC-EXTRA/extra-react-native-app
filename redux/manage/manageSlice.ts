@@ -3,12 +3,12 @@ import type { ManageState, CompanyManageState, Members } from './stateTypes';
 
 const initialState: ManageState = {
   type: '',
-  noticeId: 0,
+  jobPostId: 0,
 };
 
 const companyInitState: CompanyManageState = {
   type: 'company',
-  noticeId: 0,
+  jobPostId: 0,
   members: [],
   clockInTime: '',
   clockOutTime: '',
@@ -23,8 +23,8 @@ const manageSlice = createSlice({
         return { ...companyInitState };
       }
     },
-    setNoticeId: (state, action: PayloadAction<number>) => {
-      state.noticeId = action.payload;
+    setJobPostId: (state, action: PayloadAction<number>) => {
+      state.jobPostId = action.payload;
     },
     initMemberList: (state, action: PayloadAction<{ members: Members }>) => {
       if (state.type === 'company') {
@@ -77,7 +77,7 @@ const manageSlice = createSlice({
 
 export const {
   initManageState,
-  setNoticeId,
+  setJobPostId,
   initMemberList,
   setGlobalClockTime,
   setMemberClockTime,

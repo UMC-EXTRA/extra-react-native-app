@@ -2,12 +2,12 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 import { CameraView, FlashMode, CameraType } from 'expo-camera';
 import { useState, useEffect, useRef } from 'react';
-import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { SafeContainer } from '@/components/Container';
+import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import * as Permissions from '@/scripts/permission';
 
@@ -89,7 +89,7 @@ const Camera = ({ backLink, onConfirm }: CameraProps) => {
           style={styles.iconButton}
           onPress={() => {
             resetCamera();
-            router.navigate(backLink);
+            Router.navigate(backLink);
           }}
         >
           <Image

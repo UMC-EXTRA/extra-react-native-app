@@ -6,11 +6,11 @@ import {
   ScrollView,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import { router } from 'expo-router';
-import { AntDesign, Octicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { MainText } from '@/components/Theme/Text';
 import { SafeContainer } from '@/components/Container';
+import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
@@ -49,7 +49,7 @@ const ConfirmClothesScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backLinkButton}
-          onPress={() => router.navigate('/company/manage/detail')}
+          onPress={() => Router.navigate('/company/manage/detail')}
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
@@ -93,7 +93,7 @@ const ConfirmClothesScreen = () => {
                   key={data.id}
                   style={styles.listItemContainer}
                   onPress={() =>
-                    router.navigate({
+                    Router.navigate({
                       pathname: '/company/manage/camera',
                       params: { memberId: data.id },
                     })

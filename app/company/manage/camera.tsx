@@ -1,5 +1,6 @@
 import Camera from '@/components/Camera';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
+import { Router } from '@/scripts/router';
 
 import { isCompanyManageState } from '@/redux/manage/stateTypes';
 import { confirmClothes } from '@/redux/manage/manageSlice';
@@ -18,7 +19,7 @@ export default function CameraScreen() {
         if (isCompanyManageState(manage)) {
           dispatch(confirmClothes({ id: Number(memberId) }));
         }
-        router.navigate('/company/manage/confirm-clothes');
+        Router.navigate('/company/manage/confirm-clothes');
       }}
     />
   );

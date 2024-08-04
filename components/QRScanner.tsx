@@ -2,9 +2,9 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { CameraView, BarcodeScanningResult } from 'expo-camera';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
+import { Router } from '@/scripts/router';
 import { SafeContainer } from '@/components/Container';
 import { MainText } from '@/components/Theme/Text';
 import getSize from '@/scripts/getSize';
@@ -20,7 +20,7 @@ interface QRScannerProps {
 const QRScanner = ({
   title,
   onScanned,
-  onPress = () => router.navigate('/company/manage/detail'),
+  onPress = () => Router.navigate('/company/manage/detail'),
 }: QRScannerProps) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanAreaLayout, setScanAreaLayout] = useState({
@@ -52,7 +52,7 @@ const QRScanner = ({
         qrCodeCenterY <= scanAreaLayout.y + scanAreaLayout.height
       ) {
         onScanned(data);
-        router.back();
+        Router.back();
       }
     }
   };
