@@ -1,0 +1,30 @@
+{
+  "cli": {
+    "version": ">= 10.2.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true,
+        "buildType": "debug"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "buildType": "release",
+        "distribution": "store"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

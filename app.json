@@ -30,9 +30,20 @@
       "favicon": "./assets/images/favicon.png",
       "backgroundColor": "#000000"
     },
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5eca2949-5865-4f3e-9cec-1f8ef827f568"
+      }
     }
   }
 }
