@@ -1,50 +1,54 @@
 import {
-  Text,
-  StyleSheet,
   Pressable,
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
-  View,
 } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
-import SelectDropdown from 'react-native-select-dropdown';
+import { useState, useRef } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
 import { FormButton } from '@/components/Theme/Button';
-import { FormMainText } from '@/components/Form';
 import {
   Input,
   getRefInput,
   onFocusNext,
-  InputStyle,
-  InputTextStyle,
+  SelectBox,
+  FormMainText,
 } from '@/components/Form';
 import { Container } from '@/components/Container';
 import { BackHeaderContainer } from '@/components/Container';
 import { Router } from '@/scripts/router';
-import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isMemberSignUpState } from '@/redux/signUp/stateTypes';
+import { useAppDispatch } from '@/redux/hooks';
 import { setBasicData } from '@/redux/signUp/signUpSlice';
 
+type FormData = {
+  email: string;
+  phone: string;
+  name: string;
+  birthday: string;
+  sex: number;
+  home: string;
+};
+
 const BasicFormScreen = () => {
-  const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [name, setName] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [sex, setSex] = useState<null | boolean>(null);
-  const [home, setHome] = useState('');
-  const [complete, setComplete] = useState(false);
-
-  const items = [
-    { title: '여자', value: false },
-    { title: '남자', value: true },
-  ];
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FormData>({
+    defaultValues: {
+      email: '',
+      phone: '',
+      name: '',
+      birthday: '',
+      sex: 0,
+      home: '',
+    },
+  });
 
   const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -64,33 +68,12 @@ const BasicFormScreen = () => {
     scrollViewRef.current?.scrollTo({ y: offset, animated: true });
   };
 
-  const checkValidation = () => {
-    return true;
-  };
-
-  const checkComplete = () => {
-    if (
-      email.length > 0 &&
-      phone.length > 0 &&
-      name.length > 0 &&
-      birthday.length &&
-      sex != null &&
-      isMemberSignUpState(signUp) &&
-      home.length > 0
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    setComplete(checkComplete());
-  }, [email, phone, name, birthday, sex, home]);
-
   return (
     <BackHeaderContainer>
-      <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+      <Pressable
+        onPress={Keyboard.dismiss}
+        style={{ flex: 1, alignItems: 'center' }}
+      >
         <ScrollView
           style={{ flex: 1 }}
           ref={scrollViewRef}
@@ -103,113 +86,131 @@ const BasicFormScreen = () => {
           >
             <Container>
               <FormMainText />
-              <Input
-                placeholder="이메일을 입력해주세요."
-                inputMode="email"
-                value={email}
-                onChangeText={setEmail}
-                onSubmitEditing={() => focusNext(0)}
-                onFocus={() => adjustOffset(0)}
-                ref={ref_input[0]}
-              />
-              <Input
-                placeholder="전화번호를 입력해주세요."
-                inputMode="tel"
-                value={phone}
-                onChangeText={setPhone}
-                onSubmitEditing={() => focusNext(1)}
-                onFocus={() => adjustOffset(1)}
-                ref={ref_input[1]}
-              />
-              <Input
-                placeholder="이름을 입력해주세요."
-                value={name}
-                onChangeText={setName}
-                ref={ref_input[2]}
-                onSubmitEditing={() => focusNext(2)}
-                onFocus={() => adjustOffset(2)}
-              />
-              <Input
-                placeholder="생일을 입력해주세요. 예)19901010"
-                keyboardType="number-pad"
-                value={birthday}
-                onChangeText={setBirthday}
-                ref={ref_input[3]}
-                onSubmitEditing={() => focusNext(3)}
-                onFocus={() => adjustOffset(3)}
-              />
-              <SelectDropdown
-                data={items}
-                onSelect={(selectedItem, index) => {
-                  setSex(selectedItem.value);
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                 }}
-                renderButton={(selectedItem, isOpened) => (
-                  <View style={{ ...InputStyle, justifyContent: 'center' }}>
-                    <Text style={InputTextStyle}>
-                      {(selectedItem && selectedItem.title) || (
-                        <Text style={{ color: colors.placeholder }}>
-                          "성별을 선택해주세요."
-                        </Text>
-                      )}
-                    </Text>
-                  </View>
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="이메일을 입력해주세요."
+                    inputMode="email"
+                    keyboardType="email-address"
+                    value={value}
+                    onChangeText={onChange}
+                    onSubmitEditing={() => focusNext(0)}
+                    onFocus={() => adjustOffset(0)}
+                    ref={ref_input[0]}
+                  />
                 )}
-                renderItem={(item, index, isSelected) => (
-                  <View
-                    style={{
-                      ...styles.dropDownItem,
-                      ...(isSelected && { backgroundColor: '#111' }),
-                    }}
-                  >
-                    <Text style={InputTextStyle}>{item.title}</Text>
-                  </View>
+                name="email"
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern: /^0\d{1,2}\d{3,4}\d{4}$/,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="전화번호를 입력해주세요."
+                    keyboardType="phone-pad"
+                    value={value}
+                    onChangeText={onChange}
+                    onSubmitEditing={() => focusNext(1)}
+                    onFocus={() => adjustOffset(1)}
+                    ref={ref_input[1]}
+                  />
                 )}
-                dropdownStyle={{
-                  borderRadius: getSize(15),
-                  backgroundColor: colors.headerBackground,
-                }}
+                name="phone"
               />
-              <Input
-                placeholder="거주지를 입력해주세요."
-                value={home}
-                onChangeText={setHome}
-                style={{ marginBottom: 0 }}
-              />
-              <FormButton
-                valid={complete}
-                onPress={() => {
-                  if (checkComplete()) {
-                    dispatch(
-                      setBasicData({
-                        email,
-                        phone,
-                        name,
-                        sex,
-                        birthday,
-                        home,
-                      }),
-                    );
-                    Router.push('/sign/sign-up/member/additional-form');
-                  }
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
                 }}
-                text="다음"
-                style={{ marginTop: getSize(63), marginBottom: getSize(20) }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="이름 입력해주세요."
+                    value={value}
+                    onChangeText={onChange}
+                    ref={ref_input[2]}
+                    onSubmitEditing={() => focusNext(2)}
+                    onFocus={() => adjustOffset(2)}
+                  />
+                )}
+                name="name"
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern:
+                    /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="생일을 입력해주세요. 예)19901010"
+                    keyboardType="number-pad"
+                    value={value}
+                    onChangeText={onChange}
+                    ref={ref_input[3]}
+                    onSubmitEditing={() => focusNext(3)}
+                    onFocus={() => adjustOffset(3)}
+                  />
+                )}
+                name="birthday"
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange } }) => (
+                  <SelectBox
+                    onChange={onChange}
+                    items={[
+                      { title: '남자', value: 1 },
+                      { title: '여자', value: 2 },
+                    ]}
+                    placeholder="성별을 선택해주세요."
+                  />
+                )}
+                name="sex"
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="거주지를 입력해주세요."
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+                name="home"
               />
             </Container>
           </KeyboardAvoidingView>
         </ScrollView>
+        <FormButton
+          valid={isValid}
+          onPress={handleSubmit(data => {
+            dispatch(setBasicData(data));
+            Router.push('/sign/sign-up/member/additional-form');
+          })}
+          text="다음"
+          style={{
+            position: 'absolute',
+            bottom: getSize(49),
+          }}
+        />
       </Pressable>
     </BackHeaderContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  dropDownItem: {
-    width: '100%',
-    height: getSize(59),
-    paddingLeft: getSize(26),
-    justifyContent: 'center',
-  },
-});
 
 export default BasicFormScreen;

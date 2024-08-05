@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
 import { Container } from '@/components/Container';
 import { FormMainText } from '@/components/Form';
@@ -30,12 +31,26 @@ import * as Permissions from '@/scripts/permission';
 
 import { getTokens } from '@/scripts/tokenUtils';
 
+type FormData = {
+  height: number;
+  weight: number;
+};
+
 const PhysicalFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FormData>({
+    defaultValues: {
+      height: 0,
+      weight: 0,
+    },
+  });
+
   const [display, setDisplay] = useState(false);
   const [termComplete, setTermComplete] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -43,32 +58,50 @@ const PhysicalFormScreen = () => {
   useEffect(() => {
     if (
       isMemberSignUpState(signUp) &&
-      height.length > 0 &&
-      weight.length > 0 &&
       signUp.enteredTatto &&
       signUp.enteredAccount &&
       termComplete
     )
       setComplete(true);
     else setComplete(false);
-  }, [height, weight, signUp, termComplete]);
+  }, [signUp, termComplete]);
 
   return (
     <BackHeaderContainer>
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
           <FormMainText />
-          <Input
-            placeholder="키를 입력해주세요."
-            value={height}
-            onChangeText={setHeight}
-            keyboardType="numeric"
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              pattern: /^[0-9]+\.?[0-9]+$/,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="키를 입력해주세요."
+                value={String(`${value === 0 ? '' : value}`)}
+                onChangeText={onChange}
+                keyboardType="numeric"
+              />
+            )}
+            name="height"
           />
-          <Input
-            placeholder="몸무게를 입력해주세요."
-            value={weight}
-            onChangeText={setWeight}
-            keyboardType="numeric"
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              pattern: /^[0-9]+\.?[0-9]+$/,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="몸무게를 입력해주세요."
+                value={String(`${value === 0 ? '' : value}`)}
+                onChangeText={onChange}
+                keyboardType="numeric"
+              />
+            )}
+            name="weight"
           />
           <SelectInput
             condition={isMemberSignUpState(signUp) && signUp.enteredTatto}
@@ -94,7 +127,7 @@ const PhysicalFormScreen = () => {
             condition={isMemberSignUpState(signUp) && signUp.enteredAccount}
             value={
               isMemberSignUpState(signUp) && signUp.enteredAccount
-                ? `${signUp.account.bankName + ' ' + signUp.account.accountNumber}`
+                ? `${signUp.account.bankName} ${signUp.account.accountNumber} (${signUp.account.accountHolder})`
                 : ''
             }
             placeholder="계좌번호를 입력해주세요."
@@ -111,14 +144,9 @@ const PhysicalFormScreen = () => {
             <Text style={InputTextStyle}>약관 보기</Text>
           </TouchableOpacity>
           <FormButton
-            valid={complete}
-            onPress={() => {
-              dispatch(
-                setPhysicalData({
-                  height: Number(height),
-                  weight: Number(weight),
-                }),
-              );
+            valid={complete && isValid}
+            onPress={handleSubmit(data => {
+              dispatch(setPhysicalData(data));
               Permissions.requestLocationPermission().then(result => {
                 if (result) {
                   Permissions.requestPushNotificationPermission().then(
@@ -141,8 +169,12 @@ const PhysicalFormScreen = () => {
                   );
                 }
               });
-            }}
+            })}
             text="다음"
+            style={{
+              position: 'absolute',
+              bottom: getSize(49),
+            }}
           />
         </Container>
       </Pressable>

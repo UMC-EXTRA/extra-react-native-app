@@ -1,4 +1,4 @@
-import { useRef, forwardRef } from 'react';
+import React, { useRef, forwardRef, useState } from 'react';
 import {
   TextInput,
   StyleSheet,
@@ -6,12 +6,16 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Pressable,
+  Dimensions,
 } from 'react-native';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import { LinearGradient } from 'expo-linear-gradient';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { weight200, weight700, MainText } from './Theme/Text';
+import { weight800 } from '@/components/Theme/Text';
 /**
  * Get ref_input array
  * @param length length of ref_input: number
@@ -57,9 +61,13 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: getSize(2),
     borderColor: colors.placeholder,
-    marginBottom: 19,
+    marginBottom: getSize(19),
     marginHorizontal: 'auto',
     paddingHorizontal: getSize(26),
+  },
+  inputText: {
+    ...weight700,
+    fontSize: getSize(14),
   },
   selectInput: {
     flexDirection: 'row',
@@ -141,7 +149,7 @@ const Input = forwardRef<TextInput, InputProps>(
     return (
       <TextInput
         ref={ref}
-        style={[styles.input, InputTextStyle, style]}
+        style={{ ...styles.input, ...styles.inputText, ...style }}
         placeholder={placeholder}
         placeholderTextColor={colors.placeholder}
         value={value}
@@ -170,24 +178,23 @@ const SelectInput = ({
   style = {},
 }: SelectInputProps) => {
   return (
-    <View
+    <TouchableOpacity
       style={{
         ...styles.input,
         ...styles.selectInput,
         ...style,
       }}
+      onPress={onPress}
     >
-      <Text style={InputTextStyle}>
+      <Text style={styles.inputText}>
         {condition ? (
           value
         ) : (
           <Text style={{ color: colors.placeholder }}>{placeholder}</Text>
         )}
       </Text>
-      <TouchableOpacity onPress={onPress}>
-        <AntDesign name="caretright" size={getSize(20)} color="white" />
-      </TouchableOpacity>
-    </View>
+      <AntDesign name="caretright" size={getSize(20)} color="white" />
+    </TouchableOpacity>
   );
 };
 
@@ -233,13 +240,131 @@ const GradientSelectInput = ({
   );
 };
 
+type SelectItem = {
+  title: string;
+  value: any;
+};
+
+interface SelectBoxProps {
+  onChange: (value: any) => void;
+  items: SelectItem[];
+  placeholder: string;
+}
+
+const SelectBox = ({ onChange, items, placeholder }: SelectBoxProps) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<any>(null);
+
+  const screenSize = Dimensions.get('window');
+
+  return (
+    <>
+      {open && (
+        <Pressable
+          style={{
+            position: 'absolute',
+            width: screenSize.width,
+            height: screenSize.height,
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            zIndex: 100,
+          }}
+          onPress={() => setOpen(false)}
+        />
+      )}
+      <TouchableOpacity
+        style={{
+          ...styles.input,
+          zIndex: 1000,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+        onPress={() => setOpen(!open)}
+      >
+        {value === null ? (
+          <Text style={{ ...styles.inputText, color: colors.placeholder }}>
+            {placeholder}
+          </Text>
+        ) : (
+          <Text style={{ ...styles.inputText, color: colors.defaultText }}>
+            {value}
+          </Text>
+        )}
+        {open && (
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 101,
+              width: getSize(368),
+              top: getSize(59),
+              left: 0,
+              backgroundColor: colors.headerBackground,
+              borderRadius: 10,
+            }}
+          >
+            {items.map((data, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  onChange(data.value);
+                  setValue(data.title);
+                  setOpen(false);
+                }}
+                style={{
+                  height: getSize(59),
+                  justifyContent: 'center',
+                  paddingHorizontal: getSize(26),
+                }}
+              >
+                <Text style={styles.inputText}>{data.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+        <FontAwesome
+          name={open ? 'angle-up' : 'angle-down'}
+          size={24}
+          color="white"
+        />
+      </TouchableOpacity>
+    </>
+  );
+};
+
+interface ErrorTextProps {
+  children: React.ReactNode;
+  style?: object;
+}
+
+const ErrorText: React.FC<ErrorTextProps> = props => {
+  return (
+    <Text
+      {...props}
+      style={{
+        ...weight800,
+        color: 'red',
+        width: getSize(368),
+        marginBottom: getSize(19),
+        paddingLeft: getSize(10),
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
 export const InputStyle = styles.input;
-export const InputTextStyle = { ...weight700, fontSize: getSize(14) };
+export const InputTextStyle = styles.inputText;
 export {
   getRefInput,
   onFocusNext,
   Input,
+  SelectBox,
   SelectInput,
   GradientSelectInput,
   FormMainText,
+  ErrorText,
 };

@@ -82,14 +82,14 @@ const signUpSlice = createSlice({
       action: PayloadAction<{
         email: string;
         name: string;
-        sex: boolean;
+        sex: number;
         birthday: string;
         home?: string;
       }>,
     ) => {
       state.email = action.payload.email;
       state.name = action.payload.name;
-      state.sex = action.payload.sex;
+      state.sex = action.payload.sex === 1 ? true : false;
       state.birthday = action.payload.birthday;
       if (state.type === 'member' && action.payload.home) {
         (state as MemberSignUpState).home = action.payload.home;
@@ -114,13 +114,10 @@ const signUpSlice = createSlice({
         (state as MemberSignUpState).tatto = action.payload.tatto;
       }
     },
-    setAccountData: (
-      state,
-      action: PayloadAction<{ account: AccountState }>,
-    ) => {
+    setAccountData: (state, action: PayloadAction<AccountState>) => {
       if (state.type === 'member') {
         (state as MemberSignUpState).enteredAccount = true;
-        (state as MemberSignUpState).account = action.payload.account;
+        (state as MemberSignUpState).account = action.payload;
       }
     },
     setCompanyData: (state, action: PayloadAction<{ company: string }>) => {
