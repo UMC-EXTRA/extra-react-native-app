@@ -7,22 +7,13 @@
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "simulator": true,
-        "buildType": "debug"
+        "simulator": true
       }
     },
     "preview": {
       "distribution": "internal"
     },
-    "production": {
-      "android": {
-        "buildType": "app-bundle"
-      },
-      "ios": {
-        "buildType": "release",
-        "distribution": "store"
-      }
-    }
+    "production": {}
   },
   "submit": {
     "production": {}

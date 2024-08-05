@@ -1,5 +1,6 @@
 import { Alert, Linking, Platform } from 'react-native';
 import Constants from 'expo-constants';
+import * as Application from 'expo-application';
 import * as Notifications from 'expo-notifications';
 import * as Location from 'expo-location';
 import { Camera } from 'expo-camera';
@@ -80,8 +81,9 @@ function openSettings() {
     Linking.openURL('app-settings:');
   } else {
     const packageName =
-      Constants.manifest?.android?.package ||
-      Constants.manifest2?.android?.package;
+      Application.applicationId || // Use expo-application for getting the package name
+      Constants.expoConfig?.android?.package || // For new Expo SDK versions
+      Constants.manifest?.android?.package; // Fallback for older versions
     if (packageName) {
       IntentLauncher.startActivityAsync(
         IntentLauncher.ActivityAction.APPLICATION_DETAILS_SETTINGS,
