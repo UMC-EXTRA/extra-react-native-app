@@ -17,7 +17,7 @@ const AuthSucessScreen = () => {
         </MainText>
         <ConfirmButton
           style={{ marginTop: getSize(35) }}
-          onPress={() => Router.push(`/sign/${type}/main-form`)}
+          onPress={() => Router.push(`/sign/sign-up/${type}/main-form`)}
           text="회원가입 하러가기"
         />
       </Container>

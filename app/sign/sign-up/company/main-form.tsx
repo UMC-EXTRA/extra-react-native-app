@@ -27,6 +27,8 @@ import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
+import * as Permissions from '@/scripts/permission';
+
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { isCompanySignUpState } from '@/redux/signUp/stateTypes';
 import { setBasicData } from '@/redux/signUp/signUpSlice';
@@ -194,7 +196,28 @@ const BasicFormScreen = () => {
                     dispatch(
                       setBasicData({ email, phone, name, sex, birthday }),
                     );
-                    Router.push('/sign/sign-up/complete');
+                    Permissions.requestLocationPermission().then(result => {
+                      if (result) {
+                        Permissions.requestPushNotificationPermission().then(
+                          result => {
+                            if (!result) {
+                              Permissions.alertForOpeningSettings(
+                                '푸시 알림 거부됨',
+                                '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                              );
+                            }
+                            // getTokens(signUp.email, signUp.password, 'user').then(
+                            //   result => {
+                            //     if (result) {
+                            //       router.push('/member/sign-up/complete');
+                            //     }
+                            //   },
+                            // );
+                            Router.push('/sign/sign-up/complete');
+                          },
+                        );
+                      }
+                    });
                   } else {
                     setDisplay(true);
                   }
