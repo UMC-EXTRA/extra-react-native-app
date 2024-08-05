@@ -138,7 +138,7 @@ const SettingsScreen = () => {
   return (
     <SettingContainer
       title="설정"
-      onPress={() => Router.navigate('/company/profile')}
+      onPress={() => Router.navigate('/member/profile')}
     >
       <ScrollView contentContainerStyle={{ paddingBottom: getSize(30) }}>
         {settingList.map((setting, index) => (

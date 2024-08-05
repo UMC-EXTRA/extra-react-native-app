@@ -26,7 +26,7 @@ const Index = () => {
     return null;
   }
 
-  return <Redirect href={'/sign' as Href} />;
+  return <Redirect href={'/member/manage/detail' as Href} />;
 };
 
 export default Index;
