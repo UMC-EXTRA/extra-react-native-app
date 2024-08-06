@@ -1,9 +1,9 @@
-import { View } from 'react-native';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { router } from 'expo-router';
-import { Container } from '@/components/Container';
-import { FormButton } from '@/components/Theme/Button';
 
+import { FormButton } from '@/components/Theme/Button';
+import { Container } from '@/components/Container';
 import { BackHeaderContainer } from '@/components/Container';
 import { GradientSelectInput } from '@/components/Form';
 import getSize from '@/scripts/getSize';
@@ -19,10 +19,12 @@ const TattoFormScreen = () => {
   const [companyList, setCompanyList] = useState<string[]>([]);
   const [company, setCompany] = useState('');
 
+  // Initialize company list
   useEffect(() => {
     setCompanyList(['A', 'B', 'C', 'D']);
   }, []);
 
+  // load previously saved data
   useEffect(() => {
     if (isCompanySignUpState(signUp) && signUp.enteredCompany) {
       setCompany(signUp.company);
@@ -42,6 +44,7 @@ const TattoFormScreen = () => {
             justifyContent: 'space-between',
           }}
         >
+          {/* company list */}
           {companyList.map(key => (
             <GradientSelectInput
               key={key}
@@ -56,6 +59,8 @@ const TattoFormScreen = () => {
             />
           ))}
         </View>
+
+        {/* submit button */}
         <FormButton
           valid={company.length > 0}
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}

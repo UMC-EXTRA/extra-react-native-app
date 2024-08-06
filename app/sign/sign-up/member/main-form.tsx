@@ -1,10 +1,11 @@
+import { useState, useRef } from 'react';
 import {
   Pressable,
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
-import { useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import { FormButton } from '@/components/Theme/Button';
@@ -32,9 +33,11 @@ type FormData = {
   home: string;
 };
 
-const BasicFormScreen = () => {
+// Main form page for '보조출연자' users
+const MainFormScreen = () => {
   const dispatch = useAppDispatch();
 
+  // Initialize form data
   const {
     control,
     handleSubmit,
@@ -50,35 +53,33 @@ const BasicFormScreen = () => {
     },
   });
 
+  // Auto-scroll when keyboard is visible
   const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
+  // Initialize ref for auto-focus
   const ref_input = getRefInput(4);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
     adjustOffset(index + 1);
   };
 
+  // Auto-scroll method
   const adjustOffset = (index: number) => {
     let offset = -getSize(150);
     offset += index * getSize(50);
     setKeyboardVerticalOffset(offset);
 
-    // ScrollView를 조정된 위치로 스크롤
+    // ScrollView to the adjusted position
     scrollViewRef.current?.scrollTo({ y: offset, animated: true });
   };
 
   return (
     <BackHeaderContainer>
-      <Pressable
-        onPress={Keyboard.dismiss}
-        style={{ flex: 1, alignItems: 'center' }}
-      >
-        <ScrollView
-          style={{ flex: 1 }}
-          ref={scrollViewRef}
-          contentContainerStyle={{ flexGrow: 1 }}
-        >
+      {/* hide keyboard when pressed */}
+      <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+        <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexGrow: 1 }}>
+          {/* container avoiding keyboard */}
           <KeyboardAvoidingView
             behavior="position"
             style={{ flex: 1 }}
@@ -86,6 +87,8 @@ const BasicFormScreen = () => {
           >
             <Container>
               <FormMainText />
+
+              {/* email input */}
               <Controller
                 control={control}
                 rules={{
@@ -106,6 +109,8 @@ const BasicFormScreen = () => {
                 )}
                 name="email"
               />
+
+              {/* phone number input */}
               <Controller
                 control={control}
                 rules={{
@@ -125,6 +130,8 @@ const BasicFormScreen = () => {
                 )}
                 name="phone"
               />
+
+              {/* name input */}
               <Controller
                 control={control}
                 rules={{
@@ -142,6 +149,8 @@ const BasicFormScreen = () => {
                 )}
                 name="name"
               />
+
+              {/* birthday input */}
               <Controller
                 control={control}
                 rules={{
@@ -162,6 +171,8 @@ const BasicFormScreen = () => {
                 )}
                 name="birthday"
               />
+
+              {/* sex selectbox */}
               <Controller
                 control={control}
                 rules={{
@@ -179,6 +190,8 @@ const BasicFormScreen = () => {
                 )}
                 name="sex"
               />
+
+              {/* home address input */}
               <Controller
                 control={control}
                 rules={{
@@ -189,28 +202,31 @@ const BasicFormScreen = () => {
                     placeholder="거주지를 입력해주세요."
                     value={value}
                     onChangeText={onChange}
+                    style={{
+                      marginBottom: getSize(63),
+                    }}
                   />
                 )}
                 name="home"
               />
+
+              {/* submit button */}
+              <FormButton
+                valid={isValid}
+                onPress={handleSubmit(data => {
+                  // save basic data
+                  dispatch(setBasicData(data));
+                  // move to additional form
+                  Router.push('/sign/sign-up/member/additional-form');
+                })}
+                text="다음"
+              />
             </Container>
           </KeyboardAvoidingView>
         </ScrollView>
-        <FormButton
-          valid={isValid}
-          onPress={handleSubmit(data => {
-            dispatch(setBasicData(data));
-            Router.push('/sign/sign-up/member/additional-form');
-          })}
-          text="다음"
-          style={{
-            position: 'absolute',
-            bottom: getSize(49),
-          }}
-        />
       </Pressable>
     </BackHeaderContainer>
   );
 };
 
-export default BasicFormScreen;
+export default MainFormScreen;

@@ -1,7 +1,9 @@
-import { View, Platform, StyleSheet, Text } from 'react-native';
+import { Platform } from 'react-native';
 import Svg, { Path, Ellipse } from 'react-native-svg';
 import { useEffect } from 'react';
 
+import { SafeContainer } from '@/components/Container';
+import { TextWeight900 } from '@/components/Theme/Text';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
@@ -13,14 +15,30 @@ const Complete = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // auto login
+    // getTokens(signUp.email, signUp.password, 'user').then(
+    //   result => {
+    //     if (result) {
+    //       router.push('/member/sign-up/complete');
+    //     }
+    //   },
+    // );
+    // run action after 2 secends
     setTimeout(() => {
+      // reset sign up data
       dispatch(resetState());
+      // move to main page
       Router.replace(`/${type}`);
     }, 2000);
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeContainer
+      style={{
+        alignItems: 'center',
+        overflow: 'hidden',
+      }}
+    >
       {Platform.OS === 'ios' ? (
         <Svg width="430" height="883" viewBox="0 0 430 1100" fill="none">
           <Path d="M215 -14V785H-107L215 -14Z" fill="#F5C001" />
@@ -40,14 +58,23 @@ const Complete = () => {
           />
         </Svg>
       )}
-      <Text style={styles.text}>
+      <TextWeight900
+        align="center"
+        size={30}
+        height={35}
+        style={{
+          color: '#000',
+          position: 'absolute',
+          top: Platform.OS === 'ios' ? getSize(400) : getSize(450),
+        }}
+      >
         회원가입이 완료되었어요!{'\n\n'}이제 EXTRA와 함께{'\n'}
         {type === 'member' && '배우'}
         {type === 'company' && '감독'}님이 되어보세요 🤩
-      </Text>
+      </TextWeight900>
       <Svg
         style={{
-          ...styles.footer,
+          position: 'absolute',
           bottom: Platform.OS === 'ios' ? getSize(100) : getSize(40),
         }}
         width="600"
@@ -56,31 +83,8 @@ const Complete = () => {
       >
         <Ellipse cx="300" cy="150" rx="245" ry="83.5" fill="#FFDF6A" />
       </Svg>
-    </View>
+    </SafeContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  text: {
-    color: '#000',
-    textAlign: 'center',
-    fontFamily: 'Inter-ExtraBold',
-    fontSize: getSize(30),
-    fontWeight: '900',
-    lineHeight: getSize(35),
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? getSize(350) : getSize(400),
-  },
-  footer: {
-    position: 'absolute',
-  },
-});
 
 export default Complete;

@@ -8,126 +8,184 @@ import {
   Keyboard,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useEffect, useState, useRef } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import { SafeContainer } from '@/components/Container';
 import { weight800, weight200, MainText } from '@/components/Theme/Text';
 import { FormButton } from '@/components/Theme/Button';
+import { SafeContainer } from '@/components/Container';
+import { getRefInput, onFocusNext } from '@/components/Form';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { initType } from '@/redux/signUp/signUpSlice';
 
-/*
-  Login page
-  - Login with id and password
-  - Social login buttons
-*/
+// login page
 const LoginScreen = () => {
   const type = useAppSelector(state => state.profile.type);
   const dispatch = useAppDispatch();
 
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [valid, setValid] = useState(false);
+  // Initialize form data
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm({
+    defaultValues: {
+      id: '',
+      password: '',
+    },
+  });
 
-  const ref_input: Array<React.RefObject<TextInput>> = [];
-  ref_input[0] = useRef(null);
-  ref_input[1] = useRef(null);
-
-  const onFocusNext = (index: number) => {
-    if (ref_input[index + 1] && index < ref_input.length - 1) {
-      ref_input[index + 1].current?.focus();
-    }
-    if (ref_input[index + 1] && index == ref_input.length - 1) {
-      ref_input[index].current?.blur();
-    }
+  const ref_input = getRefInput(4);
+  const focusNext = (index: number) => {
+    onFocusNext(ref_input, index);
   };
 
-  // check if id and password are entered
-  useEffect(() => {
-    if (id.length > 0 && password.length > 0) {
-      setValid(true);
-    } else {
-      setValid(false);
-    }
-  }, [id, password]);
-
   return (
-    <SafeContainer style={{ alignItems: 'center' }}>
+    <SafeContainer>
       {/* hide keyboard when pressed */}
       <Pressable
         onPress={Keyboard.dismiss}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <View style={styles.imageContainer}>
+        {/* logo image */}
+        <View
+          style={{
+            height: getSize(338),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Image
             source={require('@/assets/images/logo.png')}
-            style={styles.logoImage}
+            style={{
+              width: getSize(124),
+              height: getSize(124),
+            }}
           />
         </View>
-        <View style={styles.loginFormContainer}>
-          <View style={styles.loginForm}>
-            <View style={styles.loginInputContainer}>
-              <TextInput
-                style={styles.loginInput}
-                value={id}
-                onChangeText={setId}
-                placeholder="아이디를 입력해주세요"
-                placeholderTextColor={'#5E5E5E'}
-                autoComplete="off"
-                returnKeyType="next"
-                ref={ref_input[0]}
-                onSubmitEditing={() => {
-                  onFocusNext(0);
+
+        {/* main content */}
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+          }}
+        >
+          {/* login form */}
+          <View
+            style={{
+              width: getSize(390),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            {/* textInputs */}
+            <View
+              style={{
+                width: getSize(282),
+                height: getSize(104),
+                justifyContent: 'space-between',
+              }}
+            >
+              {/* id input */}
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
                 }}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={styles.loginInput}
+                    value={value}
+                    onChangeText={onChange}
+                    placeholder="아이디를 입력해주세요"
+                    placeholderTextColor={'#5E5E5E'}
+                    autoComplete="off"
+                    returnKeyType="next"
+                    ref={ref_input[0]}
+                    onSubmitEditing={() => {
+                      focusNext(0);
+                    }}
+                  />
+                )}
+                name="id"
               />
-              <TextInput
-                style={styles.loginInput}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                placeholder="비밀번호를 입력해주세요"
-                placeholderTextColor={'#5E5E5E'}
-                autoComplete="off"
-                returnKeyType="done"
-                ref={ref_input[1]}
-                onSubmitEditing={() => {
-                  onFocusNext(1);
+              {/* password input */}
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
                 }}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={styles.loginInput}
+                    value={value}
+                    onChangeText={onChange}
+                    secureTextEntry
+                    placeholder="비밀번호를 입력해주세요"
+                    placeholderTextColor={'#5E5E5E'}
+                    autoComplete="off"
+                    returnKeyType="done"
+                    ref={ref_input[1]}
+                    onSubmitEditing={() => {
+                      focusNext(1);
+                    }}
+                  />
+                )}
+                name="password"
               />
             </View>
+
+            {/* submit button */}
             <FormButton
               width={100}
               height={104}
               radius={20}
-              valid={valid}
-              style={
-                {
-                  // backgroundColor: valid ? '#F5C001' : '#4B4B4B',
-                }
-              }
+              valid={isValid}
+              style={{
+                backgroundColor: isValid ? '#F5C001' : '#4B4B4B',
+              }}
               text="로그인"
               textStyle={{
                 ...weight800,
                 fontSize: getSize(15),
-                // color: valid ? '#000' : '#7D7D7D',
+                color: isValid ? '#000' : '#7D7D7D',
               }}
-              onPress={() => {}}
+              onPress={handleSubmit(data => {
+                console.log(data);
+              })}
             />
           </View>
-          <View style={styles.navigationButtonContainer}>
+
+          {/* link buttons */}
+          <View
+            style={{
+              marginTop: getSize(41),
+              width: getSize(328),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {/* link to find-id page */}
             <TouchableOpacity onPress={() => Router.push('/sign/find-id')}>
               <Text style={styles.navigationButtonText}>아이디 찾기</Text>
             </TouchableOpacity>
-            <View style={styles.divisionBar} />
+
+            <View style={styles.divider} />
+
+            {/* link to find-password page */}
             <TouchableOpacity
               onPress={() => Router.push('/sign/find-password')}
             >
               <Text style={styles.navigationButtonText}>비밀번호 찾기</Text>
             </TouchableOpacity>
-            <View style={styles.divisionBar} />
+
+            <View style={styles.divider} />
+
+            {/* link to sign-up page */}
             <TouchableOpacity
               onPress={() => {
                 dispatch(initType(type));
@@ -137,13 +195,22 @@ const LoginScreen = () => {
               <Text style={styles.navigationButtonText}>회원가입</Text>
             </TouchableOpacity>
           </View>
+
+          {/* social login buttons */}
           <MainText
             size={18}
             style={{ marginTop: getSize(42), marginBottom: getSize(30) }}
           >
             간편 로그인
           </MainText>
-          <View style={styles.socialButtonContainer}>
+          <View
+            style={{
+              width: '100%',
+              height: getSize(58),
+              flexDirection: 'row',
+            }}
+          >
+            {/* kakao login */}
             <TouchableOpacity
               onPress={() => alert('kakao')}
               style={{ ...styles.socialLoginButton, marginRight: 0 }}
@@ -161,28 +228,6 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    flex: 30,
-    paddingTop: getSize(133),
-  },
-  logoImage: {
-    width: getSize(124),
-    height: getSize(124),
-  },
-  loginFormContainer: {
-    flex: 70,
-    alignItems: 'center',
-  },
-  loginForm: {
-    width: getSize(390),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  loginInputContainer: {
-    width: getSize(282),
-    height: getSize(104),
-    justifyContent: 'space-between',
-  },
   loginInput: {
     width: '100%',
     height: getSize(46),
@@ -196,27 +241,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     paddingLeft: getSize(14),
   },
-  navigationButtonContainer: {
-    marginTop: getSize(41),
-    width: getSize(328),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   navigationButtonText: {
     ...weight200,
     fontSize: getSize(13),
     color: '#969696',
   },
-  divisionBar: {
+  divider: {
     width: getSize(1),
     height: getSize(12),
     backgroundColor: '#969696',
-  },
-  socialButtonContainer: {
-    width: '100%',
-    height: getSize(58),
-    flexDirection: 'row',
   },
   socialLoginButton: {
     width: getSize(58),

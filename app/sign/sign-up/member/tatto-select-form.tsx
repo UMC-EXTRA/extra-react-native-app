@@ -1,5 +1,5 @@
-import { View } from 'react-native';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 import { Container } from '@/components/Container';
 import { FormButton } from '@/components/Theme/Button';
@@ -8,15 +8,17 @@ import { GradientSelectInput } from '@/components/Form';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
-import { setTattoData } from '@/redux/signUp/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setTattoData } from '@/redux/signUp/signUpSlice';
 import { TattoState } from '@/redux/signUp/stateTypes';
 import { tattoNames, isMemberSignUpState } from '@/redux/signUp/stateTypes';
 
+// Select tatto page
 const TattoFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
+  // Initialize tatto data state
   const [hasTatto, setHasTatto] = useState<boolean>(false);
   const [tatto, setTatto] = useState<TattoState>({
     face: false,
@@ -31,6 +33,7 @@ const TattoFormScreen = () => {
   });
   const [complete, setComplete] = useState(false);
 
+  // Load previously saved tatto data
   useEffect(() => {
     if (isMemberSignUpState(signUp) && signUp.enteredTatto) {
       setComplete(true);
@@ -39,6 +42,7 @@ const TattoFormScreen = () => {
     }
   }, [signUp]);
 
+  // Check complete
   useEffect(() => {
     if (Object.values(tatto).filter(value => value).length > 0 || !hasTatto) {
       setComplete(true);
@@ -47,6 +51,10 @@ const TattoFormScreen = () => {
     }
   }, [hasTatto, tatto]);
 
+  /**
+   * Check if tattos is selected
+   * if tatto is selected, hasTatto is true
+   */
   useEffect(() => {
     if (Object.values(tatto).filter(value => value).length > 0) {
       setHasTatto(true);
@@ -68,6 +76,7 @@ const TattoFormScreen = () => {
             justifyContent: 'space-between',
           }}
         >
+          {/* '없음' button */}
           <GradientSelectInput
             value={!hasTatto}
             setValue={() => {
@@ -89,6 +98,7 @@ const TattoFormScreen = () => {
               marginBottom: getSize(15),
             }}
           />
+          {/* tatto buttons */}
           {Object.keys(tattoNames).map(key => (
             <GradientSelectInput
               key={key}
@@ -107,6 +117,7 @@ const TattoFormScreen = () => {
             />
           ))}
         </View>
+        {/* submit button */}
         <FormButton
           valid={complete}
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}

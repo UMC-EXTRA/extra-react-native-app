@@ -8,6 +8,7 @@ import getSize from '@/scripts/getSize';
 import { useAppDispatch } from '@/redux/hooks';
 import { resetState } from '@/redux/signUp/signUpSlice';
 
+// identity verification page
 const SignUpScreen = () => {
   const dispatch = useAppDispatch();
 
@@ -21,11 +22,13 @@ const SignUpScreen = () => {
           <MainText>휴대폰 본인인증</MainText>을{'\n'}
           진행해주세요.
         </TextWeight500>
+        {/* identity verification button */}
         <ConfirmButton
           onPress={() => Router.push('/sign/sign-up/auth-success')}
           text="본인 인증하기"
           style={{ marginTop: getSize(57) }}
         />
+        {/* back button */}
         <BackLinkButton
           style={{ marginTop: getSize(17) }}
           onPress={() => {

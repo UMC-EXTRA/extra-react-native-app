@@ -4,6 +4,7 @@ import { Redirect, Href } from 'expo-router';
 import { useFonts } from 'expo-font';
 
 const Index = () => {
+  // load font
   const [loaded, error] = useFonts({
     'Inter-Black': require('@/assets/fonts/Inter-Black.ttf'),
     'Inter-Bold': require('@/assets/fonts/Inter-Bold.ttf'),

@@ -36,10 +36,12 @@ type FormData = {
   sex: number;
 };
 
+// Main form page for '업체' users
 const BasicFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
+  // Initialize form data
   const {
     control,
     handleSubmit,
@@ -58,24 +60,28 @@ const BasicFormScreen = () => {
   const [termComplete, setTermComplete] = useState(false);
   const [complete, setComplete] = useState(false);
 
+  // Auto-scroll when keyboard is visible
   const [keyboardVerticalOffset, setKeyboardVerticalOffset] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
+  // Initialize ref for auto-focus
   const ref_input = getRefInput(4);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
     adjustOffset(index + 1);
   };
 
+  // Auto-scroll method
   const adjustOffset = (index: number) => {
     let offset = -getSize(150);
     offset += index * getSize(50);
     setKeyboardVerticalOffset(offset);
 
-    // ScrollView를 조정된 위치로 스크롤
+    // ScrollView to the adjusted position
     scrollViewRef.current?.scrollTo({ y: offset, animated: true });
   };
 
+  // Check complete
   useEffect(() => {
     if (isCompanySignUpState(signUp) && signUp.enteredCompany)
       setComplete(true);
@@ -86,6 +92,7 @@ const BasicFormScreen = () => {
 
   return (
     <BackHeaderContainer>
+      {/* hide keyboard when pressed */}
       <Pressable
         onPress={Keyboard.dismiss}
         style={{ flex: 1, alignItems: 'center' }}
@@ -95,6 +102,7 @@ const BasicFormScreen = () => {
           ref={scrollViewRef}
           contentContainerStyle={{ flexGrow: 1 }}
         >
+          {/* container avoiding keyboard */}
           <KeyboardAvoidingView
             behavior="position"
             style={{ flex: 1 }}
@@ -102,6 +110,8 @@ const BasicFormScreen = () => {
           >
             <Container>
               <FormMainText />
+
+              {/* email input */}
               <Controller
                 control={control}
                 rules={{
@@ -122,6 +132,8 @@ const BasicFormScreen = () => {
                 )}
                 name="email"
               />
+
+              {/* phone number input */}
               <Controller
                 control={control}
                 rules={{
@@ -141,6 +153,8 @@ const BasicFormScreen = () => {
                 )}
                 name="phone"
               />
+
+              {/* name input */}
               <Controller
                 control={control}
                 rules={{
@@ -158,6 +172,8 @@ const BasicFormScreen = () => {
                 )}
                 name="name"
               />
+
+              {/* birthday input */}
               <Controller
                 control={control}
                 rules={{
@@ -178,6 +194,8 @@ const BasicFormScreen = () => {
                 )}
                 name="birthday"
               />
+
+              {/* sex selectbox */}
               <Controller
                 control={control}
                 rules={{
@@ -195,6 +213,8 @@ const BasicFormScreen = () => {
                 )}
                 name="sex"
               />
+
+              {/* link button to company form */}
               <SelectInput
                 condition={
                   isCompanySignUpState(signUp) && signUp.enteredCompany
@@ -208,47 +228,43 @@ const BasicFormScreen = () => {
                 onPress={() =>
                   Router.push('/sign/sign-up/company/company-select-form')
                 }
+                style={{
+                  marginBotom: getSize(63),
+                }}
+              />
+
+              {/* submit button */}
+              <FormButton
+                valid={isValid && complete}
+                onPress={handleSubmit(data => {
+                  if (termComplete) {
+                    // save data
+                    dispatch(setBasicData(data));
+
+                    // request app permissions
+                    Permissions.requestLocationPermission().then(result => {
+                      Permissions.requestPushNotificationPermission().then(
+                        result => {
+                          if (!result) {
+                            Permissions.alertForOpeningSettings(
+                              '푸시 알림 거부됨',
+                              '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                            );
+                          }
+                          Router.push('/sign/sign-up/complete');
+                        },
+                      );
+                    });
+                  } else {
+                    // if checking terms is not completion, open term modal
+                    setDisplay(true);
+                  }
+                })}
+                text="다음"
               />
             </Container>
           </KeyboardAvoidingView>
         </ScrollView>
-        <FormButton
-          valid={isValid && complete}
-          onPress={handleSubmit(data => {
-            if (termComplete) {
-              dispatch(setBasicData(data));
-              Permissions.requestLocationPermission().then(result => {
-                if (result) {
-                  Permissions.requestPushNotificationPermission().then(
-                    result => {
-                      if (!result) {
-                        Permissions.alertForOpeningSettings(
-                          '푸시 알림 거부됨',
-                          '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
-                        );
-                      }
-                      // getTokens(signUp.email, signUp.password, 'user').then(
-                      //   result => {
-                      //     if (result) {
-                      //       router.push('/member/sign-up/complete');
-                      //     }
-                      //   },
-                      // );
-                      Router.push('/sign/sign-up/complete');
-                    },
-                  );
-                }
-              });
-            } else {
-              setDisplay(true);
-            }
-          })}
-          text="다음"
-          style={{
-            position: 'absolute',
-            bottom: getSize(49),
-          }}
-        />
       </Pressable>
       {display && (
         <TermModal

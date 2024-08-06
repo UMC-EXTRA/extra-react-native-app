@@ -5,13 +5,6 @@ import * as Location from 'expo-location';
 import { Camera } from 'expo-camera';
 import * as IntentLauncher from 'expo-intent-launcher';
 
-export function alertForOpeningSettings(title: string, message: string) {
-  Alert.alert(title, message, [
-    { text: '취소', style: 'cancel' },
-    { text: '설정으로 이동', onPress: openSettings },
-  ]);
-}
-
 export async function requestPushNotificationPermission(): Promise<boolean> {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
@@ -75,6 +68,15 @@ export async function togglePushNotificationPermission(
   }
 }
 
+// show alert
+export function alertForOpeningSettings(title: string, message: string) {
+  Alert.alert(title, message, [
+    { text: '취소', style: 'cancel' },
+    { text: '설정으로 이동', onPress: openSettings },
+  ]);
+}
+
+// open mobile setting app
 function openSettings() {
   if (Platform.OS === 'ios') {
     Linking.openURL('app-settings:');

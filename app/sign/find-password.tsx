@@ -1,6 +1,7 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import { BackHeaderContainer } from '@/components/Container';
 
+// find id
 const FindPassWordSceen = () => {
   return (
     <BackHeaderContainer title="비밀번호 찾기">
@@ -8,7 +9,5 @@ const FindPassWordSceen = () => {
     </BackHeaderContainer>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default FindPassWordSceen;

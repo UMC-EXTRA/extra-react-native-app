@@ -9,7 +9,7 @@ import { Input, getRefInput, onFocusNext } from '@/components/Form';
 import { BackHeaderContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import { setAccountData } from '@/redux/signUp/signUpSlice';
 
 type FormData = {
@@ -21,6 +21,7 @@ type FormData = {
 const AccountFormScreen = () => {
   const dispatch = useAppDispatch();
 
+  // Initialize form data
   const {
     control,
     handleSubmit,
@@ -33,6 +34,7 @@ const AccountFormScreen = () => {
     },
   });
 
+  // Initialize ref for auto-focus
   const ref_input = getRefInput(3);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
@@ -41,6 +43,7 @@ const AccountFormScreen = () => {
   return (
     <BackHeaderContainer>
       <Container>
+        {/* bank name input */}
         <MainText style={{ ...styles.mainText, marginTop: getSize(46) }}>
           은행명
         </MainText>
@@ -61,6 +64,8 @@ const AccountFormScreen = () => {
           )}
           name="bankName"
         />
+
+        {/* account number input */}
         <MainText style={styles.mainText}>계좌번호</MainText>
         <Controller
           control={control}
@@ -80,6 +85,8 @@ const AccountFormScreen = () => {
           )}
           name="accountNumber"
         />
+
+        {/* account holder input */}
         <MainText style={styles.mainText}>예금주</MainText>
         <Controller
           control={control}
@@ -98,6 +105,8 @@ const AccountFormScreen = () => {
           )}
           name="accountHolder"
         />
+
+        {/* submit button */}
         <FormButton
           valid={isValid}
           text="완료"

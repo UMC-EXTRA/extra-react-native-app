@@ -1,11 +1,5 @@
-import {
-  Pressable,
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
 import { useEffect, useState } from 'react';
+import { Pressable, Keyboard, Text, TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 import { Container } from '@/components/Container';
@@ -36,10 +30,11 @@ type FormData = {
   weight: number;
 };
 
-const PhysicalFormScreen = () => {
+const AdditionalFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
+  // Initialize form data
   const {
     control,
     handleSubmit,
@@ -55,6 +50,7 @@ const PhysicalFormScreen = () => {
   const [termComplete, setTermComplete] = useState(false);
   const [complete, setComplete] = useState(false);
 
+  // Check complete
   useEffect(() => {
     if (
       isMemberSignUpState(signUp) &&
@@ -68,9 +64,12 @@ const PhysicalFormScreen = () => {
 
   return (
     <BackHeaderContainer>
+      {/* hide keyboard when pressed */}
       <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
           <FormMainText />
+
+          {/* height input */}
           <Controller
             control={control}
             rules={{
@@ -87,6 +86,8 @@ const PhysicalFormScreen = () => {
             )}
             name="height"
           />
+
+          {/* weight input */}
           <Controller
             control={control}
             rules={{
@@ -103,6 +104,8 @@ const PhysicalFormScreen = () => {
             )}
             name="weight"
           />
+
+          {/* link button to tatto form */}
           <SelectInput
             condition={isMemberSignUpState(signUp) && signUp.enteredTatto}
             value={
@@ -123,6 +126,8 @@ const PhysicalFormScreen = () => {
               Router.push('/sign/sign-up/member/tatto-select-form')
             }
           />
+
+          {/* link button to account form */}
           <SelectInput
             condition={isMemberSignUpState(signUp) && signUp.enteredAccount}
             value={
@@ -134,50 +139,48 @@ const PhysicalFormScreen = () => {
             onPress={() => Router.push('/sign/sign-up/member/account-form')}
             style={{ marginBottom: getSize(41) }}
           />
+
+          {/* button opening term modal */}
           <TouchableOpacity
             style={{
               ...InputStyle,
-              ...styles.termOpenButton,
+              borderColor: '#949494',
+              borderWidth: getSize(3),
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: getSize(119),
             }}
             onPress={() => setDisplay(true)}
           >
             <Text style={InputTextStyle}>약관 보기</Text>
           </TouchableOpacity>
+
+          {/* submit button */}
           <FormButton
             valid={complete && isValid}
             onPress={handleSubmit(data => {
+              // save physical data
               dispatch(setPhysicalData(data));
+
+              // request app permissions
               Permissions.requestLocationPermission().then(result => {
-                if (result) {
-                  Permissions.requestPushNotificationPermission().then(
-                    result => {
-                      if (!result) {
-                        Permissions.alertForOpeningSettings(
-                          '푸시 알림 거부됨',
-                          '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
-                        );
-                      }
-                      // getTokens(signUp.email, signUp.password, 'user').then(
-                      //   result => {
-                      //     if (result) {
-                      //       router.push('/member/sign-up/complete');
-                      //     }
-                      //   },
-                      // );
-                      Router.push('/sign/sign-up/complete');
-                    },
-                  );
-                }
+                Permissions.requestPushNotificationPermission().then(result => {
+                  if (!result) {
+                    Permissions.alertForOpeningSettings(
+                      '푸시 알림 거부됨',
+                      '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                    );
+                  }
+                  Router.push('/sign/sign-up/complete');
+                });
               });
             })}
             text="다음"
-            style={{
-              position: 'absolute',
-              bottom: getSize(49),
-            }}
           />
         </Container>
       </Pressable>
+
+      {/* term modal */}
       {display && (
         <TermModal
           setDisplay={setDisplay}
@@ -189,14 +192,4 @@ const PhysicalFormScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  termOpenButton: {
-    borderColor: '#949494',
-    borderWidth: getSize(3),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: getSize(119),
-  },
-});
-
-export default PhysicalFormScreen;
+export default AdditionalFormScreen;

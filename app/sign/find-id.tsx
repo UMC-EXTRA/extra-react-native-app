@@ -1,6 +1,7 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import { BackHeaderContainer } from '@/components/Container';
 
+// find id
 const FindIdScreen = () => {
   return (
     <BackHeaderContainer title="아이디 찾기">
@@ -8,7 +9,5 @@ const FindIdScreen = () => {
     </BackHeaderContainer>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default FindIdScreen;
