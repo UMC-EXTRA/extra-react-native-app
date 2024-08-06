@@ -1,13 +1,13 @@
 import WebViewContainer from '@/components/WebViewContainer';
-import { MainContainer } from '@/components/Container';
+import { SafeContainer } from '@/components/Container';
 import HomeHeader from '@/components/HomeHeader';
 
 const HomeScreen = () => {
   return (
-    <MainContainer>
+    <SafeContainer>
       <HomeHeader />
       <WebViewContainer uri="" />
-    </MainContainer>
+    </SafeContainer>
   );
 };
 

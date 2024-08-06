@@ -1,4 +1,10 @@
-import { StyleSheet, SafeAreaView, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import { MainText } from '@/components/Theme/Text';
@@ -18,11 +24,21 @@ interface Props {
 }
 
 const SafeContainer = ({ children, style = {} }: Props) => {
-  return (
-    <SafeAreaView style={{ ...styles.container, ...style }}>
-      {children}
-    </SafeAreaView>
-  );
+  if (Platform.OS === 'ios') {
+    return (
+      <SafeAreaView style={{ ...styles.container, ...style }}>
+        {children}
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <MainContainer
+        style={{ ...styles.container, paddingTop: getSize(47), ...style }}
+      >
+        {children}
+      </MainContainer>
+    );
+  }
 };
 
 const Container = ({ children, style = {} }: Props) => {

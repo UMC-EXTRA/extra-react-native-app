@@ -2,7 +2,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useCallback, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 
-import { SafeContainer } from '@/components/Container';
+import { MainContainer } from '@/components/Container';
 import { MainText } from '@/components/Theme/Text';
 import WebViewContainer from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
@@ -27,7 +27,7 @@ const ManageScreen = () => {
   }, []);
 
   return (
-    <SafeContainer>
+    <MainContainer>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backLinkButton}
@@ -52,17 +52,18 @@ const ManageScreen = () => {
         촬영 목록
       </MainText>
       <WebViewContainer uri="" onMessage={onMessage} />
-    </SafeContainer>
+    </MainContainer>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: getSize(113),
+    height: getSize(173),
     paddingHorizontal: getSize(35),
+    paddingBottom: getSize(29),
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     position: 'relative',
   },
   diviedBar: {

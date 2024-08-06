@@ -117,7 +117,7 @@ const SettingElement = ({
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: getSize(182),
+    height: getSize(135),
     paddingHorizontal: getSize(46),
     marginBottom: getSize(46),
     flexDirection: 'row',

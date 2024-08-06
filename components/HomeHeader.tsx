@@ -40,11 +40,10 @@ const HomeHeader = () => {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: getSize(261),
+    height: getSize(191),
   },
   menuContainer: {
-    marginTop: getSize(112),
-    height: getSize(37),
+    height: getSize(105),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -63,7 +62,6 @@ const styles = StyleSheet.create({
   },
   bannerAds: {
     height: getSize(86),
-    marginTop: getSize(26),
     justifyContent: 'center',
     alignItems: 'center',
     borderStyle: 'solid',

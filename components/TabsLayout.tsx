@@ -1,4 +1,4 @@
-import { ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import { Tabs, usePathname } from 'expo-router';
 import colors from '@/constants/Colors';
@@ -31,7 +31,7 @@ const TabsLayout = ({ tabConfig, inVisiblePaths = [] }: TabsLayoutProps) => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.tabBarBackground,
-          height: getSize(160),
+          height: Platform.OS === 'ios' ? getSize(160) : getSize(126),
           display: inVisiblePaths.includes(pathname) ? 'none' : 'flex',
         },
         tabBarLabelStyle: {
@@ -43,9 +43,8 @@ const TabsLayout = ({ tabConfig, inVisiblePaths = [] }: TabsLayoutProps) => {
         tabBarInactiveTintColor: '#999',
         tabBarActiveTintColor: '#F5C001',
         tabBarItemStyle: {
-          height: getSize(55),
-          marginTop: getSize(27),
-          alignSelf: 'flex-start',
+          height: getSize(60),
+          marginTop: getSize(29),
         },
       })}
     >

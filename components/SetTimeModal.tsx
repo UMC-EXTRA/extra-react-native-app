@@ -2,10 +2,10 @@ import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import { router } from 'expo-router';
 
 import { CancelButton, ConfirmButton } from '@/components/Theme/Button';
 import { MainText } from '@/components/Theme/Text';
+import { Router } from '@/scripts/router';
 
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
@@ -156,7 +156,7 @@ const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
                 dispatch(setGlobalClockTime({ type, time }));
               }
               setDisplay(false);
-              router.push(`/company/manage/clock-${type}`);
+              Router.push(`/company/manage/clock-${type}`);
             }}
           />
         </View>

@@ -1,11 +1,11 @@
 import { View } from 'react-native';
 import { useEffect, useState } from 'react';
-import { router } from 'expo-router';
 
 import { Container } from '@/components/Container';
 import { FormButton } from '@/components/Theme/Button';
 import { BackHeaderContainer } from '@/components/Container';
 import { GradientSelectInput } from '@/components/Form';
+import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { setTattoData } from '@/redux/signUp/signUpSlice';
@@ -112,7 +112,7 @@ const TattoFormScreen = () => {
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}
           onPress={() => {
             dispatch(setTattoData({ hasTatto, tatto }));
-            router.back();
+            Router.back();
           }}
           text="다음"
         />

@@ -6,7 +6,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import { router } from 'expo-router';
 import { AntDesign, Octicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { MainText } from '@/components/Theme/Text';
@@ -14,6 +13,7 @@ import { SafeContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
+import { Router } from '@/scripts/router';
 import type { Members } from '@/redux/manage/stateTypes';
 import { isCompanyManageState } from '@/redux/manage/stateTypes';
 import { useAppSelector } from '@/redux/hooks';
@@ -68,7 +68,7 @@ const MemberListScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backLinkButton}
-          onPress={() => router.navigate('/company/manage/detail')}
+          onPress={() => Router.navigate('/company/manage/detail')}
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
@@ -122,7 +122,7 @@ const MemberListScreen = () => {
             key={data.id}
             style={styles.listItemContainer}
             onPress={() =>
-              router.navigate({
+              Router.navigate({
                 pathname: '/company/manage/[member_id]',
                 params: { memberId: data.id },
               })
