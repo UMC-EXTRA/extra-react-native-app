@@ -29,6 +29,7 @@ const inVisiblePaths = [
   '/member/manage/detail',
   '/member/manage/chat',
   '/member/manage/clothes',
+  '/member/manage/clothes-preview',
 ];
 
 export default function AdminLayout() {

@@ -40,11 +40,13 @@ const MainContainer = ({ children, style = {} }: Props) => {
 interface BackHeaderProps {
   title?: string | null;
   onPress?: () => void;
+  backgroundColor?: string;
 }
 
 const BackHeader = ({
   title = null,
   onPress = () => router.back(),
+  backgroundColor,
 }: BackHeaderProps) => {
   return (
     <View
@@ -53,7 +55,7 @@ const BackHeader = ({
         justifyContent: 'center',
         height: getSize(155),
         width: '100%',
-        backgroundColor: colors.headerBackground,
+        backgroundColor: backgroundColor || colors.headerBackground,
       }}
     >
       <TouchableOpacity
@@ -88,10 +90,15 @@ const BackHeaderContainer = ({
   children,
   title = null,
   onPress = () => router.back(),
+  backgroundColor,
 }: BackHeaderContainerProps) => {
   return (
     <MainContainer>
-      <BackHeader title={title} onPress={onPress} />
+      <BackHeader
+        title={title}
+        onPress={onPress}
+        backgroundColor={backgroundColor}
+      />
       {children}
     </MainContainer>
   );

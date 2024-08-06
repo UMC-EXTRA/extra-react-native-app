@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Image } from 'expo-image';
+import { Router } from '@/scripts/router';
 
 import { SafeContainer } from '@/components/Container';
 import {
@@ -17,22 +18,37 @@ interface SettingContainerProps {
   children: ReactNode;
   title: string;
   onPress: () => void;
+  settingUrl?: string;
 }
 
 const SettingContainer: FC<SettingContainerProps> = ({
   children,
   title,
   onPress,
+  settingUrl,
 }) => {
   return (
     <SafeContainer>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity
+          onPress={onPress}
+          style={{ height: getSize(40), justifyContent: 'center' }}
+        >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
-        <MainText size={32} style={{ marginLeft: getSize(34) }}>
+        <MainText size={32} align="left" style={{ width: getSize(206) }}>
           {title}
         </MainText>
+        {settingUrl ? (
+          <TouchableOpacity onPress={() => Router.push(settingUrl)}>
+            <Image
+              source={require('@/assets/images/icons/setting.png')}
+              style={{ width: getSize(40), height: getSize(40) }}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View style={{ width: getSize(40), height: getSize(40) }} />
+        )}
       </View>
       {children}
     </SafeContainer>
@@ -101,10 +117,12 @@ const SettingElement = ({
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: getSize(168),
-    paddingTop: getSize(92),
-    paddingLeft: getSize(46),
+    height: getSize(182),
+    paddingHorizontal: getSize(46),
+    marginBottom: getSize(46),
     flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
   },
   container: {
     width: getSize(360),

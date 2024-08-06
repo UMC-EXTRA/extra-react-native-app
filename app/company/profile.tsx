@@ -1,40 +1,54 @@
+import { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { SettingContainer } from '@/components/SettingComponents';
 import { Router } from '@/scripts/router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
+import { weight600 } from '@/components/Theme/Text';
 
 const ProfileScreen = () => {
-  const name = '박지민';
-  const sex = 1;
-  const companyName = '탑소와';
-  const age = 24;
+  const [data, setData] = useState({
+    name: '',
+    sex: 0,
+    companyName: '',
+    age: 0,
+  });
+
+  useEffect(() => {
+    setData({
+      name: '박지민',
+      sex: 1,
+      companyName: '탑소와',
+      age: 24,
+    });
+  }, []);
 
   return (
     <SettingContainer
       title="프로필"
       onPress={() => Router.navigate('/company')}
+      settingUrl="/company/profile/settings"
     >
       <View style={styles.mainProfileContainer}>
-        <TouchableOpacity
-          onPress={() => Router.push('/company/profile/settings')}
-        >
+        <TouchableOpacity onPress={() => {}}>
           <Image
             source={require('@/assets/images/icons/Registration.png')}
             style={styles.profileImage}
           />
         </TouchableOpacity>
         <View style={styles.profileInfo}>
-          <Text style={styles.profileMainText}>이름 : {name}</Text>
+          <Text style={styles.profileMainText}>이름 : {data.name}</Text>
           <View style={styles.profileInfoLine}>
             <Text style={styles.profileInfoText}>
-              성별 : {sex ? '남' : '여'}
+              성별 : {data.sex === 1 ? '남' : data.sex === 2 ? '여' : ''}
             </Text>
-            <Text style={styles.profileInfoText}>소속사 : {companyName}</Text>
+            <Text style={styles.profileInfoText}>
+              소속사 : {data.companyName}
+            </Text>
           </View>
           <View style={styles.profileInfoLine}>
-            <Text style={styles.profileInfoText}>나이 : {age}세</Text>
+            <Text style={styles.profileInfoText}>나이 : {data.age}세</Text>
           </View>
         </View>
       </View>
@@ -65,16 +79,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   profileInfoText: {
-    color: '#fff',
-    fontFamily: 'Inter-Bold',
-    fontWeight: '600',
-    fontSize: getSize(18),
+    ...weight600,
+    fontSize: getSize(15),
   },
   profileMainText: {
-    color: '#fff',
-    fontFamily: 'Inter-Bold',
-    fontWeight: '600',
-    fontSize: getSize(22),
+    ...weight600,
+    fontSize: getSize(20),
   },
   profileInfoLine: {
     width: getSize(180),
