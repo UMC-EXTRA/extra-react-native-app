@@ -17,8 +17,10 @@ import { getRefInput, onFocusNext } from '@/components/Form';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
+import type { LoginInterface } from '@/api/interface';
+import { login } from '@/api/signController';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { initType } from '@/redux/signUp/signUpSlice';
+import { initType } from '@/redux/slice/signUpSlice';
 
 // login page
 const LoginScreen = () => {
@@ -30,9 +32,9 @@ const LoginScreen = () => {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm({
+  } = useForm<LoginInterface>({
     defaultValues: {
-      id: '',
+      email: '',
       password: '',
     },
   });
@@ -94,13 +96,14 @@ const LoginScreen = () => {
                 control={control}
                 rules={{
                   required: true,
+                  pattern: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                 }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     style={styles.loginInput}
                     value={value}
                     onChangeText={onChange}
-                    placeholder="아이디를 입력해주세요"
+                    placeholder="이메일를 입력해주세요"
                     placeholderTextColor={'#5E5E5E'}
                     autoComplete="off"
                     returnKeyType="next"
@@ -110,7 +113,7 @@ const LoginScreen = () => {
                     }}
                   />
                 )}
-                name="id"
+                name="email"
               />
               {/* password input */}
               <Controller
@@ -154,7 +157,17 @@ const LoginScreen = () => {
                 color: isValid ? '#000' : '#7D7D7D',
               }}
               onPress={handleSubmit(data => {
-                console.log(data);
+                login(data, type)
+                  .then(res => {
+                    if (res) {
+                      Router.replace(`/${type}`);
+                    } else {
+                      console.log(res);
+                    }
+                  })
+                  .catch(err => {
+                    console.error(err);
+                  });
               })}
             />
           </View>
@@ -188,7 +201,7 @@ const LoginScreen = () => {
             {/* link to sign-up page */}
             <TouchableOpacity
               onPress={() => {
-                dispatch(initType(type));
+                dispatch(initType({ type }));
                 Router.push('/sign/sign-up');
               }}
             >
