@@ -39,15 +39,15 @@ interface SignUpState {
   type: string;
   email: string;
   password: string;
-  name: string;
-  sex: boolean;
-  birthday: string;
-  phone: string;
   terms: TermState;
 }
 
 interface MemberSignUpState extends SignUpState {
   type: 'member';
+  name: string;
+  sex: boolean;
+  birthday: string;
+  phone: string;
   home: string;
   height: number;
   weight: number;

@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setPhysicalData } from '@/redux/signUp/signUpSlice';
 
 import * as Permissions from '@/scripts/permission';
+import * as MEMBER_API from '@/api/memberController';
 
 import { getTokens } from '@/scripts/tokenUtils';
 
@@ -161,6 +162,38 @@ const AdditionalFormScreen = () => {
             onPress={handleSubmit(data => {
               // save physical data
               dispatch(setPhysicalData(data));
+
+              if (isMemberSignUpState(signUp)) {
+                const memberData = {
+                  email: signUp.email,
+                  password: signUp.password,
+                  phone: signUp.phone,
+                  name: signUp.name,
+                  birthday: signUp.birthday,
+                  sex: signUp.sex,
+                  home: signUp.home,
+                  height: signUp.height,
+                  weight: signUp.weight,
+                  bank: signUp.account.bankName,
+                  accountNumber: signUp.account.accountNumber,
+                  isAdmin: false,
+                  adminToken: '',
+                };
+
+                const tattoData = {
+                  face: signUp.tatto.face,
+                  chest: signUp.tatto.chest,
+                  arm: signUp.tatto.arm,
+                  leg: signUp.tatto.leg,
+                  shoulder: signUp.tatto.shoulder,
+                  back: signUp.tatto.back,
+                  hand: signUp.tatto.hand,
+                  feet: signUp.tatto.feet,
+                  etc: signUp.tatto.etc ? '기타' : '',
+                };
+
+                MEMBER_API.signUp(memberData, tattoData);
+              }
 
               // request app permissions
               Permissions.requestLocationPermission().then(result => {

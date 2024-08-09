@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: getSize(2),
     borderColor: colors.placeholder,
-    marginBottom: getSize(19),
+    marginBottom: getSize(9),
     marginHorizontal: 'auto',
     paddingHorizontal: getSize(26),
   },

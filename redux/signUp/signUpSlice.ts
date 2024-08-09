@@ -12,10 +12,6 @@ const initialState: SignUpState = {
   type: '',
   email: '',
   password: '',
-  name: '',
-  sex: false,
-  birthday: '',
-  phone: '',
   terms: [],
 };
 
@@ -56,10 +52,6 @@ const companyInitState: CompanySignUpState = {
   type: 'company',
   email: '',
   password: '',
-  name: '',
-  sex: false,
-  birthday: '',
-  phone: '',
   enteredCompany: false,
   company: '',
   terms: [],
@@ -81,17 +73,25 @@ const signUpSlice = createSlice({
       state: SignUpState,
       action: PayloadAction<{
         email: string;
-        name: string;
-        sex: number;
-        birthday: string;
+        password: string;
+        name?: string;
+        sex?: number;
+        birthday?: string;
         home?: string;
       }>,
     ) => {
       state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.sex = action.payload.sex === 1 ? true : false;
-      state.birthday = action.payload.birthday;
-      if (state.type === 'member' && action.payload.home) {
+      state.password = action.payload.password;
+      if (
+        state.type === 'member' &&
+        action.payload.name &&
+        action.payload.home &&
+        action.payload.birthday
+      ) {
+        (state as MemberSignUpState).name = action.payload.name;
+        (state as MemberSignUpState).sex =
+          action.payload.sex === 1 ? true : false;
+        (state as MemberSignUpState).birthday = action.payload.birthday;
         (state as MemberSignUpState).home = action.payload.home;
       }
     },
