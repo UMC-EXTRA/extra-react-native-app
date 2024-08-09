@@ -162,6 +162,8 @@ const AdditionalFormScreen = () => {
               // save physical data
               dispatch(setPhysicalData(data));
 
+              // api 전송
+
               // request app permissions
               Permissions.requestLocationPermission().then(result => {
                 Permissions.requestPushNotificationPermission().then(result => {

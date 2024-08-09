@@ -3,15 +3,21 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Router } from '@/scripts/router';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 
+export type MessageType = {
+  type: string;
+  payload?: object;
+  version: string;
+};
+
 interface WebViewContainerProps {
-  uri: string;
-  onMessage?: (data: object) => void;
-  dataForWebView?: object;
+  uri?: string;
+  onMessage?: (data: MessageType) => void;
+  dataForWebView?: MessageType;
   history?: string;
 }
 
 const WebViewContainer = ({
-  uri,
+  uri = '',
   onMessage,
   dataForWebView,
   history,
@@ -19,7 +25,7 @@ const WebViewContainer = ({
 }: WebViewContainerProps) => {
   const webViewRef = useRef<WebView>(null);
 
-  const sendMessage = (data: object) => {
+  const sendMessage = (data: MessageType) => {
     webViewRef.current?.postMessage(JSON.stringify(data));
   };
 
@@ -29,17 +35,13 @@ const WebViewContainer = ({
       onMessage(data);
     } else {
       switch (data.type) {
-        case 'NAVIGATION':
-          Router.push({
-            pathname: data.payload.url,
-            params: data.payload.params,
-          });
         case 'HISTORY_BACK':
           if (history) {
             Router.navigate(history);
           } else {
             Router.back();
           }
+          break;
       }
     }
   };
@@ -57,7 +59,9 @@ const WebViewContainer = ({
       source={{ uri: `${process.env.EXPO_PUBLIC_WEBVIEW_URL}${uri}` }}
       style={styles.webview}
       onMessage={messageHandler}
+      bounces={false}
       startInLoadingState={true}
+      cacheEnabled={true}
       renderLoading={() => (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="white" />
