@@ -6,7 +6,7 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { resetState } from '@/redux/signUp/signUpSlice';
+import { resetState } from '@/redux/slice/signUpSlice';
 
 // identity verification page
 const SignUpScreen = () => {

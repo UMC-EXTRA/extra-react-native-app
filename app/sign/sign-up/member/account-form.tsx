@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -9,16 +9,16 @@ import { Input, getRefInput, onFocusNext } from '@/components/Form';
 import { BackHeaderContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
 
-import { useAppDispatch } from '@/redux/hooks';
-import { setAccountData } from '@/redux/signUp/signUpSlice';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { setAccountData } from '@/redux/slice/signUpSlice';
 
 type FormData = {
-  bankName: string;
+  bank: string;
   accountNumber: string;
-  accountHolder: string;
 };
 
 const AccountFormScreen = () => {
+  const name = useAppSelector(state => state.signUp.name);
   const dispatch = useAppDispatch();
 
   // Initialize form data
@@ -28,9 +28,8 @@ const AccountFormScreen = () => {
     formState: { isValid },
   } = useForm<FormData>({
     defaultValues: {
-      bankName: '',
+      bank: '',
       accountNumber: '',
-      accountHolder: '',
     },
   });
 
@@ -42,84 +41,75 @@ const AccountFormScreen = () => {
 
   return (
     <BackHeaderContainer>
-      <Container>
-        {/* bank name input */}
-        <MainText style={{ ...styles.mainText, marginTop: getSize(46) }}>
-          은행명
-        </MainText>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              style={{ marginBottom: 0 }}
-              ref={ref_input[0]}
-              value={value}
-              onChangeText={onChange}
-              placeholder="은행명을 입력해주세요."
-              onSubmitEditing={() => focusNext(0)}
-            />
-          )}
-          name="bankName"
-        />
+      <Pressable style={{ flex: 1 }}>
+        <Container>
+          {/* bank name input */}
+          <MainText style={{ ...styles.mainText, marginTop: getSize(46) }}>
+            은행명
+          </MainText>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                style={{ marginBottom: 0 }}
+                ref={ref_input[0]}
+                value={value}
+                onChangeText={onChange}
+                placeholder="은행명을 입력해주세요."
+                onSubmitEditing={() => focusNext(0)}
+              />
+            )}
+            name="bank"
+          />
 
-        {/* account number input */}
-        <MainText style={styles.mainText}>계좌번호</MainText>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              value={value}
-              onChangeText={onChange}
-              placeholder="계좌번호를 -없이 입력해주세요."
-              inputMode="numeric"
-              ref={ref_input[1]}
-              onSubmitEditing={() => focusNext(1)}
-              style={{ marginBottom: 0 }}
-            />
-          )}
-          name="accountNumber"
-        />
+          {/* account number input */}
+          <MainText style={styles.mainText}>계좌번호</MainText>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value}
+                onChangeText={onChange}
+                placeholder="계좌번호를 -없이 입력해주세요."
+                inputMode="numeric"
+                ref={ref_input[1]}
+                onSubmitEditing={() => focusNext(1)}
+                style={{ marginBottom: 0 }}
+              />
+            )}
+            name="accountNumber"
+          />
 
-        {/* account holder input */}
-        <MainText style={styles.mainText}>예금주</MainText>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              value={value}
-              onChangeText={onChange}
-              placeholder="예금주명을 입력해주세요."
-              ref={ref_input[2]}
-              onSubmitEditing={() => focusNext(2)}
-              style={{ marginBottom: 0 }}
-            />
-          )}
-          name="accountHolder"
-        />
+          {/* account holder input */}
+          <MainText style={styles.mainText}>예금주</MainText>
+          <Input
+            value={''}
+            editable={false}
+            onChangeText={() => {}}
+            placeholder={name}
+            style={{
+              marginBottom: getSize(264),
+              backgroundColor: '#222',
+            }}
+          />
 
-        {/* submit button */}
-        <FormButton
-          valid={isValid}
-          text="완료"
-          onPress={handleSubmit(data => {
-            dispatch(setAccountData(data));
-            router.back();
-          })}
-          style={{
-            position: 'absolute',
-            bottom: getSize(49),
-          }}
-        />
-      </Container>
+          {/* submit button */}
+          <FormButton
+            valid={isValid}
+            text="완료"
+            onPress={handleSubmit(data => {
+              dispatch(setAccountData(data));
+              router.back();
+            })}
+          />
+        </Container>
+      </Pressable>
     </BackHeaderContainer>
   );
 };

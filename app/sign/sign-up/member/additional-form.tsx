@@ -16,13 +16,13 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
-import type { TattoState } from '@/redux/signUp/stateTypes';
-import { tattoNames, isMemberSignUpState } from '@/redux/signUp/stateTypes';
+import type { MemberTattoInterface } from '@/api/interface';
+import { isMemberSignUpState, tattoNames } from '@/redux/slice/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setPhysicalData } from '@/redux/signUp/signUpSlice';
+import { setPhysicalData } from '@/redux/slice/signUpSlice';
 
 import * as Permissions from '@/scripts/permission';
-import * as MEMBER_API from '@/api/memberController';
+import { signUpMember } from '@/api/signController';
 
 import { getTokens } from '@/scripts/tokenUtils';
 
@@ -116,7 +116,8 @@ const AdditionalFormScreen = () => {
                 ? `문신 있음 (${Object.entries(tattoNames)
                     .filter(
                       ([key, value]) =>
-                        signUp.tatto && signUp.tatto[key as keyof TattoState],
+                        signUp.tatto &&
+                        signUp.tatto[key as keyof MemberTattoInterface],
                     )
                     .map(([, value]) => value)
                     .join(', ')})`
@@ -133,7 +134,7 @@ const AdditionalFormScreen = () => {
             condition={isMemberSignUpState(signUp) && signUp.enteredAccount}
             value={
               isMemberSignUpState(signUp) && signUp.enteredAccount
-                ? `${signUp.account.bankName} ${signUp.account.accountNumber} (${signUp.account.accountHolder})`
+                ? `${signUp.bank} ${signUp.accountNumber}`
                 : ''
             }
             placeholder="계좌번호를 입력해주세요."
@@ -174,25 +175,16 @@ const AdditionalFormScreen = () => {
                   home: signUp.home,
                   height: signUp.height,
                   weight: signUp.weight,
-                  bank: signUp.account.bankName,
-                  accountNumber: signUp.account.accountNumber,
+                  bank: signUp.bank,
+                  accountNumber: signUp.accountNumber,
                   isAdmin: false,
                   adminToken: '',
                 };
 
-                const tattoData = {
-                  face: signUp.tatto.face,
-                  chest: signUp.tatto.chest,
-                  arm: signUp.tatto.arm,
-                  leg: signUp.tatto.leg,
-                  shoulder: signUp.tatto.shoulder,
-                  back: signUp.tatto.back,
-                  hand: signUp.tatto.hand,
-                  feet: signUp.tatto.feet,
-                  etc: signUp.tatto.etc ? '기타' : '',
-                };
-
-                MEMBER_API.signUp(memberData, tattoData);
+                signUpMember({
+                  memberCreate: memberData,
+                  tattoCreate: signUp.tatto,
+                });
               }
 
               // request app permissions

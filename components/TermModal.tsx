@@ -15,7 +15,7 @@ import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
 import type { TermState } from '@/redux/profile/stateTypes';
-import { setTermData } from '@/redux/signUp/signUpSlice';
+import { setTermData } from '@/redux/slice/signUpSlice';
 import { initTerms } from '@/redux/profile/profileSlice';
 import { useAppDispatch } from '@/redux/hooks';
 

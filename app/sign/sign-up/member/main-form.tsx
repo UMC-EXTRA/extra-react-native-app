@@ -21,7 +21,7 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { setBasicData } from '@/redux/signUp/signUpSlice';
+import { setBasicData } from '@/redux/slice/signUpSlice';
 
 type FormData = {
   email: string;
@@ -106,6 +106,9 @@ const MainFormScreen = () => {
                     onSubmitEditing={() => focusNext(0)}
                     onFocus={() => adjustOffset(0)}
                     ref={ref_input[0]}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="email"
@@ -126,6 +129,9 @@ const MainFormScreen = () => {
                     onFocus={() => adjustOffset(1)}
                     ref={ref_input[1]}
                     secureTextEntry
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="password"
@@ -147,6 +153,9 @@ const MainFormScreen = () => {
                     onSubmitEditing={() => focusNext(2)}
                     onFocus={() => adjustOffset(2)}
                     ref={ref_input[2]}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="phone"
@@ -166,6 +175,9 @@ const MainFormScreen = () => {
                     ref={ref_input[3]}
                     onSubmitEditing={() => focusNext(3)}
                     onFocus={() => adjustOffset(3)}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="name"
@@ -188,6 +200,9 @@ const MainFormScreen = () => {
                     ref={ref_input[4]}
                     onSubmitEditing={() => focusNext(4)}
                     onFocus={() => adjustOffset(4)}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="birthday"
@@ -207,6 +222,9 @@ const MainFormScreen = () => {
                       { title: '여자', value: 2 },
                     ]}
                     placeholder="성별을 선택해주세요."
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="sex"

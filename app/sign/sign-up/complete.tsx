@@ -7,7 +7,7 @@ import { TextWeight900 } from '@/components/Theme/Text';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
-import { resetState } from '@/redux/signUp/signUpSlice';
+import { resetState } from '@/redux/slice/signUpSlice';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 
 const Complete = () => {

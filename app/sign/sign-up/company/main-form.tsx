@@ -1,9 +1,4 @@
-import {
-  Pressable,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-} from 'react-native';
+import { Pressable, Keyboard } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -18,8 +13,7 @@ import TermModal from '@/components/TermModal';
 import * as Permissions from '@/scripts/permission';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isCompanySignUpState } from '@/redux/signUp/stateTypes';
-import { setBasicData } from '@/redux/signUp/signUpSlice';
+import { setBasicData, isCompanySignUpState } from '@/redux/slice/signUpSlice';
 
 type FormData = {
   email: string;
@@ -49,8 +43,7 @@ const BasicFormScreen = () => {
 
   // Check complete
   useEffect(() => {
-    if (isCompanySignUpState(signUp) && signUp.enteredCompany)
-      setComplete(true);
+    if (isCompanySignUpState(signUp) && signUp.enteredName) setComplete(true);
     else {
       setComplete(false);
     }
@@ -104,10 +97,10 @@ const BasicFormScreen = () => {
 
           {/* link button to company form */}
           <SelectInput
-            condition={isCompanySignUpState(signUp) && signUp.enteredCompany}
+            condition={isCompanySignUpState(signUp) && signUp.enteredName}
             value={
-              isCompanySignUpState(signUp) && signUp.enteredCompany
-                ? signUp.company
+              isCompanySignUpState(signUp) && signUp.enteredName
+                ? signUp.name
                 : ''
             }
             placeholder="소속된 회사를 등록해주세요."
@@ -115,7 +108,7 @@ const BasicFormScreen = () => {
               Router.push('/sign/sign-up/company/company-select-form')
             }
             style={{
-              marginBotom: getSize(63),
+              marginBottom: getSize(305),
             }}
           />
 
