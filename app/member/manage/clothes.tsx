@@ -30,8 +30,6 @@ const ClothesScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImageData({ uri: result.assets[0].uri, status: false });
     }
