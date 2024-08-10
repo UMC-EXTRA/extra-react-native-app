@@ -32,7 +32,7 @@ interface MemberTattoInterface {
 
 interface MemberSignUpInterface {
   memberCreate: MemberCreateInterface;
-  tattoCreate: MemberTattoInterface;
+  tattooCreate: MemberTattoInterface;
 }
 
 export {

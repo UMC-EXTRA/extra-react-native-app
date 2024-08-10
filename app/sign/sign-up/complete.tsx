@@ -10,19 +10,20 @@ import getSize from '@/scripts/getSize';
 import { resetState } from '@/redux/slice/signUpSlice';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 
+import { login } from '@/api/signController';
+
 const Complete = () => {
+  const signUp = useAppSelector(state => state.signUp);
   const type = useAppSelector(state => state.profile.type);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // auto login
-    // getTokens(signUp.email, signUp.password, 'user').then(
-    //   result => {
-    //     if (result) {
-    //       router.push('/member/sign-up/complete');
-    //     }
-    //   },
-    // );
+    const data = {
+      email: signUp.email,
+      password: signUp.password,
+    };
+    login(data, type);
     // run action after 2 secends
     setTimeout(() => {
       // reset sign up data

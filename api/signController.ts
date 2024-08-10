@@ -17,11 +17,13 @@ export async function signUpMember(
   data: MemberSignUpInterface,
 ): Promise<boolean> {
   try {
-    const res = await axios.post(MEMBER_API_URL + '/signup', {
-      data: JSON.stringify(data),
+    const res = await fetch(MEMBER_API_URL + '/signup', {
+      method: 'POST',
       headers: {
+        Accept: '*/*',
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(data),
     });
 
     console.log(res);

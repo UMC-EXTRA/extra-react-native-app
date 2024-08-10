@@ -159,13 +159,13 @@ const AdditionalFormScreen = () => {
 
           {/* submit button */}
           <FormButton
-            valid={complete && isValid}
+            valid={true}
             onPress={handleSubmit(data => {
               // save physical data
               dispatch(setPhysicalData(data));
 
               if (isMemberSignUpState(signUp)) {
-                const memberData = {
+                const memberCreate = {
                   email: signUp.email,
                   password: signUp.password,
                   phone: signUp.phone,
@@ -182,8 +182,8 @@ const AdditionalFormScreen = () => {
                 };
 
                 signUpMember({
-                  memberCreate: memberData,
-                  tattoCreate: signUp.tatto,
+                  memberCreate: memberCreate,
+                  tattooCreate: signUp.tatto,
                 });
               }
 

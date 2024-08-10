@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, Keyboard } from 'react-native';
 import { router } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -41,7 +41,7 @@ const AccountFormScreen = () => {
 
   return (
     <BackHeaderContainer>
-      <Pressable style={{ flex: 1 }}>
+      <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
         <Container>
           {/* bank name input */}
           <MainText style={{ ...styles.mainText, marginTop: getSize(46) }}>
