@@ -24,11 +24,11 @@ const manageConfig = {
   whitelist: ['manage', 'noticeId', 'type', 'clockInTime', 'clockOutTime'],
 };
 
-const chatConfig = {
-  key: 'chat',
-  storage: AsyncStore,
-  whitelist: ['chat'],
-};
+// const chatConfig = {
+//   key: 'chat',
+//   storage: AsyncStore,
+//   whitelist: ['chat'],
+// };
 
 const rootReducer = combineReducers({
   signUp: persistReducer(signUpConfig, signUpReducer),

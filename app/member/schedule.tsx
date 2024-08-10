@@ -8,7 +8,7 @@ const ScheduleScreen = () => {
       title="스케줄표"
       onPress={() => Router.navigate('/member')}
     >
-      <WebViewContainer uri="" />
+      <WebViewContainer uri="/scheduler" />
     </BackHeaderContainer>
   );
 };

@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { MainContainer } from '@/components/Container';
 import { MainText } from '@/components/Theme/Text';
-import WebViewContainer from '@/components/WebViewContainer';
+import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
@@ -14,13 +14,17 @@ import { useAppDispatch } from '@/redux/hooks';
 const ManageScreen = () => {
   const dispatch = useAppDispatch();
 
-  const onMessage = useCallback((event: any) => {
-    const { type, payload } = JSON.parse(event.nativeEvent.data);
-    if (type === 'NAVIGATION') {
-      dispatch(setJobPostId(payload.params.job_post_id));
-      Router.push(payload);
+  const onMessage = (data: MessageType) => {
+    if (data.type === 'NAVIGATION_MANAGE') {
+      const typedData = data as MessageType & {
+        payload: {
+          job_post_id: number;
+        };
+      };
+      dispatch(setJobPostId(typedData.payload.job_post_id));
+      Router.push('/company/manage/detail');
     }
-  }, []);
+  };
 
   useEffect(() => {
     dispatch(initManageState({ type: 'company' }));
@@ -51,7 +55,7 @@ const ManageScreen = () => {
       >
         촬영 목록
       </MainText>
-      <WebViewContainer uri="" onMessage={onMessage} />
+      <WebViewContainer uri="/company-shoot-manage" onMessage={onMessage} />
     </MainContainer>
   );
 };

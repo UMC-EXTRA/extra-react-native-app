@@ -5,20 +5,24 @@ import { Router } from '@/scripts/router';
 
 const onMessage = (data: MessageType) => {
   if (data.type === 'NAVIGATION_HOME') {
-    Router.replace('/member');
+    Router.replace('/company');
   }
 
   if (data.type === 'NAVIGATION_MANAGE') {
-    Router.replace('/member/manage');
+    Router.replace('/company/manage');
   }
 };
 
 const JobPostIdScreen = () => {
-  const { url: webViewURL } = useLocalSearchParams();
+  const { history, url: webViewURL } = useLocalSearchParams();
 
   return (
     <SafeContainer>
-      <WebViewContainer uri={`${webViewURL}`} onMessage={onMessage} />
+      <WebViewContainer
+        uri={`${webViewURL}`}
+        history={`${history}`}
+        onMessage={onMessage}
+      />
     </SafeContainer>
   );
 };

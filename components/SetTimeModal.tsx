@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { useState } from 'react';
@@ -45,7 +46,7 @@ const ToggleButton = ({
           color="#fff"
         />
       </View>
-      <MainText style={{ color: colors.highlight, width: getSize(30) }}>
+      <MainText size={20} style={{ color: colors.highlight }}>
         {text}
       </MainText>
       {show && (
@@ -61,7 +62,9 @@ const ToggleButton = ({
                 }}
               >
                 <MainText
-                  style={{ fontSize: getSize(20), color: colors.highlight }}
+                  size={20}
+                  height={40}
+                  style={{ color: colors.highlight }}
                 >
                   {type == 'moon' ? (item ? '오전' : '오후') : item}
                 </MainText>
@@ -90,8 +93,14 @@ const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
   const [showIndex, setShowIndex] = useState(0);
 
   const moonArray = [1, 0];
-  const hourArray = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minuteArray = Array.from({ length: 60 }, (_, i) => i);
+  const hourArray = useMemo(
+    () => Array.from({ length: 12 }, (_, i) => i + 1),
+    [],
+  );
+  const minuteArray = useMemo(
+    () => Array.from({ length: 60 }, (_, i) => i),
+    [],
+  );
 
   return (
     <View style={styles.modalBackground}>
@@ -222,7 +231,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     position: 'absolute',
-    top: getSize(40),
+    top: getSize(30),
     backgroundColor: '#454348',
     width: getSize(60),
     right: -getSize(15),
@@ -242,4 +251,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetTimeModal;
+export default memo(SetTimeModal);

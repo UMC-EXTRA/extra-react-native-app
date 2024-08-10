@@ -4,7 +4,7 @@ import { SafeContainer } from '@/components/Container';
 const NoticeScreen = () => {
   return (
     <SafeContainer>
-      <WebViewContainer uri="" />
+      <WebViewContainer uri="/manager-dashboard" />
     </SafeContainer>
   );
 };

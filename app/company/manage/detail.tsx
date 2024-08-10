@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeContainer } from '@/components/Container';
 import { ManageButton } from '@/components/Theme/Button';
@@ -80,6 +80,11 @@ const DetailScreen = () => {
     }
   }, []);
 
+  const memoizedSetTimeModal = useMemo(
+    () => <SetTimeModal setDisplay={setDisplay} type={type} />,
+    [],
+  );
+
   return (
     <SafeContainer>
       <View style={styles.header}>
@@ -133,7 +138,7 @@ const DetailScreen = () => {
           }}
         />
       </View>
-      {display && <SetTimeModal setDisplay={setDisplay} type={type} />}
+      {display && memoizedSetTimeModal}
     </SafeContainer>
   );
 };
