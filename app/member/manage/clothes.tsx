@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,18 +9,23 @@ import colors from '@/constants/Colors';
 import { Router } from '@/scripts/router';
 import { BackHeaderContainer } from '@/components/Container';
 import getSize from '@/scripts/getSize';
-import { TextWeight900, weight900 } from '@/components/Theme/Text';
+import {
+  TextWeight400,
+  TextWeight900,
+  weight900,
+} from '@/components/Theme/Text';
 
 const ClothesScreen = () => {
   const [data, setData] = useState({
-    role: '형사',
-    season: '겨울',
-    description: '회색옷',
+    role: '',
+    season: '',
+    description: '',
   });
   const [imageData, setImageData] = useState({
     uri: '',
     status: false,
   });
+  const [editable, setEditable] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -30,12 +35,18 @@ const ClothesScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImageData({ uri: result.assets[0].uri, status: false });
     }
   };
+
+  useEffect(() => {
+    setData({
+      role: '형사',
+      season: '겨울',
+      description: '회색옷',
+    });
+  }, []);
 
   return (
     <BackHeaderContainer
@@ -93,7 +104,7 @@ const ClothesScreen = () => {
         }}
       >
         <TextWeight900 size={16}>의상등록</TextWeight900>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setEditable(!editable)}>
           <TextWeight900
             size={15}
             spacing={0.15}
@@ -109,15 +120,41 @@ const ClothesScreen = () => {
         {imageData.uri ? (
           <TouchableOpacity
             onPress={() =>
-              Router.push({
-                pathname: '/member/manage/clothes-preview',
-                params: {
-                  uri: imageData.uri,
-                  status: Number(imageData.status),
-                },
-              })
+              editable
+                ? (setImageData({ uri: '', status: false }), setEditable(false))
+                : Router.push({
+                    pathname: '/member/manage/clothes-preview',
+                    params: {
+                      uri: imageData.uri,
+                      status: Number(imageData.status),
+                    },
+                  })
             }
+            style={{
+              width: getSize(104),
+              height: getSize(158),
+            }}
           >
+            {editable && (
+              <View
+                style={{
+                  width: getSize(30),
+                  height: getSize(30),
+                  backgroundColor: 'red',
+                  borderRadius: getSize(15),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  right: getSize(-10),
+                  top: getSize(-10),
+                  zIndex: 10000,
+                }}
+              >
+                <TextWeight400 size={30} height={30}>
+                  -
+                </TextWeight400>
+              </View>
+            )}
             <LinearGradient
               colors={
                 imageData.status

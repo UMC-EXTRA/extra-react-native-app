@@ -108,5 +108,5 @@ export const verityToken = async () => {
 
 export const logout = async () => {
   await AsyncStorage.removeItem('Tokens');
-  Router.replace('/auth');
+  Router.replace('/sign');
 };

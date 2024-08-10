@@ -23,6 +23,7 @@ const QRScanner = ({
   onPress = () => Router.navigate('/company/manage/detail'),
 }: QRScannerProps) => {
   const [hasPermission, setHasPermission] = useState(false);
+  const [scanned, setScanned] = useState(false);
   const [scanAreaLayout, setScanAreaLayout] = useState({
     x: 0,
     y: 0,
@@ -51,8 +52,8 @@ const QRScanner = ({
         qrCodeCenterY >= scanAreaLayout.y &&
         qrCodeCenterY <= scanAreaLayout.y + scanAreaLayout.height
       ) {
+        setScanned(true);
         onScanned(data);
-        Router.back();
       }
     }
   };
@@ -83,7 +84,7 @@ const QRScanner = ({
             barcodeScannerSettings={{
               barcodeTypes: ['qr'],
             }}
-            onBarcodeScanned={scanQRCodeHandler}
+            onBarcodeScanned={scanned ? undefined : scanQRCodeHandler}
           >
             <View
               style={styles.scanArea}

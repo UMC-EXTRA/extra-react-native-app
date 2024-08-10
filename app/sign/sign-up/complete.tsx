@@ -1,6 +1,5 @@
-import { Platform } from 'react-native';
-import Svg, { Path, Ellipse } from 'react-native-svg';
 import { useEffect } from 'react';
+import { Image } from 'expo-image';
 
 import { SafeContainer } from '@/components/Container';
 import { TextWeight900 } from '@/components/Theme/Text';
@@ -39,25 +38,15 @@ const Complete = () => {
         overflow: 'hidden',
       }}
     >
-      {Platform.OS === 'ios' ? (
-        <Svg width="430" height="883" viewBox="0 0 430 1100" fill="none">
-          <Path d="M215 -14V785H-107L215 -14Z" fill="#F5C001" />
-          <Path d="M215 -14V785H537L215 -14Z" fill="#F5C001" />
-          <Path
-            d="M512 785.5C512 831.616 379.252 869 215.5 869C51.7476 869 -81 831.616 -81 785.5C-81 739.384 51.7476 702 215.5 702C379.252 702 512 739.384 512 785.5Z"
-            fill="#F5C001"
-          />
-        </Svg>
-      ) : (
-        <Svg width="430" height="883" viewBox="0 0 430 1200" fill="none">
-          <Path d="M215 -14V785H-107L215 -14Z" fill="#F5C001" />
-          <Path d="M215 -14V785H537L215 -14Z" fill="#F5C001" />
-          <Path
-            d="M512 785.5C512 831.616 379.252 869 215.5 869C51.7476 869 -81 831.616 -81 785.5C-81 739.384 51.7476 702 215.5 702C379.252 702 512 739.384 512 785.5Z"
-            fill="#F5C001"
-          />
-        </Svg>
-      )}
+      <Image
+        source={require('@/assets/images/complete.jpeg')}
+        style={{
+          width: getSize(430),
+          height: getSize(867),
+          position: 'absolute',
+          bottom: getSize(51),
+        }}
+      />
       <TextWeight900
         align="center"
         size={30}
@@ -65,24 +54,13 @@ const Complete = () => {
         style={{
           color: '#000',
           position: 'absolute',
-          top: Platform.OS === 'ios' ? getSize(400) : getSize(450),
+          bottom: getSize(365),
         }}
       >
         회원가입이 완료되었어요!{'\n\n'}이제 EXTRA와 함께{'\n'}
         {type === 'member' && '배우'}
         {type === 'company' && '감독'}님이 되어보세요 🤩
       </TextWeight900>
-      <Svg
-        style={{
-          position: 'absolute',
-          bottom: Platform.OS === 'ios' ? getSize(100) : getSize(40),
-        }}
-        width="600"
-        height="300"
-        viewBox="0 0 600 300"
-      >
-        <Ellipse cx="300" cy="150" rx="245" ry="83.5" fill="#FFDF6A" />
-      </Svg>
     </SafeContainer>
   );
 };

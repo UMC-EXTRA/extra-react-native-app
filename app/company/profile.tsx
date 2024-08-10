@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
 import { SettingContainer } from '@/components/SettingComponents';
 import { Router } from '@/scripts/router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
-import { weight600 } from '@/components/Theme/Text';
+import { TextWeight600 } from '@/components/Theme/Text';
 
 const ProfileScreen = () => {
   const [data, setData] = useState({
@@ -14,6 +15,20 @@ const ProfileScreen = () => {
     companyName: '',
     age: 0,
   });
+  const [profileImage, setProfileImage] = useState('');
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri);
+    }
+  };
 
   useEffect(() => {
     setData({
@@ -30,25 +45,83 @@ const ProfileScreen = () => {
       onPress={() => Router.navigate('/company')}
       settingUrl="/company/profile/settings"
     >
-      <View style={styles.mainProfileContainer}>
-        <TouchableOpacity onPress={() => {}}>
-          <Image
-            source={require('@/assets/images/icons/Registration.png')}
-            style={styles.profileImage}
-          />
+      <View
+        style={{
+          width: getSize(358),
+          height: getSize(147),
+          paddingHorizontal: getSize(20),
+          marginHorizontal: 'auto',
+          borderTopLeftRadius: getSize(20),
+          borderTopRightRadius: getSize(20),
+          backgroundColor: colors.settingBackground,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {/* profile container */}
+        <TouchableOpacity
+          style={{
+            width: getSize(80),
+            height: getSize(80),
+            borderRadius: getSize(45),
+            backgroundColor: '#D9D9D9',
+          }}
+          onPress={pickImage}
+        >
+          {/* profile image */}
+          {profileImage && (
+            <Image
+              source={{ uri: profileImage }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%',
+                borderRadius: getSize(80),
+              }}
+            />
+          )}
+
+          {/* profile update icon */}
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              width: getSize(30),
+              height: getSize(30),
+              borderRadius: getSize(15),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#999',
+            }}
+          >
+            <Image
+              source={require('@/assets/images/icons/Registration.png')}
+              style={{
+                width: '70%',
+                height: '70%',
+              }}
+            />
+          </View>
         </TouchableOpacity>
-        <View style={styles.profileInfo}>
-          <Text style={styles.profileMainText}>이름 : {data.name}</Text>
+        <View
+          style={{
+            height: getSize(82),
+            justifyContent: 'space-between',
+          }}
+        >
+          <TextWeight600 size={20}>이름 : {data.name}</TextWeight600>
           <View style={styles.profileInfoLine}>
-            <Text style={styles.profileInfoText}>
+            <TextWeight600 size={15}>
               성별 : {data.sex === 1 ? '남' : data.sex === 2 ? '여' : ''}
-            </Text>
-            <Text style={styles.profileInfoText}>
-              소속사 : {data.companyName}
-            </Text>
+            </TextWeight600>
+            <TextWeight600 size={15}>소속사 : {data.companyName}</TextWeight600>
           </View>
           <View style={styles.profileInfoLine}>
-            <Text style={styles.profileInfoText}>나이 : {data.age}세</Text>
+            <TextWeight600 size={15}>나이 : {data.age}세</TextWeight600>
           </View>
         </View>
       </View>
@@ -57,35 +130,6 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  mainProfileContainer: {
-    width: getSize(358),
-    height: getSize(147),
-    padding: getSize(33),
-    marginHorizontal: 'auto',
-    borderTopLeftRadius: getSize(20),
-    borderTopRightRadius: getSize(20),
-    backgroundColor: colors.settingBackground,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  profileImage: {
-    width: getSize(80),
-    height: getSize(80),
-    marginRight: getSize(30),
-  },
-  profileInfo: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'space-between',
-  },
-  profileInfoText: {
-    ...weight600,
-    fontSize: getSize(15),
-  },
-  profileMainText: {
-    ...weight600,
-    fontSize: getSize(20),
-  },
   profileInfoLine: {
     width: getSize(180),
     flexDirection: 'row',

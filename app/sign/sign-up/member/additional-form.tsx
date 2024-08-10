@@ -132,7 +132,7 @@ const AdditionalFormScreen = () => {
             condition={isMemberSignUpState(signUp) && signUp.enteredAccount}
             value={
               isMemberSignUpState(signUp) && signUp.enteredAccount
-                ? `${signUp.account.bankName} ${signUp.account.accountNumber} (${signUp.account.accountHolder})`
+                ? `${signUp.account.bankName} ${signUp.account.accountNumber}`
                 : ''
             }
             placeholder="계좌번호를 입력해주세요."

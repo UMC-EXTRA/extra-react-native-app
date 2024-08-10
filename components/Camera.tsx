@@ -55,12 +55,6 @@ const Camera = ({ backLink, onConfirm }: CameraProps) => {
   return (
     <SafeContainer style={{ alignItems: 'stretch' }}>
       <View style={styles.iconContainer}>
-        <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
-          <Image
-            source={require('@/assets/images/icons/Image.png')}
-            style={styles.iconImage}
-          />
-        </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconButton}
           onPress={() => {

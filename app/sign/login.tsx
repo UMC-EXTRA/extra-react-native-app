@@ -32,12 +32,12 @@ const LoginScreen = () => {
     formState: { isValid },
   } = useForm({
     defaultValues: {
-      id: '',
+      email: '',
       password: '',
     },
   });
 
-  const ref_input = getRefInput(4);
+  const ref_input = getRefInput(2);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
   };
@@ -94,13 +94,14 @@ const LoginScreen = () => {
                 control={control}
                 rules={{
                   required: true,
+                  pattern: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                 }}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
                     style={styles.loginInput}
                     value={value}
                     onChangeText={onChange}
-                    placeholder="아이디를 입력해주세요"
+                    placeholder="이메일를 입력해주세요"
                     placeholderTextColor={'#5E5E5E'}
                     autoComplete="off"
                     returnKeyType="next"
@@ -110,7 +111,7 @@ const LoginScreen = () => {
                     }}
                   />
                 )}
-                name="id"
+                name="email"
               />
               {/* password input */}
               <Controller
@@ -163,18 +164,18 @@ const LoginScreen = () => {
           <View
             style={{
               marginTop: getSize(41),
-              width: getSize(328),
+              width: getSize(200),
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
             }}
           >
             {/* link to find-id page */}
-            <TouchableOpacity onPress={() => Router.push('/sign/find-id')}>
+            {/* <TouchableOpacity onPress={() => Router.push('/sign/find-id')}>
               <Text style={styles.navigationButtonText}>아이디 찾기</Text>
             </TouchableOpacity>
 
-            <View style={styles.divider} />
+            <View style={styles.divider} /> */}
 
             {/* link to find-password page */}
             <TouchableOpacity

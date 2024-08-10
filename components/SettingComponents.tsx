@@ -86,10 +86,10 @@ const SettingElement = ({
           const isButton = !el.children && el.onPress;
 
           return (
-            <>
+            <View key={index}>
               {index > 0 && <View style={styles.divideBar} />}
               {isButton ? (
-                <TouchableOpacity key={index} style={styles.elementContainer}>
+                <TouchableOpacity style={styles.elementContainer}>
                   <TextWeight400 size={16} spacing={0.16}>
                     {el.title}
                   </TextWeight400>
@@ -106,7 +106,7 @@ const SettingElement = ({
                   {el.children}
                 </View>
               )}
-            </>
+            </View>
           );
         })}
       </View>

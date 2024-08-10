@@ -74,9 +74,6 @@ const WebViewContainer = ({
       key={reloadKey}
       ref={webViewRef}
       source={{ uri: `${process.env.EXPO_PUBLIC_WEBVIEW_URL}${uri}` }}
-      style={{
-        flex: 1,
-      }}
       onMessage={messageHandler}
       bounces={false}
       startInLoadingState={true}
