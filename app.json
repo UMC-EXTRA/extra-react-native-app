@@ -46,7 +46,7 @@
       [
         "@react-native-kakao/core",
         {
-          "nativeAppKey": "cbbf469ca8cdbf5f2a12b61e516db036",
+          "nativeAppKey": "e52bd6d83967b79555e0e1fa2c86c044",
           "android": {
             "authCodeHandlerActivity": true
           },

@@ -75,7 +75,7 @@ const LoginScreen = () => {
                 style={styles.loginInput}
                 value={id}
                 onChangeText={setId}
-                placeholder="아이디를 입력해주세요"
+                placeholder="이메일를 입력해주세요"
                 placeholderTextColor={'#5E5E5E'}
                 autoComplete="off"
                 returnKeyType="next"
@@ -119,10 +119,10 @@ const LoginScreen = () => {
             />
           </View>
           <View style={styles.navigationButtonContainer}>
-            <TouchableOpacity onPress={() => Router.push('/sign/find-id')}>
+            {/* <TouchableOpacity onPress={() => Router.push('/sign/find-id')}>
               <Text style={styles.navigationButtonText}>아이디 찾기</Text>
             </TouchableOpacity>
-            <View style={styles.divisionBar} />
+            <View style={styles.divisionBar} /> */}
             <TouchableOpacity
               onPress={() => Router.push('/sign/find-password')}
             >
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   navigationButtonContainer: {
     marginTop: getSize(41),
-    width: getSize(328),
+    width: getSize(150),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
