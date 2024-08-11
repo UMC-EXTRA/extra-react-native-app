@@ -9,9 +9,12 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setTattoData } from '@/redux/signUp/signUpSlice';
-import { TattoState } from '@/redux/signUp/stateTypes';
-import { tattoNames, isMemberSignUpState } from '@/redux/signUp/stateTypes';
+import {
+  setTattoData,
+  isMemberSignUpState,
+  tattoNames,
+} from '@/redux/slice/signUpSlice';
+import type { MemberTattoInterface } from '@/api/interface';
 
 // Select tatto page
 const TattoFormScreen = () => {
@@ -20,7 +23,7 @@ const TattoFormScreen = () => {
 
   // Initialize tatto data state
   const [hasTatto, setHasTatto] = useState<boolean>(false);
-  const [tatto, setTatto] = useState<TattoState>({
+  const [tatto, setTatto] = useState<MemberTattoInterface>({
     face: false,
     chest: false,
     arm: false,
@@ -29,7 +32,7 @@ const TattoFormScreen = () => {
     back: false,
     hand: false,
     feet: false,
-    etc: false,
+    etc: '',
   });
   const [complete, setComplete] = useState(false);
 
@@ -90,7 +93,7 @@ const TattoFormScreen = () => {
                 back: false,
                 hand: false,
                 feet: false,
-                etc: false,
+                etc: '',
               });
             }}
             placeholder="없음"
@@ -99,23 +102,29 @@ const TattoFormScreen = () => {
             }}
           />
           {/* tatto buttons */}
-          {Object.keys(tattoNames).map(key => (
-            <GradientSelectInput
-              key={key}
-              value={hasTatto && tatto[key as keyof TattoState]}
-              setValue={() => {
-                const newTatto = { ...tatto };
-                newTatto[key as keyof TattoState] =
-                  !newTatto[key as keyof TattoState];
-                setTatto(newTatto);
-                setHasTatto(true);
-              }}
-              placeholder={tattoNames[key as keyof TattoState]}
-              style={{
-                marginBottom: getSize(15),
-              }}
-            />
-          ))}
+          {Object.keys(tatto).map(key => {
+            const typedKey = key as keyof MemberTattoInterface;
+            return (
+              <GradientSelectInput
+                key={typedKey}
+                value={Boolean(tatto[typedKey])}
+                setValue={() => {
+                  const newTatto = { ...tatto };
+                  if (typedKey === 'etc') {
+                    newTatto['etc'] = newTatto['etc'] === '' ? '기타' : '';
+                  } else {
+                    newTatto[typedKey] = !newTatto[typedKey];
+                  }
+                  setTatto(newTatto);
+                  setHasTatto(true);
+                }}
+                placeholder={tattoNames[typedKey]}
+                style={{
+                  marginBottom: getSize(15),
+                }}
+              />
+            );
+          })}
         </View>
         {/* submit button */}
         <FormButton

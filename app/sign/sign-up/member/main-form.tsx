@@ -4,7 +4,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
-  Platform,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -22,10 +21,11 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { setBasicData } from '@/redux/signUp/signUpSlice';
+import { setBasicData } from '@/redux/slice/signUpSlice';
 
 type FormData = {
   email: string;
+  password: string;
   phone: string;
   name: string;
   birthday: string;
@@ -45,6 +45,7 @@ const MainFormScreen = () => {
   } = useForm<FormData>({
     defaultValues: {
       email: '',
+      password: '',
       phone: '',
       name: '',
       birthday: '',
@@ -58,7 +59,7 @@ const MainFormScreen = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Initialize ref for auto-focus
-  const ref_input = getRefInput(4);
+  const ref_input = getRefInput(5);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
     adjustOffset(index + 1);
@@ -105,9 +106,35 @@ const MainFormScreen = () => {
                     onSubmitEditing={() => focusNext(0)}
                     onFocus={() => adjustOffset(0)}
                     ref={ref_input[0]}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="email"
+              />
+
+              {/* password input */}
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="비밀번호을 입력해주세요."
+                    value={value}
+                    onChangeText={onChange}
+                    onSubmitEditing={() => focusNext(1)}
+                    onFocus={() => adjustOffset(1)}
+                    ref={ref_input[1]}
+                    secureTextEntry
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
+                  />
+                )}
+                name="password"
               />
 
               {/* phone number input */}
@@ -123,9 +150,12 @@ const MainFormScreen = () => {
                     keyboardType="phone-pad"
                     value={value}
                     onChangeText={onChange}
-                    onSubmitEditing={() => focusNext(1)}
-                    onFocus={() => adjustOffset(1)}
-                    ref={ref_input[1]}
+                    onSubmitEditing={() => focusNext(2)}
+                    onFocus={() => adjustOffset(2)}
+                    ref={ref_input[2]}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="phone"
@@ -142,9 +172,12 @@ const MainFormScreen = () => {
                     placeholder="이름 입력해주세요."
                     value={value}
                     onChangeText={onChange}
-                    ref={ref_input[2]}
-                    onSubmitEditing={() => focusNext(2)}
-                    onFocus={() => adjustOffset(2)}
+                    ref={ref_input[3]}
+                    onSubmitEditing={() => focusNext(3)}
+                    onFocus={() => adjustOffset(3)}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="name"
@@ -164,9 +197,12 @@ const MainFormScreen = () => {
                     keyboardType="number-pad"
                     value={value}
                     onChangeText={onChange}
-                    ref={ref_input[3]}
-                    onSubmitEditing={() => focusNext(3)}
-                    onFocus={() => adjustOffset(3)}
+                    ref={ref_input[4]}
+                    onSubmitEditing={() => focusNext(4)}
+                    onFocus={() => adjustOffset(4)}
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="birthday"
@@ -186,6 +222,9 @@ const MainFormScreen = () => {
                       { title: '여자', value: 2 },
                     ]}
                     placeholder="성별을 선택해주세요."
+                    style={{
+                      marginBottom: getSize(9),
+                    }}
                   />
                 )}
                 name="sex"

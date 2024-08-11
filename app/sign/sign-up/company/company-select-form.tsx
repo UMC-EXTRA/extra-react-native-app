@@ -8,9 +8,11 @@ import { BackHeaderContainer } from '@/components/Container';
 import { GradientSelectInput } from '@/components/Form';
 import getSize from '@/scripts/getSize';
 
-import { setCompanyData } from '@/redux/signUp/signUpSlice';
+import {
+  setCompanyData,
+  isCompanySignUpState,
+} from '@/redux/slice/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { isCompanySignUpState } from '@/redux/signUp/stateTypes';
 
 const TattoFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -26,8 +28,8 @@ const TattoFormScreen = () => {
 
   // load previously saved data
   useEffect(() => {
-    if (isCompanySignUpState(signUp) && signUp.enteredCompany) {
-      setCompany(signUp.company);
+    if (isCompanySignUpState(signUp) && signUp.enteredName) {
+      setCompany(signUp.name);
     }
   }, [signUp]);
 
@@ -65,7 +67,7 @@ const TattoFormScreen = () => {
           valid={company.length > 0}
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}
           onPress={() => {
-            dispatch(setCompanyData({ company }));
+            dispatch(setCompanyData({ name: company }));
             router.back();
           }}
           text="다음"

@@ -249,9 +249,15 @@ interface SelectBoxProps {
   onChange: (value: any) => void;
   items: SelectItem[];
   placeholder: string;
+  style?: object;
 }
 
-const SelectBox = ({ onChange, items, placeholder }: SelectBoxProps) => {
+const SelectBox = ({
+  onChange,
+  items,
+  placeholder,
+  style = {},
+}: SelectBoxProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<any>(null);
 
@@ -280,6 +286,7 @@ const SelectBox = ({ onChange, items, placeholder }: SelectBoxProps) => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
+          ...style,
         }}
         onPress={() => setOpen(!open)}
       >

@@ -16,14 +16,13 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
-import type { TattoState } from '@/redux/signUp/stateTypes';
-import { tattoNames, isMemberSignUpState } from '@/redux/signUp/stateTypes';
+import type { MemberTattoInterface } from '@/api/interface';
+import { isMemberSignUpState, tattoNames } from '@/redux/slice/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setPhysicalData } from '@/redux/signUp/signUpSlice';
+import { setPhysicalData } from '@/redux/slice/signUpSlice';
 
 import * as Permissions from '@/scripts/permission';
-
-import { getTokens } from '@/scripts/tokenUtils';
+import { signUpMember } from '@/api/signController';
 
 type FormData = {
   height: number;
@@ -115,7 +114,8 @@ const AdditionalFormScreen = () => {
                 ? `문신 있음 (${Object.entries(tattoNames)
                     .filter(
                       ([key, value]) =>
-                        signUp.tatto && signUp.tatto[key as keyof TattoState],
+                        signUp.tatto &&
+                        signUp.tatto[key as keyof MemberTattoInterface],
                     )
                     .map(([, value]) => value)
                     .join(', ')})`
@@ -132,7 +132,7 @@ const AdditionalFormScreen = () => {
             condition={isMemberSignUpState(signUp) && signUp.enteredAccount}
             value={
               isMemberSignUpState(signUp) && signUp.enteredAccount
-                ? `${signUp.account.bankName} ${signUp.account.accountNumber}`
+                ? `${signUp.bank} ${signUp.accountNumber}`
                 : ''
             }
             placeholder="계좌번호를 입력해주세요."
@@ -162,20 +162,48 @@ const AdditionalFormScreen = () => {
               // save physical data
               dispatch(setPhysicalData(data));
 
-              // api 전송
+              if (isMemberSignUpState(signUp)) {
+                const memberCreate = {
+                  email: signUp.email,
+                  password: signUp.password,
+                  phone: signUp.phone,
+                  name: signUp.name,
+                  birthday: signUp.birthday.replace(
+                    /(\d{4})(\d{2})(\d{2})/g,
+                    '$1-$2-$3',
+                  ),
+                  sex: signUp.sex,
+                  home: signUp.home,
+                  height: signUp.height,
+                  weight: signUp.weight,
+                  bank: signUp.bank,
+                  accountNumber: signUp.accountNumber,
+                  isAdmin: false,
+                  adminToken: '',
+                };
 
-              // request app permissions
-              Permissions.requestLocationPermission().then(result => {
-                Permissions.requestPushNotificationPermission().then(result => {
-                  if (!result) {
-                    Permissions.alertForOpeningSettings(
-                      '푸시 알림 거부됨',
-                      '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
-                    );
+                signUpMember({
+                  memberCreate: memberCreate,
+                  tattooCreate: signUp.tatto,
+                }).then(res => {
+                  if (res) {
+                    // request app permissions
+                    Permissions.requestLocationPermission().then(result => {
+                      Permissions.requestPushNotificationPermission().then(
+                        result => {
+                          if (!result) {
+                            Permissions.alertForOpeningSettings(
+                              '푸시 알림 거부됨',
+                              '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                            );
+                          }
+                          Router.push('/sign/sign-up/complete');
+                        },
+                      );
+                    });
                   }
-                  Router.push('/sign/sign-up/complete');
                 });
-              });
+              }
             })}
             text="다음"
           />

@@ -11,10 +11,11 @@ import { ToggleButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
 import { Router } from '@/scripts/router';
 
-import { logout } from '@/scripts/tokenUtils';
+import { useAppSelector } from '@/redux/hooks';
+import { logout } from '@/api/signController';
 
 const SettingsScreen = () => {
-  const email = 'abc123@naver.com';
+  const profile = useAppSelector(state => state.profile);
 
   const settingList: SettingListType = useMemo(() => {
     return [
@@ -26,7 +27,7 @@ const SettingsScreen = () => {
             children: <TextWeight600 size={16}>Kakao</TextWeight600>,
           },
           {
-            title: email,
+            title: profile.email,
             children: (
               <TouchableOpacity
                 style={{
@@ -49,19 +50,7 @@ const SettingsScreen = () => {
                       {
                         text: '확인',
                         onPress: () => {
-                          Alert.alert(
-                            '로그아웃 되었습니다.',
-                            '',
-                            [
-                              {
-                                text: '확인',
-                                onPress: () => {
-                                  logout();
-                                },
-                              },
-                            ],
-                            { cancelable: false },
-                          );
+                          logout(profile.type);
                         },
                       },
                     ],

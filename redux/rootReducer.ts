@@ -2,8 +2,8 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import AsyncStore from '@react-native-async-storage/async-storage';
 
-import signUpReducer from './signUp/signUpSlice';
-import profileReducer from './profile/profileSlice';
+import signUpReducer from './slice/signUpSlice';
+import profileReducer from './slice/profileSlice';
 import manageReducer from './manage/manageSlice';
 
 const signUpConfig = {

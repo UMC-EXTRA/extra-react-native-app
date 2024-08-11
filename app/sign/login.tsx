@@ -6,6 +6,7 @@ import {
   TextInput,
   Pressable,
   Keyboard,
+  Alert,
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useForm, Controller } from 'react-hook-form';
@@ -17,8 +18,11 @@ import { getRefInput, onFocusNext } from '@/components/Form';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
+import type { LoginInterface } from '@/api/interface';
+import { login } from '@/api/signController';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { initType } from '@/redux/signUp/signUpSlice';
+import { initType } from '@/redux/slice/signUpSlice';
+import { initEmail } from '@/redux/slice/profileSlice';
 
 // login page
 const LoginScreen = () => {
@@ -30,7 +34,7 @@ const LoginScreen = () => {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm({
+  } = useForm<LoginInterface>({
     defaultValues: {
       email: '',
       password: '',
@@ -155,7 +159,23 @@ const LoginScreen = () => {
                 color: isValid ? '#000' : '#7D7D7D',
               }}
               onPress={handleSubmit(data => {
-                console.log(data);
+                login(data, type)
+                  .then(res => {
+                    if (res) {
+                      Alert.alert('로그인 성공', '로그인 되었습니다.', [
+                        {
+                          text: '확인',
+                          onPress: () => {
+                            dispatch(initEmail(data.email));
+                            Router.replace(`/${type}`);
+                          },
+                        },
+                      ]);
+                    }
+                  })
+                  .catch(err => {
+                    console.error(err);
+                  });
               })}
             />
           </View>
@@ -164,19 +184,12 @@ const LoginScreen = () => {
           <View
             style={{
               marginTop: getSize(41),
-              width: getSize(200),
+              width: getSize(180),
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
             }}
           >
-            {/* link to find-id page */}
-            {/* <TouchableOpacity onPress={() => Router.push('/sign/find-id')}>
-              <Text style={styles.navigationButtonText}>아이디 찾기</Text>
-            </TouchableOpacity>
-
-            <View style={styles.divider} /> */}
-
             {/* link to find-password page */}
             <TouchableOpacity
               onPress={() => Router.push('/sign/find-password')}
@@ -189,7 +202,7 @@ const LoginScreen = () => {
             {/* link to sign-up page */}
             <TouchableOpacity
               onPress={() => {
-                dispatch(initType(type));
+                dispatch(initType({ type }));
                 Router.push('/sign/sign-up');
               }}
             >
