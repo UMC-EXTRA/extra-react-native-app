@@ -8,6 +8,7 @@
     "icon": "./assets/images/logo.png",
     "scheme": "extra",
     "userInterfaceStyle": "automatic",
+    "jsEngine": "jsc",
     "splash": {
       "image": "./assets/images/logo.png",
       "resizeMode": "contain",
@@ -30,7 +31,7 @@
       "favicon": "./assets/images/favicon.png",
       "backgroundColor": "#000000"
     },
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": ["expo-router", "expo-font", "expo-build-properties"],
     "experiments": {
       "typedRoutes": true
     }
