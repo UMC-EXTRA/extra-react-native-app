@@ -1,11 +1,12 @@
-import axios from 'axios';
+import { Alert } from 'react-native';
 import {
   MemberSignUpInterface,
   SignUpInterface,
   LoginInterface,
 } from './interface';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Router } from '@/scripts/router';
+
+import * as Utils from './utils';
 
 const SERVER_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}`;
 const API_URL = SERVER_URL + '/api/v1/';
@@ -17,17 +18,24 @@ export async function signUpMember(
   data: MemberSignUpInterface,
 ): Promise<boolean> {
   try {
-    const res = await fetch(MEMBER_API_URL + '/signup', {
-      method: 'POST',
-      headers: {
-        Accept: '*/*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    const res = await Utils.requestFetchWithOutToken(
+      MEMBER_API_URL + '/signup',
+      'POST',
+      data,
+    );
 
-    console.log(res);
-    return true;
+    if (res.status === 201) {
+      return true;
+    } else if (res.status === 400) {
+      const message = '이미 존재하는 유저입니다.';
+      Alert.alert('이메일 중복', message, [
+        { text: '확인', onPress: () => Router.back() },
+      ]);
+      return false;
+    } else {
+      const error = await res.json();
+      throw new Error(error.message || 'An error occurred');
+    }
   } catch (err) {
     console.error(err);
   }
@@ -38,13 +46,22 @@ export async function signUpMember(
 // 업체 회원가입
 export async function signUpCompany(data: SignUpInterface): Promise<boolean> {
   try {
-    const res = await axios.post(COMPANY_API_URL + '/signup', {
+    const res = await Utils.requestFetchWithOutToken(
+      COMPANY_API_URL + '/signup',
+      'POST',
       data,
-    });
+    );
 
-    console.log(res);
-
-    return true;
+    if (res.status === 201) {
+      return true;
+    } else if (res.status === 400) {
+      const message = '이미 존재하는 유저입니다.';
+      Alert.alert('이메일 중복', message);
+      return false;
+    } else {
+      const error = await res.json();
+      throw new Error(error.message || 'An error occurred');
+    }
   } catch (err) {
     console.error(err);
   }
@@ -58,65 +75,64 @@ export async function login(
   type: string,
 ): Promise<boolean> {
   try {
-    const res = await axios.post(
+    const res = await Utils.requestFetchWithOutToken(
       `${type === 'member' ? MEMBER_API_URL : COMPANY_API_URL}` + '/login',
+      'POST',
       data,
     );
 
-    console.log(res);
     if (res.status === 200) {
-      AsyncStorage.setItem(
-        'Tokens',
-        JSON.stringify({
-          accessToken: res.data.accessToken,
-          refreshToken: res.data.refreshToken,
-        }),
-      );
+      const token = res.headers.get('authorization');
+      if (token && token.startsWith('Bearer ')) {
+        const accesToken = token.slice(7);
+
+        Utils.storeToken(accesToken);
+      }
 
       return true;
     }
 
-    if (res.status === 401) {
-      return false;
+    if (res.status === 404) {
+      Alert.alert(
+        '이메일 오류',
+        '찾을 수 없는 이메일 입니다. 다시 입력해주세요',
+      );
     }
+
+    if (res.status === 400) {
+      Alert.alert(
+        '비밀번호 오류',
+        '비밀번호가 일치하지 않습니다. 다시 입력해주세요',
+      );
+    }
+
+    return false;
   } catch (err) {
     console.error(err);
   }
   return false;
 }
 
-const getTokenFromLocal = async () => {
+export async function logout(type: string) {
   try {
-    const value = await AsyncStorage.getItem('Tokens');
-    if (value !== null) {
-      return JSON.parse(value);
+    const res = await Utils.requestFetch(
+      `${type === 'member' ? MEMBER_API_URL : COMPANY_API_URL}` + '/logout',
+      'POST',
+    );
+
+    if (res !== null) {
+      if (res.status === 200) {
+        Alert.alert('로그아웃 완료', '로그아웃 되었습니다.');
+      }
+
+      if (res.status === 403) {
+        Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요');
+      }
     } else {
-      return null;
+      Alert.alert('로그인 필요', '로그인 후 가능합니다.');
     }
   } catch (err) {
-    if (err instanceof Error) {
-      console.log(err.message);
-    } else {
-      console.log('An unknown error occurred');
-    }
-  }
-};
-
-export async function logout() {
-  const Token = await getTokenFromLocal();
-
-  if (Token !== null) {
-    try {
-      const res = await axios.post(MEMBER_API_URL + '/logout', {
-        headers: {
-          Authorization: `Bearer ${Token.accessToken}`,
-        },
-      });
-
-      console.log(res);
-    } catch (err) {
-      console.error(err);
-    }
+    console.error(err);
   }
 
   Router.replace('/sign');

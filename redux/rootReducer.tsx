@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import AsyncStore from '@react-native-async-storage/async-storage';
 
 import signUpReducer from './slice/signUpSlice';
-import profileReducer from './profile/profileSlice';
+import profileReducer from './slice/profileSlice';
 import manageReducer from './manage/manageSlice';
 
 const signUpConfig = {

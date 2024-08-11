@@ -14,9 +14,9 @@ import { FormButton } from '@/components/Theme/Button';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-import type { TermState } from '@/redux/profile/stateTypes';
+import type { TermState } from '@/redux/slice/profileSlice';
 import { setTermData } from '@/redux/slice/signUpSlice';
-import { initTerms } from '@/redux/profile/profileSlice';
+import { initTerms } from '@/redux/slice/profileSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 interface CheckBoxProps {

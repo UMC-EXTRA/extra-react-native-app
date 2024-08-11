@@ -6,7 +6,7 @@ import { MainText } from '@/components/Theme/Text';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
-import { initType } from '@/redux/profile/profileSlice';
+import { initType } from '@/redux/slice/profileSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 // sign in/up first page

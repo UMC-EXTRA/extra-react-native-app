@@ -14,6 +14,7 @@ import * as Permissions from '@/scripts/permission';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setBasicData, isCompanySignUpState } from '@/redux/slice/signUpSlice';
+import { signUpCompany } from '@/api/signController';
 
 type FormData = {
   email: string;
@@ -120,19 +121,27 @@ const BasicFormScreen = () => {
                 // save data
                 dispatch(setBasicData(data));
 
-                // request app permissions
-                Permissions.requestLocationPermission().then(result => {
-                  Permissions.requestPushNotificationPermission().then(
-                    result => {
-                      if (!result) {
-                        Permissions.alertForOpeningSettings(
-                          '푸시 알림 거부됨',
-                          '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
-                        );
-                      }
-                      Router.push('/sign/sign-up/complete');
-                    },
-                  );
+                signUpCompany({
+                  email: data.email,
+                  password: data.password,
+                  name: signUp.name,
+                }).then(res => {
+                  if (res) {
+                    // request app permissions
+                    Permissions.requestLocationPermission().then(result => {
+                      Permissions.requestPushNotificationPermission().then(
+                        result => {
+                          if (!result) {
+                            Permissions.alertForOpeningSettings(
+                              '푸시 알림 거부됨',
+                              '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                            );
+                          }
+                          Router.push('/sign/sign-up/complete');
+                        },
+                      );
+                    });
+                  }
                 });
               } else {
                 // if checking terms is not completion, open term modal

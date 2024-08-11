@@ -1,14 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { TermState } from './stateTypes';
+
+type Term = {
+  id: number;
+  title: string;
+  content: string;
+  agree: boolean;
+  optional: boolean;
+};
+
+type TermState = (Term | undefined)[];
+
+export type { TermState };
 
 type SliceState = {
   type: string;
+  email: string;
   requiredTerms: TermState;
   eventNoticeAgree: boolean;
 };
 
 const initialState: SliceState = {
   type: '',
+  email: '',
   requiredTerms: [],
   eventNoticeAgree: false,
 };
@@ -19,6 +32,9 @@ const profileSlice = createSlice({
   reducers: {
     initType: (state, action) => {
       state.type = action.payload;
+    },
+    initEmail: (state, action) => {
+      state.email = action.payload;
     },
     initTerms: (state, action: PayloadAction<TermState>) => {
       action.payload
@@ -37,5 +53,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const { initType, initTerms } = profileSlice.actions;
+export const { initType, initTerms, initEmail } = profileSlice.actions;
 export default profileSlice.reducer;

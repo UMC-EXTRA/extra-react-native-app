@@ -24,8 +24,6 @@ import { setPhysicalData } from '@/redux/slice/signUpSlice';
 import * as Permissions from '@/scripts/permission';
 import { signUpMember } from '@/api/signController';
 
-import { getTokens } from '@/scripts/tokenUtils';
-
 type FormData = {
   height: number;
   weight: number;
@@ -159,7 +157,7 @@ const AdditionalFormScreen = () => {
 
           {/* submit button */}
           <FormButton
-            valid={true}
+            valid={complete && isValid}
             onPress={handleSubmit(data => {
               // save physical data
               dispatch(setPhysicalData(data));
@@ -170,7 +168,10 @@ const AdditionalFormScreen = () => {
                   password: signUp.password,
                   phone: signUp.phone,
                   name: signUp.name,
-                  birthday: signUp.birthday,
+                  birthday: signUp.birthday.replace(
+                    /(\d{4})(\d{2})(\d{2})/g,
+                    '$1-$2-$3',
+                  ),
                   sex: signUp.sex,
                   home: signUp.home,
                   height: signUp.height,
@@ -184,21 +185,25 @@ const AdditionalFormScreen = () => {
                 signUpMember({
                   memberCreate: memberCreate,
                   tattooCreate: signUp.tatto,
+                }).then(res => {
+                  if (res) {
+                    // request app permissions
+                    Permissions.requestLocationPermission().then(result => {
+                      Permissions.requestPushNotificationPermission().then(
+                        result => {
+                          if (!result) {
+                            Permissions.alertForOpeningSettings(
+                              '푸시 알림 거부됨',
+                              '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
+                            );
+                          }
+                          Router.push('/sign/sign-up/complete');
+                        },
+                      );
+                    });
+                  }
                 });
               }
-
-              // request app permissions
-              Permissions.requestLocationPermission().then(result => {
-                Permissions.requestPushNotificationPermission().then(result => {
-                  if (!result) {
-                    Permissions.alertForOpeningSettings(
-                      '푸시 알림 거부됨',
-                      '푸시 알림을 받으려면 설정에서 알림을 허용해주세요.',
-                    );
-                  }
-                  Router.push('/sign/sign-up/complete');
-                });
-              });
             })}
             text="다음"
           />
