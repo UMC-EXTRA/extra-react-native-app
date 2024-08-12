@@ -1,6 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import CryptoJS from 'crypto-js';
-// import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store';
 
 export const storeToken = async (
   accessToken: string,
@@ -8,7 +7,7 @@ export const storeToken = async (
 ) => {
   try {
     //await SecureStore.setItemAsync('accessToken', token);
-    await AsyncStorage.setItem(
+    await SecureStore.setItemAsync(
       'Token',
       JSON.stringify({
         accessToken,
@@ -23,7 +22,7 @@ export const storeToken = async (
 export const getToken = async () => {
   try {
     //const token = await SecureStore.getItemAsync('accesToken');
-    const tokens = await AsyncStorage.getItem('Token');
+    const tokens = await SecureStore.getItemAsync('Token');
     if (tokens !== null) {
       return JSON.parse(tokens);
     } else {

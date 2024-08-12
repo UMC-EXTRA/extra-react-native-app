@@ -45,18 +45,6 @@ const MemberScreen = () => {
           }}
           text="관리자"
         />
-
-        {/* link button for testing pages */}
-        <ConfirmButton
-          style={{ marginTop: getSize(20) }}
-          onPress={() => Router.replace('/member')}
-          text="보조출연자 홈화면"
-        />
-        <ConfirmButton
-          style={{ marginTop: getSize(20) }}
-          onPress={() => Router.replace('/company')}
-          text="관리자 홈화면"
-        />
       </View>
     </SafeContainer>
   );

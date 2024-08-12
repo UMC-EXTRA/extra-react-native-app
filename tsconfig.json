@@ -1,13 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types" // 또는 타입 정의 파일이 위치한 경로
-    ],
-    "types": [
-      "crypto-js" // 명시적으로 추가
-    ],
     "strict": true,
     "paths": {
       "@/*": ["./*"],
