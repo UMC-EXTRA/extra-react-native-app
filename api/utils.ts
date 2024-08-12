@@ -116,7 +116,10 @@ export const encryptAccessToken = (accessToken: string) => {
 
 export const createHmacSignature = (data: string) => {
   const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
-  return CryptoJS.HmacSHA256(data, secretKey).toString();
+  return CryptoJS.HmacSHA256(
+    data,
+    CryptoJS.enc.Utf8.parse(secretKey),
+  ).toString();
 };
 
 export const initKakao = () => {
