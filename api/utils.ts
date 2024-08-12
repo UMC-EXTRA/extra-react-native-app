@@ -1,3 +1,4 @@
+import { hmacSHA256 } from 'react-native-hmac';
 import CryptoJS from 'react-native-crypto-js';
 import * as SecureStore from 'expo-secure-store';
 
@@ -114,12 +115,10 @@ export const encryptAccessToken = (accessToken: string) => {
   };
 };
 
-export const createHmacSignature = (data: string) => {
+export const createHmacSignature = async (data: string) => {
   const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
-  return CryptoJS.HmacSHA256(
-    data,
-    CryptoJS.enc.Utf8.parse(secretKey),
-  ).toString();
+  const signature = await hmacSHA256(data, secretKey);
+  return signature;
 };
 
 export const initKakao = () => {
