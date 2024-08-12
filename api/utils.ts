@@ -1,6 +1,9 @@
 import CryptoJS from 'crypto-js';
 import * as SecureStore from 'expo-secure-store';
 
+import { initializeKakaoSDK } from '@react-native-kakao/core';
+import { login, logout } from '@react-native-kakao/user';
+
 export const storeToken = async (
   accessToken: string,
   refreshToken?: string,
@@ -114,4 +117,17 @@ export const encryptAccessToken = (accessToken: string) => {
 export const createHmacSignature = (data: string) => {
   const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
   return CryptoJS.HmacSHA256(data, secretKey).toString();
+};
+
+export const initKakao = () => {
+  initializeKakaoSDK(`${process.env.EXPO_PUBLIC_KAKAO_APP_KEY}`);
+};
+
+export const loginKakao = async () => {
+  const token = await login();
+  storeToken(token.accessToken, token.refreshToken);
+};
+
+export const logoutKakao = () => {
+  logout();
 };
