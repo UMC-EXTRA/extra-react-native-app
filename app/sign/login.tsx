@@ -23,6 +23,7 @@ import { login } from '@/api/signController';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { initType } from '@/redux/slice/signUpSlice';
 import { initEmail } from '@/redux/slice/profileSlice';
+import { loginKakao } from '@/api/utils';
 
 // login page
 const LoginScreen = () => {
@@ -226,7 +227,13 @@ const LoginScreen = () => {
           >
             {/* kakao login */}
             <TouchableOpacity
-              onPress={() => alert('kakao')}
+              onPress={() => {
+                loginKakao().then(res => {
+                  if (res !== null) {
+                    console.log(res);
+                  }
+                });
+              }}
               style={{ ...styles.socialLoginButton, marginRight: 0 }}
             >
               <Image

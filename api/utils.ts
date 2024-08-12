@@ -123,9 +123,15 @@ export const initKakao = () => {
   initializeKakaoSDK(`${process.env.EXPO_PUBLIC_KAKAO_APP_KEY}`);
 };
 
-export const loginKakao = async () => {
-  const token = await login();
-  storeToken(token.accessToken, token.refreshToken);
+export const loginKakao = async (): Promise<string | null> => {
+  try {
+    const token = await login();
+    storeToken(token.accessToken, token.refreshToken);
+    return token.accessToken;
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
 };
 
 export const logoutKakao = () => {
