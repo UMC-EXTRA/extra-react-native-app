@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+import CryptoJS from 'react-native-crypto-js';
 import * as SecureStore from 'expo-secure-store';
 
 import { initializeKakaoSDK } from '@react-native-kakao/core';
