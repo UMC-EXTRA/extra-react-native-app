@@ -3,6 +3,8 @@ import { useFocusEffect } from 'expo-router';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Router } from '@/scripts/router';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { createHmacSignature, getToken } from '@/api/utils';
+import { encryptAccessToken } from '../api/utils';
 
 export type MessageType = {
   type: string;
@@ -45,6 +47,28 @@ const WebViewContainer = ({
           Router.back();
         }
         break;
+      case 'REQUEST_AUTHORIZATION':
+        getToken()
+          .then(res => {
+            if (res !== null) {
+              const accessToken = res.accessToken;
+              const { iv, encryptedData } = encryptAccessToken(accessToken);
+              const signature = createHmacSignature(encryptedData);
+              sendMessage({
+                type: 'AUTHORIZATION',
+                payload: {
+                  iv,
+                  encryptedData,
+                  signature,
+                },
+                version: '1.0',
+              });
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+        break;
     }
   };
 
@@ -63,10 +87,20 @@ const WebViewContainer = ({
   }, []);
 
   const INJECTEDJAVASCRIPT = `
-    const meta = document.createElement('meta');
-    meta.setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0');
-    meta.setAttribute('name', 'viewport');
-    document.getElementsByTagName('head')[0].appendChild(meta);
+    const metaList = [
+      {'name': 'viewport', 'content': 'initial-scale=1.0, maximum-scale=1.0'},
+      {'http-equiv': 'X-Frame-Options', 'content': 'deny'},
+      {'http-equiv': 'X-Content-Type-Options', 'content': 'nosniff'},
+      {'http-equiv': 'Referrer-Policy', 'content': 'no-referrer'},
+    ]
+    const metaElements = Array.from({length: 4}, () => document.createElement('meta'));
+
+    metaElements.forEach((element, index) => {
+      Object.entries(metaList[index]).forEach(([key, value]) => {
+        element.setAttribute(key, value);
+      });
+      document.getElementsByTagName('head')[0].appendChild(element);
+    });
   `;
 
   return (
