@@ -40,7 +40,7 @@ const ManageScreen = () => {
       title="촬영 관리"
       onPress={() => Router.push('/member')}
     >
-      <WebViewContainer uri="/extra-shoot-manage" onMessage={onMessage} />
+      <WebViewContainer uri="/member/manage" onMessage={onMessage} />
     </BackHeaderContainer>
   );
 };
