@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CryptoJS from 'crypto-js';
 // import * as SecureStore from 'expo-secure-store';
 
 export const storeToken = async (
@@ -90,4 +91,28 @@ export const requestFetch = async (
   }
 
   return null;
+};
+
+export const encryptAccessToken = (accessToken: string) => {
+  const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
+  const iv = CryptoJS.lib.WordArray.random(16);
+  const encrypted = CryptoJS.AES.encrypt(
+    accessToken,
+    CryptoJS.enc.Utf8.parse(secretKey),
+    {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC,
+    },
+  );
+
+  return {
+    iv: iv.toString(CryptoJS.enc.Hex),
+    encryptedData: encrypted.toString(),
+  };
+};
+
+export const createHmacSignature = (data: string) => {
+  const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
+  return CryptoJS.HmacSHA256(data, secretKey).toString();
 };
