@@ -137,3 +137,24 @@ export async function logout(type: string) {
 
   Router.replace('/sign');
 }
+
+export async function getMemberProfile(): Promise<object | null> {
+  try {
+    const res = await Utils.requestFetch(MEMBER_API_URL, 'GET');
+
+    if (res !== null) {
+      if (res.status === 200) {
+        console.log(res);
+        return res;
+      } else {
+        Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요', [
+          { text: '확인', onPress: () => Router.replace('/sign') },
+        ]);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return null;
+}

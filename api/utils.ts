@@ -73,6 +73,7 @@ export const requestFetch = async (
   if (Token !== null) {
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set('Authorization', `Bearer ${Token.accessToken}`);
+    requestHeaders.set('Accept', '*/*');
     if (option) {
       Object.entries(option).map(([key, value]) => {
         requestHeaders.set(key, value);

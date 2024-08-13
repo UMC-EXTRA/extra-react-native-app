@@ -7,6 +7,7 @@ import { Router } from '@/scripts/router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import { TextWeight600 } from '@/components/Theme/Text';
+import { getMemberProfile } from '@/api/signController';
 
 const ProfileScreen = () => {
   const [data, setData] = useState({
@@ -31,6 +32,10 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
+    getMemberProfile().then(res => {
+      if (res != null) {
+      }
+    });
     setData({
       name: '박지민',
       sex: 1,

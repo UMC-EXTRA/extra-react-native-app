@@ -10,6 +10,7 @@ import { resetState } from '@/redux/slice/signUpSlice';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 
 import { login } from '@/api/signController';
+import { initEmail } from '@/redux/slice/profileSlice';
 
 const Complete = () => {
   const signUp = useAppSelector(state => state.signUp);
@@ -22,14 +23,21 @@ const Complete = () => {
       email: signUp.email,
       password: signUp.password,
     };
-    login(data, type);
-    // run action after 2 secends
-    setTimeout(() => {
-      // reset sign up data
-      dispatch(resetState());
-      // move to main page
-      Router.replace(`/${type}`);
-    }, 2000);
+    login(data, type).then(res => {
+      if (res) {
+        // save email
+        dispatch(initEmail(signUp.email));
+
+        // reset sign up data
+        dispatch(resetState());
+
+        // run action after 2 secends
+        setTimeout(() => {
+          // move to main page
+          Router.replace(`/${type}`);
+        }, 2000);
+      }
+    });
   }, []);
 
   return (
