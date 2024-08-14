@@ -20,7 +20,7 @@ const ManageScreen = () => {
     }
     if (data.type === 'NAVIGATION_DETAIL') {
       Router.push({
-        pathname: '/member/home/detail',
+        pathname: '/member/index/detail',
         params: {
           ...data.payload,
           history: '/member/manage',

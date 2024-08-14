@@ -1,8 +1,12 @@
 import { useRef, useEffect, useCallback, useState, memo } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 import { Router } from '@/scripts/router';
-import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import {
+  WebView,
+  WebViewMessageEvent,
+  WebViewProps,
+} from 'react-native-webview';
 import { createHmacSignature, getToken } from '@/api/utils';
 import { encryptAccessToken } from '../api/utils';
 
@@ -12,18 +16,20 @@ export type MessageType = {
   version: string;
 };
 
-interface WebViewContainerProps {
+interface WebViewContainerProps extends Omit<WebViewProps, 'onMessage'> {
   uri?: string;
   onMessage?: (data: MessageType) => void;
   dataForWebView?: MessageType;
   history?: string;
+  injectedJavaScript?: string;
 }
 
 const WebViewContainer = ({
   uri = '',
   onMessage,
   dataForWebView,
-  history,
+  history = '',
+  injectedJavaScript = '',
   ...restProps
 }: WebViewContainerProps) => {
   const [reloadKey, setReloadKey] = useState(0);
@@ -101,6 +107,8 @@ const WebViewContainer = ({
       });
       document.getElementsByTagName('head')[0].appendChild(element);
     });
+    document.body.style.overscrollBehavior = 'none';
+    ${injectedJavaScript}
   `;
 
   return (
@@ -112,6 +120,8 @@ const WebViewContainer = ({
       bounces={false}
       startInLoadingState={true}
       cacheEnabled={true}
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
       injectedJavaScript={INJECTEDJAVASCRIPT}
       renderLoading={() => (
         // spin loader

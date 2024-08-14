@@ -53,7 +53,7 @@ const ConfirmClothesScreen = () => {
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
         </TouchableOpacity>
-        <MainText style={{ fontSize: getSize(30) }}>의상 컨펌</MainText>
+        <MainText size={30}>의상 컨펌</MainText>
       </View>
       <View
         style={{

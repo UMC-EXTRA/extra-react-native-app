@@ -3,23 +3,12 @@ import { SafeContainer } from '@/components/Container';
 import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
 
-const DetailScreen = () => {
+const JobPostIdScreen = () => {
   const { history, uri: webViewURI } = useLocalSearchParams();
 
-  const onMessage = (data: MessageType) => {
-    if (data.type === 'NAVIGATION_APPLICANTS') {
-      Router.replace({
-        pathname: '/company/home/applicants',
-        params: {
-          ...data.payload,
-        },
-      });
-    }
+  console.log(webViewURI);
 
-    if (data.type === 'NAVIGATION_MANAGE') {
-      Router.replace('/company/manage');
-    }
-  };
+  const onMessage = (data: MessageType) => {};
 
   return (
     <SafeContainer>
@@ -32,4 +21,4 @@ const DetailScreen = () => {
   );
 };
 
-export default DetailScreen;
+export default JobPostIdScreen;

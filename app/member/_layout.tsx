@@ -25,7 +25,7 @@ const tabConfig: TabConfigType = {
 };
 
 const inVisiblePaths = [
-  '/member/home/[date]',
+  '/member/home/date',
   '/member/home/detail',
   '/member/manage/detail',
   '/member/manage/chat',

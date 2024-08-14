@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useMemo, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeContainer } from '@/components/Container';
@@ -87,12 +87,26 @@ const DetailScreen = () => {
 
   return (
     <SafeContainer>
-      <View style={styles.header}>
+      <View
+        style={{
+          height: getSize(197),
+          paddingLeft: getSize(48),
+          justifyContent: 'center',
+        }}
+      >
         <TouchableOpacity onPress={() => Router.navigate('/company/manage')}>
           <AntDesign name="caretleft" size={28} color="white" />
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonContainer}>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          width: getSize(382),
+          marginHorizontal: 'auto',
+        }}
+      >
         <ManageButton
           text="출석"
           onPress={() => {
@@ -128,7 +142,7 @@ const DetailScreen = () => {
         <ManageButton
           text="의상 컨펌"
           onPress={() => {
-            Router.push('/company/manage/confirm-clothes');
+            Router.push('/company/manage/clothes');
           }}
         />
         <ManageButton
@@ -142,19 +156,5 @@ const DetailScreen = () => {
     </SafeContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    height: getSize(197),
-    paddingLeft: getSize(48),
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginHorizontal: getSize(24),
-  },
-});
 
 export default DetailScreen;

@@ -8,19 +8,19 @@ import { Router } from '@/scripts/router';
 const DateScreen = () => {
   const [title, setTitle] = useState('');
 
-  const { url: webViewURL } = useLocalSearchParams();
+  const { uri: webViewURI } = useLocalSearchParams();
 
   const onMessage = (data: MessageType) => {
     if (data.type === 'NAVIGATION_DETAIL') {
       const typedData = data as MessageType & {
         payload: {
-          url: string;
+          uri: string;
         };
       };
       Router.push({
         pathname: '/member/home/detail',
         params: {
-          url: typedData.payload.url,
+          uri: typedData.payload.uri,
         },
       });
     }
@@ -37,7 +37,7 @@ const DateScreen = () => {
 
   return (
     <BackHeaderContainer title={title}>
-      <WebViewContainer uri={`${webViewURL}`} onMessage={onMessage} />
+      <WebViewContainer uri={`${webViewURI}`} onMessage={onMessage} />
     </BackHeaderContainer>
   );
 };

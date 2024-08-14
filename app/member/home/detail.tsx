@@ -14,11 +14,11 @@ const onMessage = (data: MessageType) => {
 };
 
 const JobPostIdScreen = () => {
-  const { url: webViewURL } = useLocalSearchParams();
+  const { uri: webViewURI } = useLocalSearchParams();
 
   return (
     <SafeContainer>
-      <WebViewContainer uri={`${webViewURL}`} onMessage={onMessage} />
+      <WebViewContainer uri={`${webViewURI}`} onMessage={onMessage} />
     </SafeContainer>
   );
 };

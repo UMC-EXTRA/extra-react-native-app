@@ -1,5 +1,5 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { useCallback, useEffect } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import { useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 
 import { MainContainer } from '@/components/Container';
@@ -32,9 +32,21 @@ const ManageScreen = () => {
 
   return (
     <MainContainer>
-      <View style={styles.header}>
+      <View
+        style={{
+          width: '100%',
+          height: getSize(173),
+          paddingHorizontal: getSize(35),
+          paddingBottom: getSize(29),
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+        }}
+      >
         <TouchableOpacity
-          style={styles.backLinkButton}
+          style={{
+            marginLeft: getSize(11),
+            marginRight: getSize(22.45),
+          }}
           onPress={() => Router.navigate(`/company`)}
         >
           <AntDesign name="caretleft" size={getSize(28)} color="white" />
@@ -42,7 +54,17 @@ const ManageScreen = () => {
         <MainText size={30} spacing={0.3}>
           현장 관리
         </MainText>
-        <View style={styles.diviedBar} />
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            marginHorizontal: getSize(35),
+            height: getSize(1),
+            backgroundColor: 'white',
+          }}
+        />
       </View>
       <MainText
         spacing={0.2}
@@ -55,34 +77,9 @@ const ManageScreen = () => {
       >
         촬영 목록
       </MainText>
-      <WebViewContainer uri="/company-shoot-manage" onMessage={onMessage} />
+      <WebViewContainer uri="/company/manage" onMessage={onMessage} />
     </MainContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    width: '100%',
-    height: getSize(173),
-    paddingHorizontal: getSize(35),
-    paddingBottom: getSize(29),
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    position: 'relative',
-  },
-  diviedBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    marginHorizontal: getSize(35),
-    height: getSize(1),
-    backgroundColor: 'white',
-  },
-  backLinkButton: {
-    marginLeft: getSize(11),
-    marginRight: getSize(22.45),
-  },
-});
 
 export default ManageScreen;

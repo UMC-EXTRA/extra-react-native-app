@@ -144,7 +144,6 @@ export async function getMemberProfile(): Promise<object | null> {
 
     if (res !== null) {
       if (res.status === 200) {
-        console.log(res);
         return res;
       } else {
         Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요', [
