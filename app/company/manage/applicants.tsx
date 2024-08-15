@@ -14,12 +14,11 @@ import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
 import { Router } from '@/scripts/router';
-import type { Members } from '@/redux/manage/stateTypes';
-import { isCompanyManageState } from '@/redux/manage/stateTypes';
+import type { Members } from '@/redux/manage/companyManageSlice';
 import { useAppSelector } from '@/redux/hooks';
 
-const MemberListScreen = () => {
-  const manage = useAppSelector(state => state.manage);
+const ApplicantsScreen = () => {
+  const manage = useAppSelector(state => state.companyManage);
 
   const sortItems = ['역할별', '성별', '나이별'];
 
@@ -29,38 +28,32 @@ const MemberListScreen = () => {
   const [members, setMembers] = useState<Members>([]);
 
   useEffect(() => {
-    if (isCompanyManageState(manage)) {
-      setMembers(manage.members);
-    }
+    setMembers(manage.members);
   }, [manage]);
 
   useEffect(() => {
-    if (isCompanyManageState(manage)) {
-      let sortedMembers = [...manage.members];
-      sortedMembers = sortedMembers.sort((a, b) => {
-        if (sorted === '역할별') {
-          return a.role.localeCompare(b.role);
-        }
-        if (sorted === '성별') {
-          return Number(a.sex) - Number(b.sex);
-        }
-        if (sorted == '나이별') {
-          return a.age - b.age;
-        }
-        return 0;
-      });
-      setMembers(sortedMembers);
-    }
+    let sortedMembers = [...manage.members];
+    sortedMembers = sortedMembers.sort((a, b) => {
+      if (sorted === '역할별') {
+        return a.role.localeCompare(b.role);
+      }
+      // if (sorted === '성별') {
+      //   return Number(a.sex) - Number(b.sex);
+      // }
+      // if (sorted == '나이별') {
+      //   return a.age - b.age;
+      // }
+      return 0;
+    });
+    setMembers(sortedMembers);
   }, [sorted]);
 
   useEffect(() => {
-    if (isCompanyManageState(manage)) {
-      let filteredMembers = [...manage.members];
-      filteredMembers = filteredMembers.filter(data =>
-        data.name.includes(search),
-      );
-      setMembers(filteredMembers);
-    }
+    let filteredMembers = [...manage.members];
+    filteredMembers = filteredMembers.filter(data =>
+      data.name.includes(search),
+    );
+    setMembers(filteredMembers);
   }, [search]);
 
   return (
@@ -117,41 +110,47 @@ const MemberListScreen = () => {
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.listContainer}>
-        {members.map(data => (
-          <TouchableOpacity
-            key={data.id}
-            style={styles.listItemContainer}
-            onPress={() =>
-              Router.navigate({
-                pathname: '/company/manage/[member_id]',
-                params: { memberId: data.id },
-              })
-            }
-          >
-            <View style={styles.itemImage}></View>
-            <MainText
-              style={{
-                height: '100%',
-                marginTop: getSize(25),
-                paddingLeft: getSize(17),
-                width: getSize(219),
-                textAlign: 'left',
-              }}
+        {manage.roleApplicantList.map((applicants, index) =>
+          applicants.map(data => (
+            <TouchableOpacity
+              key={data.id}
+              style={styles.listItemContainer}
+              onPress={() =>
+                Router.navigate({
+                  pathname: '/company/manage/applicant-detail',
+                  params: {
+                    memberId: data.memberId,
+                    memberName: data.name,
+                    history: '/company/manage/applicants',
+                  },
+                })
+              }
             >
-              {data.name}/{data.role}
-            </MainText>
-            <View
-              style={{
-                ...styles.statusDot,
-                backgroundColor: data.clockIn ? '#35EB17' : '#E00338',
-              }}
-            />
-            <Image
-              source={require('@/assets/images/icons/Forward.png')}
-              style={styles.navigateIconImage}
-            />
-          </TouchableOpacity>
-        ))}
+              <View style={styles.itemImage}></View>
+              <MainText
+                style={{
+                  height: '100%',
+                  marginTop: getSize(25),
+                  paddingLeft: getSize(17),
+                  width: getSize(219),
+                  textAlign: 'left',
+                }}
+              >
+                {data.name}/{manage.roleNameList[index]}
+              </MainText>
+              <View
+                style={{
+                  ...styles.statusDot,
+                  backgroundColor: true ? '#35EB17' : '#E00338',
+                }}
+              />
+              <Image
+                source={require('@/assets/images/icons/Forward.png')}
+                style={styles.navigateIconImage}
+              />
+            </TouchableOpacity>
+          )),
+        )}
       </ScrollView>
     </SafeContainer>
   );
@@ -256,4 +255,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MemberListScreen;
+export default ApplicantsScreen;

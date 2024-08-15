@@ -7,13 +7,12 @@ import { Router } from '@/scripts/router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import { TextWeight600 } from '@/components/Theme/Text';
+import { getCompanyProfile } from '@/api/signController';
 
 const ProfileScreen = () => {
   const [data, setData] = useState({
     name: '',
-    sex: 0,
     companyName: '',
-    age: 0,
   });
   const [profileImage, setProfileImage] = useState('');
 
@@ -31,11 +30,14 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
+    // getCompanyProfile().then(res => {
+    //   if (res !== null) {
+    //     console.log(res);
+    //   }
+    // });
     setData({
-      name: '박지민',
-      sex: 1,
-      companyName: '탑소와',
-      age: 24,
+      name: '테스트',
+      companyName: '테스트회사',
     });
   }, []);
 
@@ -115,14 +117,9 @@ const ProfileScreen = () => {
         >
           <TextWeight600 size={20}>이름 : {data.name}</TextWeight600>
           <View style={styles.profileInfoLine}>
-            <TextWeight600 size={15}>
-              성별 : {data.sex === 1 ? '남' : data.sex === 2 ? '여' : ''}
-            </TextWeight600>
             <TextWeight600 size={15}>소속사 : {data.companyName}</TextWeight600>
           </View>
-          <View style={styles.profileInfoLine}>
-            <TextWeight600 size={15}>나이 : {data.age}세</TextWeight600>
-          </View>
+          <View style={styles.profileInfoLine} />
         </View>
       </View>
     </SettingContainer>

@@ -3,7 +3,7 @@ import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
 import { BackHeaderContainer } from '@/components/Container';
 import { useAppDispatch } from '@/redux/hooks';
-import { initManageState, setJobPostId } from '@/redux/manage/manageSlice';
+import { setJobPostId } from '@/redux/manage/memberManageSlice';
 
 const ManageScreen = () => {
   const dispatch = useAppDispatch();
@@ -28,12 +28,6 @@ const ManageScreen = () => {
       });
     }
   };
-
-  useEffect(() => {
-    return () => {
-      dispatch(initManageState({ type: 'member' }));
-    };
-  }, []);
 
   return (
     <BackHeaderContainer

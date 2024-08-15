@@ -107,7 +107,6 @@ const WebViewContainer = ({
       });
       document.getElementsByTagName('head')[0].appendChild(element);
     });
-    document.body.style.overscrollBehavior = 'none';
     ${injectedJavaScript}
   `;
 
@@ -120,8 +119,6 @@ const WebViewContainer = ({
       bounces={false}
       startInLoadingState={true}
       cacheEnabled={true}
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
       injectedJavaScript={INJECTEDJAVASCRIPT}
       renderLoading={() => (
         // spin loader

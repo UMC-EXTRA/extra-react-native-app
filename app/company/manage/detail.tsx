@@ -7,13 +7,11 @@ import SetTimeModal from '@/components/SetTimeModal';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
-import { isCompanyManageState } from '@/redux/manage/stateTypes';
-import { initMemberList } from '@/redux/manage/manageSlice';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { initMemberList } from '@/redux/manage/companyManageSlice';
+import { useAppDispatch } from '@/redux/hooks';
 import { useEffect } from 'react';
 
 const DetailScreen = () => {
-  const manage = useAppSelector(state => state.manage);
   const dispatch = useAppDispatch();
 
   const [display, setDisplay] = useState(false);
@@ -75,9 +73,7 @@ const DetailScreen = () => {
   ];
 
   useEffect(() => {
-    if (isCompanyManageState(manage)) {
-      dispatch(initMemberList({ members: memberData }));
-    }
+    dispatch(initMemberList({ members: memberData }));
   }, []);
 
   const memoizedSetTimeModal = useMemo(
@@ -116,7 +112,7 @@ const DetailScreen = () => {
         <ManageButton
           text="출연자 목록"
           onPress={() => {
-            Router.push('/company/manage/member-list');
+            Router.push('/company/manage/applicants');
           }}
         />
         <ManageButton

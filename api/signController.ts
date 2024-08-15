@@ -138,13 +138,54 @@ export async function logout(type: string) {
   Router.replace('/sign');
 }
 
-export async function getMemberProfile(): Promise<object | null> {
+interface ProfileResponse {
+  name: string;
+  sex: boolean;
+  birthday: string;
+  home: string;
+  introduction: string;
+  license: string;
+  pros: string;
+  height: number;
+  weight: number;
+  face: boolean;
+  back: boolean;
+  arm: boolean;
+  leg: boolean;
+  hand: boolean;
+  shoulder: boolean;
+  chest: boolean;
+  feet: boolean;
+  etc: string;
+}
+
+export async function getMemberProfile(): Promise<ProfileResponse | null> {
   try {
-    const res = await Utils.requestFetch(MEMBER_API_URL, 'GET');
+    const res = await Utils.requestGetFetch(MEMBER_API_URL);
 
     if (res !== null) {
       if (res.status === 200) {
-        return res;
+        return res.json();
+      } else {
+        Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요', [
+          { text: '확인', onPress: () => Router.replace('/sign') },
+        ]);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return null;
+}
+
+export async function getCompanyProfile(): Promise<object | null> {
+  try {
+    const res = await Utils.requestGetFetch(COMPANY_API_URL);
+
+    if (res !== null) {
+      if (res.status === 200) {
+        return res.json();
       } else {
         Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요', [
           { text: '확인', onPress: () => Router.replace('/sign') },

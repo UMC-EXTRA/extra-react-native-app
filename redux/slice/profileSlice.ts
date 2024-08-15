@@ -15,15 +15,79 @@ export type { TermState };
 type SliceState = {
   type: string;
   email: string;
+  name: string;
   requiredTerms: TermState;
   eventNoticeAgree: boolean;
+  info?: object;
+};
+
+type Tattoo = {
+  arm: boolean;
+  back: boolean;
+  chest: boolean;
+  face: boolean;
+  feet: boolean;
+  hand: boolean;
+  leg: boolean;
+  shoulder: boolean;
+  etc: string;
+};
+
+type MemberState = SliceState & {
+  info: {
+    tattoo: Tattoo;
+    birthday: string;
+    height: number;
+    home: string;
+    introduction: string;
+    license: string;
+    pros: string;
+    sex: boolean;
+    weight: number;
+  };
 };
 
 const initialState: SliceState = {
   type: '',
   email: '',
+  name: '',
   requiredTerms: [],
   eventNoticeAgree: false,
+};
+
+const memberInitState: MemberState = {
+  type: 'member',
+  email: '',
+  name: '',
+  requiredTerms: [],
+  eventNoticeAgree: false,
+  info: {
+    birthday: '',
+    home: '',
+    introduction: '',
+    license: '',
+    pros: '',
+    sex: true,
+    height: 0,
+    weight: 0,
+    tattoo: {
+      face: false,
+      back: false,
+      arm: false,
+      leg: false,
+      hand: false,
+      shoulder: false,
+      chest: false,
+      feet: false,
+      etc: '',
+    },
+  },
+};
+
+export const isMemberProfileState = (
+  state: SliceState,
+): state is MemberState => {
+  return state.type === 'member';
 };
 
 const profileSlice = createSlice({
@@ -31,10 +95,19 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     initType: (state, action) => {
-      state.type = action.payload;
+      if (action.payload === 'member') {
+        return memberInitState;
+      } else {
+        state.type = action.payload;
+      }
     },
     initEmail: (state, action) => {
       state.email = action.payload;
+    },
+    initProfile: (state, action) => {
+      state.name = action.payload.name;
+
+      if (action.payload.info) state.info = action.payload.info;
     },
     initTerms: (state, action: PayloadAction<TermState>) => {
       action.payload
@@ -53,5 +126,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { initType, initTerms, initEmail } = profileSlice.actions;
+export const { initType, initTerms, initEmail, initProfile } =
+  profileSlice.actions;
 export default profileSlice.reducer;

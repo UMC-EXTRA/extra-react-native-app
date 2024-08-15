@@ -14,8 +14,7 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-import type { Members } from '@/redux/manage/stateTypes';
-import { isCompanyManageState } from '@/redux/manage/stateTypes';
+import type { Members } from '@/redux/manage/companyManageSlice';
 import { useAppSelector } from '@/redux/hooks';
 
 type SortedByRoleMembers = {
@@ -23,26 +22,24 @@ type SortedByRoleMembers = {
 };
 
 const ConfirmClothesScreen = () => {
-  const manage = useAppSelector(state => state.manage);
+  const companyManage = useAppSelector(state => state.companyManage);
 
   const [search, setSearch] = useState('');
   const [members, setMembers] = useState<SortedByRoleMembers>({});
 
   useEffect(() => {
-    if (isCompanyManageState(manage)) {
-      let newMembers: SortedByRoleMembers = {};
-      const SortedByRoleMembers = [...manage.members].sort((a, b) => {
-        return a.role.localeCompare(b.role);
-      });
-      SortedByRoleMembers.forEach(data => {
-        if (newMembers[data.role] === undefined) {
-          newMembers[data.role] = [];
-        }
-        newMembers[data.role].push(data);
-      });
-      setMembers(newMembers);
-    }
-  }, [manage]);
+    let newMembers: SortedByRoleMembers = {};
+    const SortedByRoleMembers = [...companyManage.members].sort((a, b) => {
+      return a.role.localeCompare(b.role);
+    });
+    SortedByRoleMembers.forEach(data => {
+      if (newMembers[data.role] === undefined) {
+        newMembers[data.role] = [];
+      }
+      newMembers[data.role].push(data);
+    });
+    setMembers(newMembers);
+  }, [companyManage]);
 
   return (
     <SafeContainer>

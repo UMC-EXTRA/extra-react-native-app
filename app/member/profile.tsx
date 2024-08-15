@@ -7,13 +7,18 @@ import { Router } from '@/scripts/router';
 import colors from '@/constants/Colors';
 import getSize from '@/scripts/getSize';
 import { TextWeight600 } from '@/components/Theme/Text';
+
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { initProfile, isMemberProfileState } from '@/redux/slice/profileSlice';
 import { getMemberProfile } from '@/api/signController';
 
 const ProfileScreen = () => {
+  const profile = useAppSelector(state => state.profile);
+  const dispatch = useAppDispatch();
+
   const [data, setData] = useState({
     name: '',
-    sex: 0,
-    companyName: '',
+    sex: true,
     age: 0,
   });
   const [profileImage, setProfileImage] = useState('');
@@ -31,17 +36,65 @@ const ProfileScreen = () => {
     }
   };
 
+  const getAge = (birth: string) => {
+    const today = new Date();
+    const birthDate = new Date(birth);
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  };
+
   useEffect(() => {
-    getMemberProfile().then(res => {
-      if (res != null) {
+    if (profile.name === '') {
+      getMemberProfile().then(res => {
+        if (res !== null) {
+          setData({
+            name: res.name,
+            sex: res.sex,
+            age: getAge(res.birthday),
+          });
+
+          dispatch(
+            initProfile({
+              name: res.name,
+              info: {
+                birthday: res.birthday,
+                home: res.home,
+                introduction: res.introduction,
+                license: res.license,
+                pros: res.pros,
+                height: res.height,
+                weight: res.weight,
+                tattoo: {
+                  face: res.face,
+                  back: res.back,
+                  arm: res.arm,
+                  leg: res.leg,
+                  hand: res.hand,
+                  shoulder: res.shoulder,
+                  chest: res.chest,
+                  feet: res.feet,
+                  etc: res.etc,
+                },
+              },
+            }),
+          );
+        }
+      });
+    } else {
+      if (isMemberProfileState(profile)) {
+        setData({
+          name: profile.name,
+          sex: profile.info.sex,
+          age: getAge(profile.info.birthday),
+        });
       }
-    });
-    setData({
-      name: '박지민',
-      sex: 1,
-      companyName: '탑소와',
-      age: 24,
-    });
+    }
   }, []);
 
   return (
@@ -121,9 +174,8 @@ const ProfileScreen = () => {
           <TextWeight600 size={20}>이름 : {data.name}</TextWeight600>
           <View style={styles.profileInfoLine}>
             <TextWeight600 size={15}>
-              성별 : {data.sex === 1 ? '남' : data.sex === 2 ? '여' : ''}
+              성별 : {data.sex ? '남' : '여'}
             </TextWeight600>
-            <TextWeight600 size={15}>소속사 : {data.companyName}</TextWeight600>
           </View>
           <View style={styles.profileInfoLine}>
             <TextWeight600 size={15}>나이 : {data.age}세</TextWeight600>

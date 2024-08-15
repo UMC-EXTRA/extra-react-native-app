@@ -2,17 +2,19 @@ import { useLocalSearchParams } from 'expo-router';
 import WebViewContainer from '@/components/WebViewContainer';
 import { SafeContainer } from '@/components/Container';
 
-const MemberIdScreen = () => {
-  const { member_id } = useLocalSearchParams();
+const ApplicantDetailScreen = () => {
+  const { memberId, memberName, history } = useLocalSearchParams();
 
   return (
     <SafeContainer>
       <WebViewContainer
-        uri=""
+        uri="/applicants/detail"
+        history={`${history}`}
         dataForWebView={{
           type: 'POST_DATA',
           payload: {
-            member_id: member_id,
+            id: memberId,
+            name: memberName,
           },
           version: '1.0',
         }}
@@ -21,4 +23,4 @@ const MemberIdScreen = () => {
   );
 };
 
-export default MemberIdScreen;
+export default ApplicantDetailScreen;

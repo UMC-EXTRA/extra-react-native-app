@@ -1,7 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { SafeContainer } from '@/components/Container';
 import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
-import { Router } from '@/scripts/router';
 
 const JobPostIdScreen = () => {
   const { history, uri: webViewURI } = useLocalSearchParams();

@@ -8,7 +8,15 @@ import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
-import { initManageState, setJobPostId } from '@/redux/manage/manageSlice';
+import { dummyApplicantList } from '@/api/dummyData';
+// import { ApplicantInterface } from '@/api/interface';
+// import { getApplicantsByRoleId } from '@/api/manageController';
+
+import {
+  setJobPostId,
+  setRoleData,
+  setRoleApplicantData,
+} from '@/redux/manage/companyManageSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 const ManageScreen = () => {
@@ -19,16 +27,38 @@ const ManageScreen = () => {
       const typedData = data as MessageType & {
         payload: {
           job_post_id: number;
+          roleIdList: number[];
+          roleNameList: string[];
         };
       };
       dispatch(setJobPostId(typedData.payload.job_post_id));
+      dispatch(
+        setRoleData({
+          roleIdList: typedData.payload.roleIdList,
+          roleNameList: typedData.payload.roleNameList,
+        }),
+      );
+
+      console.log(data);
+
+      // let roleApplicantData: ApplicantInterface[][] = [];
+      // .forEach(applicantList => {
+      //   roleApplicantData.push(applicantList);
+      // });
+      // typedData.payload.roleIdList.forEach((id, index) => {
+      //   // getApplicantsByRoleId(id).then(res => {
+      //   //   if (res !== null) {
+      //   //     setRoleApplicantData(res);
+      //   //   }
+      //   // });
+
+      // });
+      // dispatch(setRoleApplicantData(roleApplicantData));
+      dispatch(setRoleApplicantData(dummyApplicantList));
+
       Router.push('/company/manage/detail');
     }
   };
-
-  useEffect(() => {
-    dispatch(initManageState({ type: 'company' }));
-  }, []);
 
   return (
     <MainContainer>
@@ -77,7 +107,7 @@ const ManageScreen = () => {
       >
         촬영 목록
       </MainText>
-      <WebViewContainer uri="/company/manage" onMessage={onMessage} />
+      <WebViewContainer uri="/company-shoot-manage" onMessage={onMessage} />
     </MainContainer>
   );
 };

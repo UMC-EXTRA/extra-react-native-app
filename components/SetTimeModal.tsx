@@ -11,9 +11,8 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-import { isCompanyManageState } from '@/redux/manage/stateTypes';
-import { setGlobalClockTime } from '@/redux/manage/manageSlice';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
+import { setGlobalClockTime } from '@/redux/manage/companyManageSlice';
 
 interface Props {
   show: boolean;
@@ -83,7 +82,6 @@ interface SetTimeModalProps {
 }
 
 const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
-  const manage = useAppSelector(state => state.manage);
   const dispatch = useAppDispatch();
 
   const [moon, setMoon] = useState(true);
@@ -161,9 +159,7 @@ const SetTimeModal = ({ setDisplay, type }: SetTimeModalProps) => {
             text="확인"
             onPress={() => {
               const time = `${moon ? hour : hour + 12}:${minute < 10 ? '0' : ''}${minute}`;
-              if (isCompanyManageState(manage)) {
-                dispatch(setGlobalClockTime({ type, time }));
-              }
+              dispatch(setGlobalClockTime({ type, time }));
               setDisplay(false);
               Router.push(`/company/manage/clock-${type}`);
             }}

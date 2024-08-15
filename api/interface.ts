@@ -35,10 +35,18 @@ interface MemberSignUpInterface {
   tattooCreate: MemberTattoInterface;
 }
 
+interface ApplicantInterface {
+  id: number;
+  memberId: number;
+  name: string;
+  applyStatus: string;
+}
+
 export {
   LoginInterface,
   SignUpInterface,
   MemberSignUpInterface,
   MemberCreateInterface,
   MemberTattoInterface,
+  ApplicantInterface,
 };

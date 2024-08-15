@@ -97,6 +97,26 @@ export const requestFetch = async (
   return null;
 };
 
+export const requestPostFetch = async (url: string, data: object) => {
+  return await requestFetch(url, 'POST', data, {
+    'Content-Type': 'application/json',
+  });
+};
+
+export const requestPutFetch = async (url: string, data: object) => {
+  return await requestFetch(url, 'PUT', data, {
+    'Content-Type': 'application/json',
+  });
+};
+
+export const requestGetFetch = async (url: string) => {
+  return await requestFetch(url, 'GET');
+};
+
+export const requestDeleteFetch = async (url: string) => {
+  return await requestFetch(url, 'DELETE');
+};
+
 export const encryptAccessToken = (accessToken: string) => {
   const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
   const iv = CryptoJS.lib.WordArray.random(16);

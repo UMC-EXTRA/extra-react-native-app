@@ -2,8 +2,7 @@ import Camera from '@/components/Camera';
 import { useLocalSearchParams } from 'expo-router';
 import { Router } from '@/scripts/router';
 
-import { isCompanyManageState } from '@/redux/manage/stateTypes';
-import { confirmClothes } from '@/redux/manage/manageSlice';
+import { confirmClothes } from '@/redux/manage/companyManageSlice';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 
 export default function CameraScreen() {
@@ -16,9 +15,7 @@ export default function CameraScreen() {
     <Camera
       backLink="/company/manage/confirm-clothes"
       onConfirm={() => {
-        if (isCompanyManageState(manage)) {
-          dispatch(confirmClothes({ id: Number(memberId) }));
-        }
+        dispatch(confirmClothes({ id: Number(memberId) }));
         Router.navigate('/company/manage/confirm-clothes');
       }}
     />
