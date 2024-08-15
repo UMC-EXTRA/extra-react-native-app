@@ -88,9 +88,10 @@ const WebViewContainer = ({
 
   useEffect(() => {
     if (dataForWebView) {
+      console.log(dataForWebView);
       sendMessage(dataForWebView);
     }
-  }, []);
+  }, [dataForWebView]);
 
   const INJECTEDJAVASCRIPT = `
     const metaList = [
