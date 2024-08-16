@@ -1,10 +1,9 @@
-import { ApplicantInterface } from './interface';
+import { ApplicantInterface, AttendanceMembersInterface } from './interface';
 
 import * as Utils from './utils';
 
-const SERVER_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}`;
-const API_URL = SERVER_URL + '/api/v1/';
-const APPLICANT_API_URL = API_URL + 'application-request/';
+const APPLICANT_API_URL = 'application-request/';
+const ATTENDANCE_API_URL = 'attendance-management/';
 
 export const getApplicantsByRoleId = async (
   roleId: number,
@@ -25,5 +24,33 @@ export const getApplicantsByRoleId = async (
     console.error(err);
   }
 
+  return null;
+};
+
+export const getAttendanceMembersByJobPostId = async (
+  job_post_id: number,
+  page: number,
+  sort: boolean,
+): Promise<AttendanceMembersInterface[] | null> => {
+  try {
+    const sorting = sort === true ? 'asc' : 'desc';
+    const res = await Utils.requestGetFetch(
+      ATTENDANCE_API_URL +
+        'company/job-posts/' +
+        job_post_id +
+        '/members?page=' +
+        page +
+        '&sort=' +
+        sorting,
+    );
+
+    if (res !== null) {
+      if (res.status === 200) {
+        return res.json();
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
   return null;
 };

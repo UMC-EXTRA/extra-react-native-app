@@ -1,9 +1,8 @@
 import { Pressable, Keyboard } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 
 import { FormButton } from '@/components/Theme/Button';
-import { Input, FormMainText, SelectInput } from '@/components/Form';
+import { FormMainText, SelectInput } from '@/components/Form';
 import { Container } from '@/components/Container';
 import { BackHeaderContainer } from '@/components/Container';
 import { Router } from '@/scripts/router';
@@ -12,31 +11,13 @@ import TermModal from '@/components/TermModal';
 
 import * as Permissions from '@/scripts/permission';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setBasicData, isCompanySignUpState } from '@/redux/slice/signUpSlice';
+import { useAppSelector } from '@/redux/hooks';
+import { isCompanySignUpState } from '@/redux/slice/signUpSlice';
 import { signUpCompany } from '@/api/signController';
-
-type FormData = {
-  email: string;
-  password: string;
-};
 
 // Main form page for '업체' users
 const BasicFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
-  const dispatch = useAppDispatch();
-
-  // Initialize form data
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<FormData>({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
 
   const [display, setDisplay] = useState(false);
   const [termComplete, setTermComplete] = useState(false);
@@ -60,42 +41,6 @@ const BasicFormScreen = () => {
         <Container>
           <FormMainText />
 
-          {/* email input */}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              pattern: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="이메일을 입력해주세요."
-                inputMode="email"
-                keyboardType="email-address"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-            name="email"
-          />
-
-          {/* password input */}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="비밀번호을 입력해주세요."
-                secureTextEntry
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-            name="password"
-          />
-
           {/* link button to company form */}
           <SelectInput
             condition={isCompanySignUpState(signUp) && signUp.enteredName}
@@ -115,15 +60,11 @@ const BasicFormScreen = () => {
 
           {/* submit button */}
           <FormButton
-            valid={isValid && complete}
-            onPress={handleSubmit(data => {
+            valid={complete}
+            onPress={() => {
               if (termComplete) {
-                // save data
-                dispatch(setBasicData(data));
-
                 signUpCompany({
-                  email: data.email,
-                  password: data.password,
+                  accountId: signUp.accountId,
                   name: signUp.name,
                 }).then(res => {
                   if (res) {
@@ -147,7 +88,7 @@ const BasicFormScreen = () => {
                 // if checking terms is not completion, open term modal
                 setDisplay(true);
               }
-            })}
+            }}
             text="다음"
           />
         </Container>

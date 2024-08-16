@@ -9,10 +9,15 @@ import getSize from '@/scripts/getSize';
 import { TextWeight600 } from '@/components/Theme/Text';
 import { getCompanyProfile } from '@/api/signController';
 
+import * as Linking from 'expo-linking';
+import { initProfile } from '@/redux/slice/profileSlice';
+import { useAppDispatch } from '@/redux/hooks';
+
 const ProfileScreen = () => {
+  const dispatch = useAppDispatch();
   const [data, setData] = useState({
     name: '',
-    companyName: '',
+    url: '',
   });
   const [profileImage, setProfileImage] = useState('');
 
@@ -30,14 +35,21 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
-    // getCompanyProfile().then(res => {
-    //   if (res !== null) {
-    //     console.log(res);
-    //   }
-    // });
-    setData({
-      name: '테스트',
-      companyName: '테스트회사',
+    getCompanyProfile().then(res => {
+      if (res !== null) {
+        dispatch(
+          initProfile({
+            name: res.name,
+            info: {
+              url: res.url,
+            },
+          }),
+        );
+        setData({
+          name: res.name,
+          url: res.url,
+        });
+      }
     });
   }, []);
 
@@ -111,15 +123,26 @@ const ProfileScreen = () => {
         </TouchableOpacity>
         <View
           style={{
-            height: getSize(82),
+            height: getSize(60),
             justifyContent: 'space-between',
           }}
         >
-          <TextWeight600 size={20}>이름 : {data.name}</TextWeight600>
+          <TextWeight600 size={20}>소속사 : {data.name}</TextWeight600>
           <View style={styles.profileInfoLine}>
-            <TextWeight600 size={15}>소속사 : {data.companyName}</TextWeight600>
+            <TextWeight600 size={15}>회사 페이지 : </TextWeight600>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(data.url);
+              }}
+            >
+              <TextWeight600
+                size={15}
+                style={{ textDecorationLine: 'underline' }}
+              >
+                링크
+              </TextWeight600>
+            </TouchableOpacity>
           </View>
-          <View style={styles.profileInfoLine} />
         </View>
       </View>
     </SettingContainer>
@@ -130,7 +153,6 @@ const styles = StyleSheet.create({
   profileInfoLine: {
     width: getSize(180),
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
 

@@ -8,10 +8,39 @@ import { Router } from '@/scripts/router';
 
 import * as Utils from './utils';
 
-const SERVER_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}`;
-const API_URL = SERVER_URL + '/api/v1/';
-const MEMBER_API_URL = API_URL + 'members';
-const COMPANY_API_URL = API_URL + 'companies';
+const ACCOUNT_API_URL = 'account';
+const MEMBER_API_URL = 'members';
+const COMPANY_API_URL = 'companies';
+const KAKAO_API_URL = 'oauth/';
+
+export async function signUpAccount(
+  data: LoginInterface,
+  type: string,
+): Promise<object | null> {
+  try {
+    const res = await Utils.requestFetchWithOutToken(
+      `${ACCOUNT_API_URL}/signup`,
+      'POST',
+      {
+        ...data,
+        userRole: type === 'member' ? 'USER' : 'COMPANY',
+      },
+    );
+
+    if (res.status === 200) {
+      return res.json();
+    } else if (res.status === 400) {
+      const message = '이미 존재하는 유저입니다.';
+      Alert.alert('이메일 중복', message);
+    } else {
+      const error = await res.json();
+      throw new Error(error.message || 'An error occurred');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
+}
 
 // 보초출연자 회원가입
 export async function signUpMember(
@@ -78,7 +107,10 @@ export async function login(
     const res = await Utils.requestFetchWithOutToken(
       `${type === 'member' ? MEMBER_API_URL : COMPANY_API_URL}` + '/login',
       'POST',
-      data,
+      {
+        ...data,
+        userRole: type === 'member' ? 'USER' : 'COMPANY',
+      },
     );
 
     if (res.status === 200) {
@@ -138,7 +170,7 @@ export async function logout(type: string) {
   Router.replace('/sign');
 }
 
-interface ProfileResponse {
+interface MemberProfileInterface {
   name: string;
   sex: boolean;
   birthday: string;
@@ -156,10 +188,9 @@ interface ProfileResponse {
   shoulder: boolean;
   chest: boolean;
   feet: boolean;
-  etc: string;
 }
 
-export async function getMemberProfile(): Promise<ProfileResponse | null> {
+export async function getMemberProfile(): Promise<MemberProfileInterface | null> {
   try {
     const res = await Utils.requestGetFetch(MEMBER_API_URL);
 
@@ -179,7 +210,12 @@ export async function getMemberProfile(): Promise<ProfileResponse | null> {
   return null;
 }
 
-export async function getCompanyProfile(): Promise<object | null> {
+interface CompanyProfileResponse {
+  name: string;
+  url: string;
+}
+
+export async function getCompanyProfile(): Promise<CompanyProfileResponse | null> {
   try {
     const res = await Utils.requestGetFetch(COMPANY_API_URL);
 
@@ -198,3 +234,55 @@ export async function getCompanyProfile(): Promise<object | null> {
 
   return null;
 }
+
+interface AuthorizationInterface {
+  url?: string;
+}
+
+export const getRedirectURI =
+  async (): Promise<AuthorizationInterface | null> => {
+    try {
+      const res = await Utils.requestFetchWithOutToken(
+        KAKAO_API_URL + 'authorize',
+        'GET',
+      );
+
+      if (res.status === 200) {
+        const accessToken = await res.headers.get('authorization');
+        if (accessToken) {
+          Utils.storeToken(accessToken.slice(7));
+          return {};
+        } else {
+          return res.json();
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    return null;
+  };
+
+export const kakaoLogin = async (
+  code: string,
+  type: string,
+): Promise<object | null> => {
+  try {
+    const res = await Utils.requestFetchWithOutToken(
+      KAKAO_API_URL + 'kakao?code=' + code,
+      'POST',
+      {
+        userRole: type === 'member' ? 'USER' : 'COMPANY',
+      },
+    );
+
+    if (res.status === 200) {
+      console.log(res);
+      return res;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return null;
+};

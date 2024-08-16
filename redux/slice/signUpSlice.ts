@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type {
   SignUpInterface,
   MemberCreateInterface,
-  MemberTattoInterface,
+  TattooInterface,
 } from '@/api/interface';
 
 type Term = {
@@ -21,7 +21,7 @@ interface SignUpStateInterface extends SignUpInterface {
 interface MemberSignUpStateInterface extends MemberCreateInterface {
   type: string;
   terms: (Term | undefined)[];
-  tatto: MemberTattoInterface;
+  tattoo: TattooInterface;
   hasTatto: boolean;
   enteredTatto: boolean;
   enteredAccount: boolean;
@@ -33,16 +33,14 @@ interface CompanySignUpStateInferface extends SignUpStateInterface {
 
 const initialState: SignUpStateInterface = {
   type: '',
-  email: '',
-  password: '',
   name: '',
+  accountId: 0,
   terms: [],
 };
 
 const memberInitState: MemberSignUpStateInterface = {
   type: 'member',
-  email: '',
-  password: '',
+  accountId: 0,
   name: '',
   sex: false,
   birthday: '',
@@ -54,7 +52,7 @@ const memberInitState: MemberSignUpStateInterface = {
   accountNumber: '',
   enteredTatto: false,
   hasTatto: false,
-  tatto: {
+  tattoo: {
     face: false,
     chest: false,
     arm: false,
@@ -63,7 +61,6 @@ const memberInitState: MemberSignUpStateInterface = {
     back: false,
     hand: false,
     feet: false,
-    etc: '',
   },
   enteredAccount: false,
   terms: [],
@@ -71,18 +68,17 @@ const memberInitState: MemberSignUpStateInterface = {
 
 const companyInitState: CompanySignUpStateInferface = {
   type: 'company',
-  email: '',
-  password: '',
+  accountId: 0,
   name: '',
   enteredName: false,
   terms: [],
 };
 
-type tattoNamesType = {
-  [key in keyof MemberTattoInterface]: string;
+type tattooNamesType = {
+  [key in keyof TattooInterface]: string;
 };
 
-const tattoNames: tattoNamesType = {
+const tattooNames: tattooNamesType = {
   face: '얼굴',
   chest: '가슴',
   arm: '팔',
@@ -91,7 +87,6 @@ const tattoNames: tattoNamesType = {
   back: '등',
   hand: '손',
   feet: '발',
-  etc: '기타',
 };
 
 const isMemberSignUpState = (
@@ -102,7 +97,7 @@ const isCompanySignUpState = (
   state: SignUpStateInterface,
 ): state is CompanySignUpStateInferface => state.type === 'company';
 
-export { isMemberSignUpState, isCompanySignUpState, tattoNames };
+export { isMemberSignUpState, tattooNames, isCompanySignUpState };
 export type { TermState };
 
 const signUpSlice = createSlice({
@@ -120,28 +115,26 @@ const signUpSlice = createSlice({
         return { ...companyInitState };
       }
     },
+    setAccountId: (state, action: PayloadAction<number>) => {
+      state.accountId = action.payload;
+    },
     setBasicData: (
       state: SignUpStateInterface,
       action: PayloadAction<{
-        email: string;
-        password: string;
-        name?: string;
+        name: string;
         phone?: string;
         sex?: number;
         birthday?: string;
         home?: string;
       }>,
     ) => {
-      state.email = action.payload.email;
-      state.password = action.payload.password;
+      action.payload.name = action.payload.name;
       if (
         isMemberSignUpState(state) &&
-        action.payload.name &&
         action.payload.home &&
         action.payload.birthday &&
         action.payload.phone
       ) {
-        state.name = action.payload.name;
         state.sex = action.payload.sex === 1 ? true : false;
         state.birthday = action.payload.birthday;
         state.phone = action.payload.phone;
@@ -159,12 +152,12 @@ const signUpSlice = createSlice({
     },
     setTattoData: (
       state: SignUpStateInterface,
-      action: PayloadAction<{ hasTatto: boolean; tatto: MemberTattoInterface }>,
+      action: PayloadAction<{ hasTatto: boolean; tattoo: TattooInterface }>,
     ) => {
       if (isMemberSignUpState(state)) {
         state.enteredTatto = true;
         state.hasTatto = action.payload.hasTatto;
-        state.tatto = action.payload.tatto;
+        state.tattoo = action.payload.tattoo;
       }
     },
     setAccountData: (
@@ -200,6 +193,7 @@ const signUpSlice = createSlice({
 
 export const {
   initType,
+  setAccountId,
   setBasicData,
   setPhysicalData,
   setTattoData,

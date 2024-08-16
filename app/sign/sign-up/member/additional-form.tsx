@@ -16,7 +16,7 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
-import type { MemberTattoInterface } from '@/api/interface';
+import type { TattooInterface } from '@/api/interface';
 import { isMemberSignUpState, tattoNames } from '@/redux/slice/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setPhysicalData } from '@/redux/slice/signUpSlice';
@@ -114,8 +114,8 @@ const AdditionalFormScreen = () => {
                 ? `문신 있음 (${Object.entries(tattoNames)
                     .filter(
                       ([key, value]) =>
-                        signUp.tatto &&
-                        signUp.tatto[key as keyof MemberTattoInterface],
+                        signUp.tattoo &&
+                        signUp.tattoo[key as keyof TattooInterface],
                     )
                     .map(([, value]) => value)
                     .join(', ')})`
@@ -164,8 +164,7 @@ const AdditionalFormScreen = () => {
 
               if (isMemberSignUpState(signUp)) {
                 const memberCreate = {
-                  email: signUp.email,
-                  password: signUp.password,
+                  accountId: signUp.accountId,
                   phone: signUp.phone,
                   name: signUp.name,
                   birthday: signUp.birthday.replace(
@@ -184,7 +183,7 @@ const AdditionalFormScreen = () => {
 
                 signUpMember({
                   memberCreate: memberCreate,
-                  tattooCreate: signUp.tatto,
+                  tattooCreate: signUp.tattoo,
                 }).then(res => {
                   if (res) {
                     // request app permissions

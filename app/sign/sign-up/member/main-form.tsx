@@ -24,8 +24,6 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setBasicData } from '@/redux/slice/signUpSlice';
 
 type FormData = {
-  email: string;
-  password: string;
   phone: string;
   name: string;
   birthday: string;
@@ -44,8 +42,6 @@ const MainFormScreen = () => {
     formState: { isValid },
   } = useForm<FormData>({
     defaultValues: {
-      email: '',
-      password: '',
       phone: '',
       name: '',
       birthday: '',
@@ -59,7 +55,7 @@ const MainFormScreen = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Initialize ref for auto-focus
-  const ref_input = getRefInput(5);
+  const ref_input = getRefInput(3);
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
     adjustOffset(index + 1);
@@ -89,54 +85,6 @@ const MainFormScreen = () => {
             <Container>
               <FormMainText />
 
-              {/* email input */}
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                  pattern: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                }}
-                render={({ field: { onChange, value } }) => (
-                  <Input
-                    placeholder="이메일을 입력해주세요."
-                    inputMode="email"
-                    keyboardType="email-address"
-                    value={value}
-                    onChangeText={onChange}
-                    onSubmitEditing={() => focusNext(0)}
-                    onFocus={() => adjustOffset(0)}
-                    ref={ref_input[0]}
-                    style={{
-                      marginBottom: getSize(9),
-                    }}
-                  />
-                )}
-                name="email"
-              />
-
-              {/* password input */}
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, value } }) => (
-                  <Input
-                    placeholder="비밀번호을 입력해주세요."
-                    value={value}
-                    onChangeText={onChange}
-                    onSubmitEditing={() => focusNext(1)}
-                    onFocus={() => adjustOffset(1)}
-                    ref={ref_input[1]}
-                    secureTextEntry
-                    style={{
-                      marginBottom: getSize(9),
-                    }}
-                  />
-                )}
-                name="password"
-              />
-
               {/* phone number input */}
               <Controller
                 control={control}
@@ -150,9 +98,9 @@ const MainFormScreen = () => {
                     keyboardType="phone-pad"
                     value={value}
                     onChangeText={onChange}
-                    onSubmitEditing={() => focusNext(2)}
-                    onFocus={() => adjustOffset(2)}
-                    ref={ref_input[2]}
+                    onSubmitEditing={() => focusNext(0)}
+                    onFocus={() => adjustOffset(0)}
+                    ref={ref_input[0]}
                     style={{
                       marginBottom: getSize(9),
                     }}
@@ -172,9 +120,9 @@ const MainFormScreen = () => {
                     placeholder="이름 입력해주세요."
                     value={value}
                     onChangeText={onChange}
-                    ref={ref_input[3]}
-                    onSubmitEditing={() => focusNext(3)}
-                    onFocus={() => adjustOffset(3)}
+                    ref={ref_input[1]}
+                    onSubmitEditing={() => focusNext(1)}
+                    onFocus={() => adjustOffset(1)}
                     style={{
                       marginBottom: getSize(9),
                     }}
@@ -197,9 +145,9 @@ const MainFormScreen = () => {
                     keyboardType="number-pad"
                     value={value}
                     onChangeText={onChange}
-                    ref={ref_input[4]}
-                    onSubmitEditing={() => focusNext(4)}
-                    onFocus={() => adjustOffset(4)}
+                    ref={ref_input[2]}
+                    onSubmitEditing={() => focusNext(2)}
+                    onFocus={() => adjustOffset(2)}
                     style={{
                       marginBottom: getSize(9),
                     }}
@@ -255,6 +203,7 @@ const MainFormScreen = () => {
                 onPress={handleSubmit(data => {
                   // save basic data
                   dispatch(setBasicData(data));
+
                   // move to additional form
                   Router.push('/sign/sign-up/member/additional-form');
                 })}

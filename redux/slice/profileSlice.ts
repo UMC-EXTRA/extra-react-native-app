@@ -47,6 +47,12 @@ type MemberState = SliceState & {
   };
 };
 
+type CompanyState = SliceState & {
+  info: {
+    url: string;
+  };
+};
+
 const initialState: SliceState = {
   type: '',
   email: '',
@@ -84,7 +90,24 @@ const memberInitState: MemberState = {
   },
 };
 
+const companyInitState: CompanyState = {
+  type: 'company',
+  email: '',
+  name: '',
+  requiredTerms: [],
+  eventNoticeAgree: false,
+  info: {
+    url: '',
+  },
+};
+
 export const isMemberProfileState = (
+  state: SliceState,
+): state is MemberState => {
+  return state.type === 'member';
+};
+
+export const isCompanyProfileState = (
   state: SliceState,
 ): state is MemberState => {
   return state.type === 'member';
@@ -98,7 +121,7 @@ const profileSlice = createSlice({
       if (action.payload === 'member') {
         return memberInitState;
       } else {
-        state.type = action.payload;
+        return companyInitState;
       }
     },
     initEmail: (state, action) => {
@@ -106,8 +129,7 @@ const profileSlice = createSlice({
     },
     initProfile: (state, action) => {
       state.name = action.payload.name;
-
-      if (action.payload.info) state.info = action.payload.info;
+      state.info = action.payload.info;
     },
     initTerms: (state, action: PayloadAction<TermState>) => {
       action.payload
