@@ -3,8 +3,9 @@ interface LoginInterface {
   password: string;
 }
 
-interface SignUpInterface extends LoginInterface {
+interface SignUpInterface {
   name: string;
+  accountId: number;
 }
 
 interface MemberCreateInterface extends SignUpInterface {
@@ -18,7 +19,7 @@ interface MemberCreateInterface extends SignUpInterface {
   accountNumber: string;
 }
 
-interface MemberTattoInterface {
+interface TattooInterface {
   face: boolean;
   chest: boolean;
   arm: boolean;
@@ -27,12 +28,11 @@ interface MemberTattoInterface {
   back: boolean;
   hand: boolean;
   feet: boolean;
-  etc: string;
 }
 
 interface MemberSignUpInterface {
   memberCreate: MemberCreateInterface;
-  tattooCreate: MemberTattoInterface;
+  tattooCreate: TattooInterface;
 }
 
 interface ApplicantInterface {
@@ -42,11 +42,20 @@ interface ApplicantInterface {
   applyStatus: string;
 }
 
+interface AttendanceMembersInterface {
+  id: number;
+  memberId: number;
+  memberName: string;
+  roleName: string;
+  isAttended: boolean;
+}
+
 export {
   LoginInterface,
   SignUpInterface,
   MemberSignUpInterface,
   MemberCreateInterface,
-  MemberTattoInterface,
+  TattooInterface,
   ApplicantInterface,
+  AttendanceMembersInterface,
 };

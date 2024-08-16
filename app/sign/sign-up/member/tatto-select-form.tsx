@@ -32,7 +32,6 @@ const TattoFormScreen = () => {
     back: false,
     hand: false,
     feet: false,
-    etc: '',
   });
   const [complete, setComplete] = useState(false);
 
@@ -79,28 +78,6 @@ const TattoFormScreen = () => {
             justifyContent: 'space-between',
           }}
         >
-          {/* '없음' button */}
-          <GradientSelectInput
-            value={!hasTatto}
-            setValue={() => {
-              setHasTatto(!hasTatto);
-              setTatto({
-                face: false,
-                chest: false,
-                arm: false,
-                leg: false,
-                shoulder: false,
-                back: false,
-                hand: false,
-                feet: false,
-                etc: '',
-              });
-            }}
-            placeholder="없음"
-            style={{
-              marginBottom: getSize(15),
-            }}
-          />
           {/* tatto buttons */}
           {Object.keys(tatto).map(key => {
             const typedKey = key as keyof MemberTattoInterface;
@@ -110,11 +87,7 @@ const TattoFormScreen = () => {
                 value={Boolean(tatto[typedKey])}
                 setValue={() => {
                   const newTatto = { ...tatto };
-                  if (typedKey === 'etc') {
-                    newTatto['etc'] = newTatto['etc'] === '' ? '기타' : '';
-                  } else {
-                    newTatto[typedKey] = !newTatto[typedKey];
-                  }
+                  newTatto[typedKey] = !newTatto[typedKey];
                   setTatto(newTatto);
                   setHasTatto(true);
                 }}
@@ -125,6 +98,32 @@ const TattoFormScreen = () => {
               />
             );
           })}
+
+          <View
+            style={{
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            {/* '없음' button */}
+            <GradientSelectInput
+              value={!hasTatto}
+              setValue={() => {
+                setHasTatto(!hasTatto);
+                setTatto({
+                  face: false,
+                  chest: false,
+                  arm: false,
+                  leg: false,
+                  shoulder: false,
+                  back: false,
+                  hand: false,
+                  feet: false,
+                });
+              }}
+              placeholder="없음"
+            />
+          </View>
         </View>
         {/* submit button */}
         <FormButton

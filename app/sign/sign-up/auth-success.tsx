@@ -4,11 +4,8 @@ import { ConfirmButton } from '@/components/Theme/Button';
 import { MainText } from '@/components/Theme/Text';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
-import { useAppSelector } from '@/redux/hooks';
 
 const AuthSucessScreen = () => {
-  const type = useAppSelector(state => state.signUp.type);
-
   return (
     <BackHeaderContainer>
       <Container style={{ paddingTop: getSize(219) }}>
@@ -17,7 +14,7 @@ const AuthSucessScreen = () => {
         </MainText>
         <ConfirmButton
           style={{ marginTop: getSize(35) }}
-          onPress={() => Router.push(`/sign/sign-up/${type}/main-form`)}
+          onPress={() => Router.push(`/sign/sign-up/main-form`)}
           text="회원가입 하러가기"
         />
       </Container>

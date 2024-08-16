@@ -2,6 +2,9 @@ import { hmacSHA256 } from 'react-native-hmac';
 import CryptoJS from 'react-native-crypto-js';
 import * as SecureStore from 'expo-secure-store';
 
+const SERVER_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}`;
+const API_URL = SERVER_URL + '/api/v1/';
+
 import { initializeKakaoSDK } from '@react-native-kakao/core';
 import { login, logout } from '@react-native-kakao/user';
 
@@ -40,12 +43,11 @@ export const getToken = async () => {
 export const requestFetchWithOutToken = async (
   url: string,
   method: string,
-  data: object,
+  data?: object,
   option?: object,
 ) => {
   const headers_config = {
     Accept: '*/*',
-    'Content-Type': 'application/json',
   };
 
   const requestHeaders: HeadersInit = new Headers();
@@ -55,11 +57,21 @@ export const requestFetchWithOutToken = async (
     requestHeaders.set(key, value);
   });
 
-  return await fetch(url, {
-    method,
-    headers: requestHeaders,
-    body: JSON.stringify(data),
-  });
+  const URL = API_URL + url;
+
+  if (data) {
+    requestHeaders.set('Content-Type', 'application/json');
+    return await fetch(URL, {
+      method,
+      headers: requestHeaders,
+      body: JSON.stringify(data),
+    });
+  } else {
+    return await fetch(URL, {
+      method,
+      headers: requestHeaders,
+    });
+  }
 };
 
 export const requestFetch = async (
@@ -80,14 +92,16 @@ export const requestFetch = async (
       });
     }
 
+    const URL = API_URL + url;
+
     if (data) {
-      return await fetch(url, {
+      return await fetch(URL, {
         method,
         headers: requestHeaders,
         body: JSON.stringify(data),
       });
     } else {
-      return await fetch(url, {
+      return await fetch(URL, {
         method,
         headers: requestHeaders,
       });
