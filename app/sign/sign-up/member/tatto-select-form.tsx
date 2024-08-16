@@ -10,20 +10,20 @@ import getSize from '@/scripts/getSize';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
-  setTattoData,
+  setTattooData,
   isMemberSignUpState,
-  tattoNames,
+  tattooNames,
 } from '@/redux/slice/signUpSlice';
-import type { MemberTattoInterface } from '@/api/interface';
+import type { TattooInterface } from '@/api/interface';
 
-// Select tatto page
-const TattoFormScreen = () => {
+// Select tattoo page
+const tattooFormScreen = () => {
   const signUp = useAppSelector(state => state.signUp);
   const dispatch = useAppDispatch();
 
-  // Initialize tatto data state
-  const [hasTatto, setHasTatto] = useState<boolean>(false);
-  const [tatto, setTatto] = useState<MemberTattoInterface>({
+  // Initialize tattoo data state
+  const [hasTattoo, setHasTattoo] = useState<boolean>(false);
+  const [tattoo, setTattoo] = useState<TattooInterface>({
     face: false,
     chest: false,
     arm: false,
@@ -35,35 +35,35 @@ const TattoFormScreen = () => {
   });
   const [complete, setComplete] = useState(false);
 
-  // Load previously saved tatto data
+  // Load previously saved tattoo data
   useEffect(() => {
-    if (isMemberSignUpState(signUp) && signUp.enteredTatto) {
+    if (isMemberSignUpState(signUp) && signUp.enteredTattoo) {
       setComplete(true);
-      setHasTatto(signUp.hasTatto);
-      setTatto(signUp.tatto);
+      setHasTattoo(signUp.hasTattoo);
+      setTattoo(signUp.tattoo);
     }
   }, [signUp]);
 
   // Check complete
   useEffect(() => {
-    if (Object.values(tatto).filter(value => value).length > 0 || !hasTatto) {
+    if (Object.values(tattoo).filter(value => value).length > 0 || !hasTattoo) {
       setComplete(true);
     } else {
       setComplete(false);
     }
-  }, [hasTatto, tatto]);
+  }, [hasTattoo, tattoo]);
 
   /**
-   * Check if tattos is selected
-   * if tatto is selected, hasTatto is true
+   * Check if tattoos is selected
+   * if tattoo is selected, hastattoo is true
    */
   useEffect(() => {
-    if (Object.values(tatto).filter(value => value).length > 0) {
-      setHasTatto(true);
+    if (Object.values(tattoo).filter(value => value).length > 0) {
+      setHasTattoo(true);
     } else {
-      setHasTatto(false);
+      setHasTattoo(false);
     }
-  }, [tatto]);
+  }, [tattoo]);
 
   return (
     <BackHeaderContainer>
@@ -78,20 +78,20 @@ const TattoFormScreen = () => {
             justifyContent: 'space-between',
           }}
         >
-          {/* tatto buttons */}
-          {Object.keys(tatto).map(key => {
-            const typedKey = key as keyof MemberTattoInterface;
+          {/* tattoo buttons */}
+          {Object.keys(tattoo).map(key => {
+            const typedKey = key as keyof TattooInterface;
             return (
               <GradientSelectInput
                 key={typedKey}
-                value={Boolean(tatto[typedKey])}
+                value={Boolean(tattoo[typedKey])}
                 setValue={() => {
-                  const newTatto = { ...tatto };
-                  newTatto[typedKey] = !newTatto[typedKey];
-                  setTatto(newTatto);
-                  setHasTatto(true);
+                  const newTattoo = { ...tattoo };
+                  newTattoo[typedKey] = !newTattoo[typedKey];
+                  setTattoo(newTattoo);
+                  setHasTattoo(true);
                 }}
-                placeholder={tattoNames[typedKey]}
+                placeholder={tattooNames[typedKey]}
                 style={{
                   marginBottom: getSize(15),
                 }}
@@ -107,10 +107,10 @@ const TattoFormScreen = () => {
           >
             {/* '없음' button */}
             <GradientSelectInput
-              value={!hasTatto}
+              value={!hasTattoo}
               setValue={() => {
-                setHasTatto(!hasTatto);
-                setTatto({
+                setHasTattoo(!hasTattoo);
+                setTattoo({
                   face: false,
                   chest: false,
                   arm: false,
@@ -130,7 +130,7 @@ const TattoFormScreen = () => {
           valid={complete}
           style={{ marginTop: getSize(88), marginBottom: getSize(49) }}
           onPress={() => {
-            dispatch(setTattoData({ hasTatto, tatto }));
+            dispatch(setTattooData({ hasTattoo, tattoo }));
             Router.back();
           }}
           text="다음"
@@ -140,4 +140,4 @@ const TattoFormScreen = () => {
   );
 };
 
-export default TattoFormScreen;
+export default tattooFormScreen;

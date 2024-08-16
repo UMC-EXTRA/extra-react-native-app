@@ -190,7 +190,7 @@ const MainFormScreen = () => {
                     value={value}
                     onChangeText={onChange}
                     style={{
-                      marginBottom: getSize(63),
+                      marginBottom: getSize(195),
                     }}
                   />
                 )}

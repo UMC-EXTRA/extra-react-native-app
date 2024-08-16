@@ -8,10 +8,10 @@ import {
   Pressable,
   Keyboard,
   Alert,
-  Linking,
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useForm, Controller } from 'react-hook-form';
+import * as Linking from 'expo-linking';
 
 import { weight800, weight200, MainText } from '@/components/Theme/Text';
 import { FormButton } from '@/components/Theme/Button';
@@ -52,6 +52,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     const handleDeepLink = (event: { url: string }) => {
+      console.log(event);
       const url = event.url;
       const result = url.split('code=')[1];
       if (result) {
@@ -253,7 +254,12 @@ const LoginScreen = () => {
                 getRedirectURI().then(async res => {
                   if (res !== null) {
                     if (res.url) {
-                      await Linking.openURL(res.url);
+                      Router.push({
+                        pathname: '/sign/kakao-login',
+                        params: {
+                          uri: res.url,
+                        },
+                      });
                     } else {
                       Router.replace(`/${type}`);
                     }

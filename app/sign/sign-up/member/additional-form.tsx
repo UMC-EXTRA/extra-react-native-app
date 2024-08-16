@@ -17,7 +17,7 @@ import getSize from '@/scripts/getSize';
 import TermModal from '@/components/TermModal';
 
 import type { TattooInterface } from '@/api/interface';
-import { isMemberSignUpState, tattoNames } from '@/redux/slice/signUpSlice';
+import { isMemberSignUpState, tattooNames } from '@/redux/slice/signUpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setPhysicalData } from '@/redux/slice/signUpSlice';
 
@@ -53,7 +53,7 @@ const AdditionalFormScreen = () => {
   useEffect(() => {
     if (
       isMemberSignUpState(signUp) &&
-      signUp.enteredTatto &&
+      signUp.enteredTattoo &&
       signUp.enteredAccount &&
       termComplete
     )
@@ -106,12 +106,12 @@ const AdditionalFormScreen = () => {
 
           {/* link button to tatto form */}
           <SelectInput
-            condition={isMemberSignUpState(signUp) && signUp.enteredTatto}
+            condition={isMemberSignUpState(signUp) && signUp.enteredTattoo}
             value={
               isMemberSignUpState(signUp) &&
-              signUp.enteredTatto &&
-              signUp.hasTatto
-                ? `문신 있음 (${Object.entries(tattoNames)
+              signUp.enteredTattoo &&
+              signUp.hasTattoo
+                ? `문신 있음 (${Object.entries(tattooNames)
                     .filter(
                       ([key, value]) =>
                         signUp.tattoo &&

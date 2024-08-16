@@ -13,10 +13,14 @@ const MEMBER_API_URL = 'members';
 const COMPANY_API_URL = 'companies';
 const KAKAO_API_URL = 'oauth/';
 
+type AccountInterface = {
+  id: number;
+};
+
 export async function signUpAccount(
   data: LoginInterface,
   type: string,
-): Promise<object | null> {
+): Promise<AccountInterface | null> {
   try {
     const res = await Utils.requestFetchWithOutToken(
       `${ACCOUNT_API_URL}/signup`,
@@ -27,14 +31,11 @@ export async function signUpAccount(
       },
     );
 
-    if (res.status === 200) {
+    if (res.status === 201) {
       return res.json();
     } else if (res.status === 400) {
       const message = '이미 존재하는 유저입니다.';
       Alert.alert('이메일 중복', message);
-    } else {
-      const error = await res.json();
-      throw new Error(error.message || 'An error occurred');
     }
   } catch (err) {
     console.error(err);
@@ -248,13 +249,7 @@ export const getRedirectURI =
       );
 
       if (res.status === 200) {
-        const accessToken = await res.headers.get('authorization');
-        if (accessToken) {
-          Utils.storeToken(accessToken.slice(7));
-          return {};
-        } else {
-          return res.json();
-        }
+        return res.json();
       }
     } catch (err) {
       console.error(err);
@@ -263,22 +258,35 @@ export const getRedirectURI =
     return null;
   };
 
+type KakaoLoginInterface = {
+  id?: number;
+};
+
 export const kakaoLogin = async (
   code: string,
   type: string,
-): Promise<object | null> => {
+): Promise<KakaoLoginInterface | null> => {
+  const params = {
+    code: code,
+  };
+
+  const query = new URLSearchParams(params).toString();
+  const requrl = KAKAO_API_URL + 'kakao?' + query;
+
   try {
-    const res = await Utils.requestFetchWithOutToken(
-      KAKAO_API_URL + 'kakao?code=' + code,
-      'POST',
-      {
-        userRole: type === 'member' ? 'USER' : 'COMPANY',
-      },
-    );
+    const res = await Utils.requestFetchWithOutToken(requrl, 'POST', {
+      userRole: type === 'member' ? 'USER' : 'COMPANY',
+    });
 
     if (res.status === 200) {
-      console.log(res);
-      return res;
+      const accessToken = await res.headers.get('authorization');
+      if (accessToken && accessToken.startsWith('Bearer ')) {
+        Utils.storeToken(accessToken.slice(7));
+      }
+      return {};
+    }
+    if (res.status === 201) {
+      return res.json();
     }
   } catch (err) {
     console.error(err);

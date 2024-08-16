@@ -22,8 +22,8 @@ interface MemberSignUpStateInterface extends MemberCreateInterface {
   type: string;
   terms: (Term | undefined)[];
   tattoo: TattooInterface;
-  hasTatto: boolean;
-  enteredTatto: boolean;
+  hasTattoo: boolean;
+  enteredTattoo: boolean;
   enteredAccount: boolean;
 }
 
@@ -50,8 +50,8 @@ const memberInitState: MemberSignUpStateInterface = {
   phone: '',
   bank: '',
   accountNumber: '',
-  enteredTatto: false,
-  hasTatto: false,
+  enteredTattoo: false,
+  hasTattoo: false,
   tattoo: {
     face: false,
     chest: false,
@@ -150,13 +150,13 @@ const signUpSlice = createSlice({
         state.weight = action.payload.weight;
       }
     },
-    setTattoData: (
+    setTattooData: (
       state: SignUpStateInterface,
-      action: PayloadAction<{ hasTatto: boolean; tattoo: TattooInterface }>,
+      action: PayloadAction<{ hasTattoo: boolean; tattoo: TattooInterface }>,
     ) => {
       if (isMemberSignUpState(state)) {
-        state.enteredTatto = true;
-        state.hasTatto = action.payload.hasTatto;
+        state.enteredTattoo = true;
+        state.hasTattoo = action.payload.hasTattoo;
         state.tattoo = action.payload.tattoo;
       }
     },
@@ -196,7 +196,7 @@ export const {
   setAccountId,
   setBasicData,
   setPhysicalData,
-  setTattoData,
+  setTattooData,
   setAccountData,
   setCompanyData,
   setTermData,

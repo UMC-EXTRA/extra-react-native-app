@@ -106,7 +106,7 @@ const MainFormScreen = () => {
               // save email and password
               signUpAccount(data, type).then(res => {
                 if (res !== null) {
-                  console.log(res);
+                  dispatch(setAccountId(res.id));
 
                   dispatch(initEmail(data.email));
 
