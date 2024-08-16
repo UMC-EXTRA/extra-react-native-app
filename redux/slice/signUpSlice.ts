@@ -33,14 +33,18 @@ interface CompanySignUpStateInferface extends SignUpStateInterface {
 
 const initialState: SignUpStateInterface = {
   type: '',
-  name: '',
   accountId: 0,
+  email: '',
+  password: '',
+  name: '',
   terms: [],
 };
 
 const memberInitState: MemberSignUpStateInterface = {
   type: 'member',
   accountId: 0,
+  email: '',
+  password: '',
   name: '',
   sex: false,
   birthday: '',
@@ -69,6 +73,8 @@ const memberInitState: MemberSignUpStateInterface = {
 const companyInitState: CompanySignUpStateInferface = {
   type: 'company',
   accountId: 0,
+  email: '',
+  password: '',
   name: '',
   enteredName: false,
   terms: [],
@@ -115,6 +121,13 @@ const signUpSlice = createSlice({
         return { ...companyInitState };
       }
     },
+    setAccount: (
+      state,
+      action: PayloadAction<{ email: string; password: string }>,
+    ) => {
+      state.email = action.payload.email;
+      state.password = action.payload.password;
+    },
     setAccountId: (state, action: PayloadAction<number>) => {
       state.accountId = action.payload;
     },
@@ -128,7 +141,7 @@ const signUpSlice = createSlice({
         home?: string;
       }>,
     ) => {
-      action.payload.name = action.payload.name;
+      state.name = action.payload.name;
       if (
         isMemberSignUpState(state) &&
         action.payload.home &&
@@ -193,6 +206,7 @@ const signUpSlice = createSlice({
 
 export const {
   initType,
+  setAccount,
   setAccountId,
   setBasicData,
   setPhysicalData,

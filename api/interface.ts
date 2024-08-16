@@ -3,7 +3,7 @@ interface LoginInterface {
   password: string;
 }
 
-interface SignUpInterface {
+interface SignUpInterface extends LoginInterface {
   name: string;
   accountId: number;
 }

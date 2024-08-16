@@ -183,7 +183,7 @@ const LoginScreen = () => {
                 color: isValid ? '#000' : '#7D7D7D',
               }}
               onPress={handleSubmit(data => {
-                login(data, type)
+                login(data)
                   .then(res => {
                     if (res) {
                       Alert.alert('로그인 성공', '로그인 되었습니다.', [

@@ -100,18 +100,12 @@ export async function signUpCompany(data: SignUpInterface): Promise<boolean> {
 }
 
 // 로그인
-export async function login(
-  data: LoginInterface,
-  type: string,
-): Promise<boolean> {
+export async function login(data: LoginInterface): Promise<boolean> {
   try {
     const res = await Utils.requestFetchWithOutToken(
-      `${type === 'member' ? MEMBER_API_URL : COMPANY_API_URL}` + '/login',
+      `${ACCOUNT_API_URL}` + '/login',
       'POST',
-      {
-        ...data,
-        userRole: type === 'member' ? 'USER' : 'COMPANY',
-      },
+      data,
     );
 
     if (res.status === 200) {

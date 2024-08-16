@@ -5,9 +5,6 @@ import * as SecureStore from 'expo-secure-store';
 const SERVER_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}`;
 const API_URL = SERVER_URL + '/api/v1/';
 
-import { initializeKakaoSDK } from '@react-native-kakao/core';
-import { login, logout } from '@react-native-kakao/user';
-
 export const storeToken = async (
   accessToken: string,
   refreshToken?: string,
@@ -154,23 +151,4 @@ export const createHmacSignature = async (data: string) => {
   const secretKey = `${process.env.EXPO_PUBLIC_SECRET_KEY}`;
   const signature = await hmacSHA256(data, secretKey);
   return signature;
-};
-
-export const initKakao = () => {
-  initializeKakaoSDK(`${process.env.EXPO_PUBLIC_KAKAO_APP_KEY}`);
-};
-
-export const loginKakao = async (): Promise<string | null> => {
-  try {
-    const token = await login();
-    storeToken(token.accessToken, token.refreshToken);
-    return token.accessToken;
-  } catch (err) {
-    console.error(err);
-  }
-  return null;
-};
-
-export const logoutKakao = () => {
-  logout();
 };

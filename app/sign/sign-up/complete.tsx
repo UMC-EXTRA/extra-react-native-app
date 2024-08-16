@@ -23,7 +23,7 @@ const Complete = () => {
       email: signUp.email,
       password: signUp.password,
     };
-    login(data, type).then(res => {
+    login(data).then(res => {
       if (res) {
         // save email
         dispatch(initEmail(signUp.email));

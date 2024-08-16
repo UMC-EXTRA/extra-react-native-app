@@ -21,12 +21,10 @@ const KakaoLoginScreen = () => {
     if (url.includes(seperator)) {
       const code = url.split(seperator)[1];
       await kakaoLogin(code, type).then(res => {
-        console.log(res);
         if (res !== null) {
           if (res.id) {
             dispatch(setAccountId(res.id));
-            console.log(res.id);
-            Router.replace('/sign/sign-up/main-form');
+            Router.replace(`/sign/sign-up/${type}/main-form`);
           } else {
             Router.replace(`/${type}`);
           }

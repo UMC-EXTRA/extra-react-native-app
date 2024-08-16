@@ -14,9 +14,8 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { setAccountId } from '@/redux/slice/signUpSlice';
+import { setAccount, setAccountId } from '@/redux/slice/signUpSlice';
 import { signUpAccount } from '@/api/signController';
-import { initEmail } from '@/redux/slice/profileSlice';
 
 type FormData = {
   email: string;
@@ -106,9 +105,11 @@ const MainFormScreen = () => {
               // save email and password
               signUpAccount(data, type).then(res => {
                 if (res !== null) {
-                  dispatch(setAccountId(res.id));
+                  // save email, password for auto login
+                  dispatch(setAccount(data));
 
-                  dispatch(initEmail(data.email));
+                  // save accountId for requesting signup
+                  dispatch(setAccountId(res.id));
 
                   // move to info form
                   Router.push(`/sign/sign-up/${type}/main-form`);
