@@ -67,7 +67,6 @@ export const requestFetchWithOutToken = async (
       body: JSON.stringify(data),
     });
   } else {
-    console.log(requestHeaders, method, URL);
     return await fetch(URL, {
       method,
       headers: requestHeaders,
