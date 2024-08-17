@@ -1,13 +1,13 @@
 import { useRef, useEffect, useCallback, useState, memo } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Router } from '@/scripts/router';
 import {
   WebView,
   WebViewMessageEvent,
   WebViewProps,
 } from 'react-native-webview';
-import { createHmacSignature, getToken } from '@/api/utils';
+import { getToken } from '@/api/utils';
 import { encryptAccessToken } from '../api/utils';
 
 export type MessageType = {
@@ -59,13 +59,13 @@ const WebViewContainer = ({
             if (res !== null) {
               const accessToken = res.accessToken;
               const { iv, encryptedData } = encryptAccessToken(accessToken);
-              const signature = createHmacSignature(encryptedData);
+              // const signature = createHmacSignature(encryptedData);
               sendMessage({
                 type: 'AUTHORIZATION',
                 payload: {
                   iv,
                   encryptedData,
-                  signature,
+                  // signature,
                 },
                 version: '1.0',
               });
@@ -88,7 +88,6 @@ const WebViewContainer = ({
 
   useEffect(() => {
     if (dataForWebView) {
-      console.log(dataForWebView);
       sendMessage(dataForWebView);
     }
   }, [dataForWebView]);

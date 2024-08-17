@@ -1,50 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ApplicantInterface } from '@/api/interface';
-
-type Member = {
-  id: number;
-  name: string;
-  sex: boolean;
-  role: string;
-  age: number;
-  clockIn: boolean;
-  clockOut: boolean;
-  clockInTime: string;
-  clockOutTime: string;
-  isConfirmed: boolean;
-  inChat: boolean;
-};
-
-type Members = Member[];
-
-export type { Members };
+import { ApplicantInterface, AttandanceInfoInterface } from '@/api/interface';
 
 type Applicants = ApplicantInterface[];
 
 interface CompanyManageState {
   jobPostId: number;
+  page: number;
   clockInTime: string;
   clockOutTime: string;
-  members: Members;
   roleIdList: number[];
   roleNameList: string[];
   roleApplicantList: Applicants[];
+  attandanceInfoList: AttandanceInfoInterface[];
 }
 
 const initialState: CompanyManageState = {
   jobPostId: 0,
-  members: [],
+  page: -1,
   clockInTime: '',
   clockOutTime: '',
   roleIdList: [],
   roleNameList: [],
   roleApplicantList: [],
+  attandanceInfoList: [],
 };
 
 const companyManageSlice = createSlice({
   name: 'companyManage',
   initialState,
   reducers: {
+    initManage: state => {
+      return initialState;
+    },
     setJobPostId: (state, action: PayloadAction<number>) => {
       state.jobPostId = action.payload;
     },
@@ -55,14 +42,27 @@ const companyManageSlice = createSlice({
       state.roleIdList = action.payload.roleIdList;
       state.roleNameList = action.payload.roleNameList;
     },
+    setPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
+    },
     setRoleApplicantData: (
       state,
-      action: PayloadAction<ApplicantInterface[][]>,
+      action: PayloadAction<{ index: number; data: ApplicantInterface[] }>,
     ) => {
-      state.roleApplicantList = action.payload;
+      if (state.roleApplicantList[action.payload.index] === undefined) {
+        state.roleApplicantList.push(action.payload.data);
+      } else {
+        state.roleApplicantList[action.payload.index] = [
+          ...state.roleApplicantList[action.payload.index],
+          ...action.payload.data,
+        ];
+      }
     },
-    initMemberList: (state, action: PayloadAction<{ members: Members }>) => {
-      state.members = action.payload.members;
+    setAttendanceInfoList: (
+      state,
+      action: PayloadAction<AttandanceInfoInterface[]>,
+    ) => {
+      state.attandanceInfoList = action.payload;
     },
     setGlobalClockTime: (
       state,
@@ -74,41 +74,16 @@ const companyManageSlice = createSlice({
         state.clockOutTime = action.payload.time;
       }
     },
-    setMemberClockTime: (
-      state,
-      action: PayloadAction<{ id: number; type: 'in' | 'out'; time: string }>,
-    ) => {
-      const member = state.members.find(
-        member => member.id === action.payload.id,
-      );
-      if (member) {
-        if (action.payload.type === 'in') {
-          member.clockInTime = action.payload.time;
-          member.clockIn = true;
-        } else if (action.payload.type === 'out') {
-          member.clockOutTime = action.payload.time;
-          member.clockOut = true;
-        }
-      }
-    },
-    confirmClothes: (state, action: PayloadAction<{ id: number }>) => {
-      const member = state.members.find(
-        member => member.id === action.payload.id,
-      );
-      if (member !== undefined) {
-        member.isConfirmed = true;
-      }
-    },
   },
 });
 
 export const {
+  initManage,
   setJobPostId,
-  initMemberList,
   setRoleData,
+  setPage,
+  setAttendanceInfoList,
   setRoleApplicantData,
   setGlobalClockTime,
-  setMemberClockTime,
-  confirmClothes,
 } = companyManageSlice.actions;
 export default companyManageSlice.reducer;

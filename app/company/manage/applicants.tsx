@@ -14,47 +14,49 @@ import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
 import { Router } from '@/scripts/router';
-import type { Members } from '@/redux/manage/companyManageSlice';
-import { useAppSelector } from '@/redux/hooks';
+import {
+  setAttendanceInfoList,
+  setPage,
+  setRoleApplicantData,
+} from '@/redux/manage/companyManageSlice';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import {
+  getApplicantsByRoleId,
+  getAttendanceInfoListByJobPostId,
+} from '@/api/manageController';
 
 const ApplicantsScreen = () => {
   const manage = useAppSelector(state => state.companyManage);
+  const dispatch = useAppDispatch();
 
   const sortItems = ['역할별', '성별', '나이별'];
 
   const [clicked, setClicked] = useState(false);
   const [sorted, setSorted] = useState(sortItems[0]);
   const [search, setSearch] = useState('');
-  const [members, setMembers] = useState<Members>([]);
 
   useEffect(() => {
-    setMembers(manage.members);
-  }, [manage]);
+    if (manage.attandanceInfoList.length === 0) {
+      loadData();
+    }
+  }, [manage.roleApplicantList]);
 
-  useEffect(() => {
-    let sortedMembers = [...manage.members];
-    sortedMembers = sortedMembers.sort((a, b) => {
-      if (sorted === '역할별') {
-        return a.role.localeCompare(b.role);
+  const loadData = async () => {
+    getAttendanceInfoListByJobPostId(manage.jobPostId).then(res => {
+      if (res !== null) {
+        dispatch(setAttendanceInfoList(res));
       }
-      // if (sorted === '성별') {
-      //   return Number(a.sex) - Number(b.sex);
-      // }
-      // if (sorted == '나이별') {
-      //   return a.age - b.age;
-      // }
-      return 0;
     });
-    setMembers(sortedMembers);
-  }, [sorted]);
-
-  useEffect(() => {
-    let filteredMembers = [...manage.members];
-    filteredMembers = filteredMembers.filter(data =>
-      data.name.includes(search),
-    );
-    setMembers(filteredMembers);
-  }, [search]);
+    // const nextPage = manage.page + 1;
+    // dispatch(setPage(nextPage));
+    // await manage.roleIdList.forEach(async (id, index) => {
+    //   await getApplicantsByRoleId(id, nextPage).then(res => {
+    //     if (res !== null) {
+    //       dispatch(setRoleApplicantData({ index, data: res }));
+    //     }
+    //   });
+    // });
+  };
 
   return (
     <SafeContainer>
@@ -110,47 +112,45 @@ const ApplicantsScreen = () => {
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.listContainer}>
-        {manage.roleApplicantList.map((applicants, index) =>
-          applicants.map(data => (
-            <TouchableOpacity
-              key={data.id}
-              style={styles.listItemContainer}
-              onPress={() =>
-                Router.navigate({
-                  pathname: '/company/manage/applicant-detail',
-                  params: {
-                    memberId: data.memberId,
-                    memberName: data.name,
-                    history: '/company/manage/applicants',
-                  },
-                })
-              }
+        {manage.attandanceInfoList.map((data, index) => (
+          <TouchableOpacity
+            key={data.id}
+            style={styles.listItemContainer}
+            onPress={() =>
+              Router.navigate({
+                pathname: '/company/manage/applicant-detail',
+                params: {
+                  memberId: data.memberId,
+                  memberName: data.memberName,
+                  history: '/company/manage/applicants',
+                },
+              })
+            }
+          >
+            <View style={styles.itemImage}></View>
+            <MainText
+              style={{
+                height: '100%',
+                marginTop: getSize(25),
+                paddingLeft: getSize(17),
+                width: getSize(219),
+                textAlign: 'left',
+              }}
             >
-              <View style={styles.itemImage}></View>
-              <MainText
-                style={{
-                  height: '100%',
-                  marginTop: getSize(25),
-                  paddingLeft: getSize(17),
-                  width: getSize(219),
-                  textAlign: 'left',
-                }}
-              >
-                {data.name}/{manage.roleNameList[index]}
-              </MainText>
-              <View
-                style={{
-                  ...styles.statusDot,
-                  backgroundColor: true ? '#35EB17' : '#E00338',
-                }}
-              />
-              <Image
-                source={require('@/assets/images/icons/Forward.png')}
-                style={styles.navigateIconImage}
-              />
-            </TouchableOpacity>
-          )),
-        )}
+              {data.memberName}/{data.roleName}
+            </MainText>
+            <View
+              style={{
+                ...styles.statusDot,
+                backgroundColor: data.isAttended ? '#35EB17' : '#E00338',
+              }}
+            />
+            <Image
+              source={require('@/assets/images/icons/Forward.png')}
+              style={styles.navigateIconImage}
+            />
+          </TouchableOpacity>
+        ))}
       </ScrollView>
     </SafeContainer>
   );

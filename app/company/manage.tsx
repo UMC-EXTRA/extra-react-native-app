@@ -1,5 +1,4 @@
 import { View, TouchableOpacity } from 'react-native';
-import { useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 
 import { MainContainer } from '@/components/Container';
@@ -8,14 +7,10 @@ import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 
-import { dummyApplicantList } from '@/api/dummyData';
-// import { ApplicantInterface } from '@/api/interface';
-// import { getApplicantsByRoleId } from '@/api/manageController';
-
 import {
+  initManage,
   setJobPostId,
   setRoleData,
-  setRoleApplicantData,
 } from '@/redux/manage/companyManageSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
@@ -31,6 +26,7 @@ const ManageScreen = () => {
           roleNameList: string[];
         };
       };
+      dispatch(initManage());
       dispatch(setJobPostId(typedData.payload.job_post_id));
       dispatch(
         setRoleData({
@@ -38,23 +34,6 @@ const ManageScreen = () => {
           roleNameList: typedData.payload.roleNameList,
         }),
       );
-
-      console.log(data);
-
-      // let roleApplicantData: ApplicantInterface[][] = [];
-      // .forEach(applicantList => {
-      //   roleApplicantData.push(applicantList);
-      // });
-      // typedData.payload.roleIdList.forEach((id, index) => {
-      //   // getApplicantsByRoleId(id).then(res => {
-      //   //   if (res !== null) {
-      //   //     setRoleApplicantData(res);
-      //   //   }
-      //   // });
-
-      // });
-      // dispatch(setRoleApplicantData(roleApplicantData));
-      dispatch(setRoleApplicantData(dummyApplicantList));
 
       Router.push('/company/manage/detail');
     }

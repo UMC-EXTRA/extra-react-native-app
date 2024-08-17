@@ -15,11 +15,15 @@ type TermState = (Term | undefined)[];
 
 interface SignUpStateInterface extends SignUpInterface {
   type: string;
+  email: string;
+  password: string;
   terms: TermState;
 }
 
 interface MemberSignUpStateInterface extends MemberCreateInterface {
   type: string;
+  email: string;
+  password: string;
   terms: (Term | undefined)[];
   tattoo: TattooInterface;
   hasTattoo: boolean;

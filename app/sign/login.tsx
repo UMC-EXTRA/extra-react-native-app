@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -11,7 +10,6 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useForm, Controller } from 'react-hook-form';
-import * as Linking from 'expo-linking';
 
 import { weight800, weight200, MainText } from '@/components/Theme/Text';
 import { FormButton } from '@/components/Theme/Button';
@@ -47,29 +45,6 @@ const LoginScreen = () => {
   const focusNext = (index: number) => {
     onFocusNext(ref_input, index);
   };
-
-  const [code, setCode] = useState('');
-
-  useEffect(() => {
-    const handleDeepLink = (event: { url: string }) => {
-      console.log(event);
-      const url = event.url;
-      const result = url.split('code=')[1];
-      if (result) {
-        // 전달된 결과 처리
-        console.log('Result from Other Page:', result);
-      }
-    };
-
-    // Deep link 구독
-    const supscription = Linking.addEventListener('url', handleDeepLink);
-
-    return () => {
-      // 구독 해제
-      supscription.remove();
-    };
-  }, []);
-
   return (
     <SafeContainer>
       {/* hide keyboard when pressed */}

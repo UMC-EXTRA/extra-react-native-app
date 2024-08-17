@@ -163,7 +163,7 @@ const AdditionalFormScreen = () => {
               dispatch(setPhysicalData(data));
 
               if (isMemberSignUpState(signUp)) {
-                const memberCreate = {
+                signUpMember({
                   accountId: signUp.accountId,
                   phone: signUp.phone,
                   name: signUp.name,
@@ -177,13 +177,7 @@ const AdditionalFormScreen = () => {
                   weight: Number(data.weight),
                   bank: signUp.bank,
                   accountNumber: signUp.accountNumber,
-                  isAdmin: false,
-                  adminToken: '',
-                };
-
-                signUpMember({
-                  memberCreate: memberCreate,
-                  tattooCreate: signUp.tattoo,
+                  tattoo: signUp.tattoo,
                 }).then(res => {
                   if (res) {
                     // request app permissions

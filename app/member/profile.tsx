@@ -20,6 +20,18 @@ const ProfileScreen = () => {
     name: '',
     sex: true,
     age: 0,
+    height: 0,
+    weight: 0,
+    tattoo: {
+      face: false,
+      back: false,
+      arm: false,
+      leg: false,
+      hand: false,
+      shoulder: false,
+      chest: false,
+      feet: false,
+    },
   });
   const [profileImage, setProfileImage] = useState('');
 
@@ -57,6 +69,9 @@ const ProfileScreen = () => {
             name: res.name,
             sex: res.sex,
             age: getAge(res.birthday),
+            height: res.height,
+            weight: res.weight,
+            tattoo: res.tattoo,
           });
 
           dispatch(
@@ -70,17 +85,7 @@ const ProfileScreen = () => {
                 pros: res.pros,
                 height: res.height,
                 weight: res.weight,
-                tattoo: {
-                  face: res.face,
-                  back: res.back,
-                  arm: res.arm,
-                  leg: res.leg,
-                  hand: res.hand,
-                  shoulder: res.shoulder,
-                  chest: res.chest,
-                  feet: res.feet,
-                  etc: res.etc,
-                },
+                tattoo: res.tattoo,
               },
             }),
           );
@@ -92,6 +97,9 @@ const ProfileScreen = () => {
           name: profile.name,
           sex: profile.info.sex,
           age: getAge(profile.info.birthday),
+          height: profile.info.height,
+          weight: profile.info.weight,
+          tattoo: profile.info.tattoo,
         });
       }
     }
@@ -174,12 +182,57 @@ const ProfileScreen = () => {
           <TextWeight600 size={20}>이름 : {data.name}</TextWeight600>
           <View style={styles.profileInfoLine}>
             <TextWeight600 size={15}>
-              성별 : {data.sex ? '남' : '여'}
+              성별 : {data.sex ? '남자' : '여자'}
             </TextWeight600>
+            <TextWeight600 size={15}>키 : {data.height}cm</TextWeight600>
           </View>
           <View style={styles.profileInfoLine}>
             <TextWeight600 size={15}>나이 : {data.age}세</TextWeight600>
+            <TextWeight600 size={15}>몸무게 : {data.weight}kg</TextWeight600>
           </View>
+        </View>
+      </View>
+      <View
+        style={{
+          width: getSize(358),
+          height: getSize(140),
+          marginHorizontal: 'auto',
+          borderColor: '#D9D9D9',
+          borderBottomWidth: 1,
+          marginTop: getSize(20),
+        }}
+      >
+        <TextWeight600 size={20}>타투여부</TextWeight600>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            width: '100%',
+            marginTop: getSize(20),
+          }}
+        >
+          {Object.keys(data.tattoo).map((key, index) => {
+            console.log(data.tattoo[key]);
+            return (
+              <View key={index}>
+                {data.tattoo[key] && (
+                  <View
+                    style={{
+                      width: getSize(70),
+                      height: getSize(30),
+                      marginRight: getSize(10),
+                      backgroundColor: colors.grayBackground,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: getSize(15),
+                    }}
+                  >
+                    <TextWeight600 size={12}>{key}</TextWeight600>
+                  </View>
+                )}
+              </View>
+            );
+          })}
         </View>
       </View>
     </SettingContainer>
@@ -188,7 +241,7 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   profileInfoLine: {
-    width: getSize(180),
+    width: getSize(200),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

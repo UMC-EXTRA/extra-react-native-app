@@ -147,17 +147,7 @@ export async function logout(type: string) {
       'POST',
     );
 
-    if (res !== null) {
-      if (res.status === 200) {
-        Alert.alert('로그아웃 완료', '로그아웃 되었습니다.');
-      }
-
-      if (res.status === 403) {
-        Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요');
-      }
-    } else {
-      Alert.alert('로그인 필요', '로그인 후 가능합니다.');
-    }
+    Alert.alert('로그아웃 완료', '로그아웃 되었습니다.');
   } catch (err) {
     console.error(err);
   }
@@ -175,14 +165,16 @@ interface MemberProfileInterface {
   pros: string;
   height: number;
   weight: number;
-  face: boolean;
-  back: boolean;
-  arm: boolean;
-  leg: boolean;
-  hand: boolean;
-  shoulder: boolean;
-  chest: boolean;
-  feet: boolean;
+  tattoo: {
+    face: boolean;
+    back: boolean;
+    arm: boolean;
+    leg: boolean;
+    hand: boolean;
+    shoulder: boolean;
+    chest: boolean;
+    feet: boolean;
+  };
 }
 
 export async function getMemberProfile(): Promise<MemberProfileInterface | null> {

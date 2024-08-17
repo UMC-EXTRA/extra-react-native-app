@@ -14,32 +14,27 @@ import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import colors from '@/constants/Colors';
 
-import type { Members } from '@/redux/manage/companyManageSlice';
 import { useAppSelector } from '@/redux/hooks';
-
-type SortedByRoleMembers = {
-  [key: string]: Members;
-};
 
 const ConfirmClothesScreen = () => {
   const companyManage = useAppSelector(state => state.companyManage);
 
   const [search, setSearch] = useState('');
-  const [members, setMembers] = useState<SortedByRoleMembers>({});
+  // const [members, setMembers] = useState<SortedByRoleMembers>({});
 
-  useEffect(() => {
-    let newMembers: SortedByRoleMembers = {};
-    const SortedByRoleMembers = [...companyManage.members].sort((a, b) => {
-      return a.role.localeCompare(b.role);
-    });
-    SortedByRoleMembers.forEach(data => {
-      if (newMembers[data.role] === undefined) {
-        newMembers[data.role] = [];
-      }
-      newMembers[data.role].push(data);
-    });
-    setMembers(newMembers);
-  }, [companyManage]);
+  // useEffect(() => {
+  //   let newMembers: SortedByRoleMembers = {};
+  //   const SortedByRoleMembers = [...companyManage.members].sort((a, b) => {
+  //     return a.role.localeCompare(b.role);
+  //   });
+  //   SortedByRoleMembers.forEach(data => {
+  //     if (newMembers[data.role] === undefined) {
+  //       newMembers[data.role] = [];
+  //     }
+  //     newMembers[data.role].push(data);
+  //   });
+  //   setMembers(newMembers);
+  // }, [companyManage]);
 
   return (
     <SafeContainer>
@@ -66,7 +61,7 @@ const ConfirmClothesScreen = () => {
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.listScrollView}>
-        {Object.keys(members).map((role, index) => {
+        {/* {Object.keys(members).map((role, index) => {
           return (
             <View style={styles.listContainer} key={index}>
               <View style={styles.listHeader}>
@@ -122,7 +117,7 @@ const ConfirmClothesScreen = () => {
               ))}
             </View>
           );
-        })}
+        })} */}
       </ScrollView>
     </SafeContainer>
   );

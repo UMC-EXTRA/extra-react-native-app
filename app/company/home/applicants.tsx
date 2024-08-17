@@ -5,8 +5,6 @@ import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 const JobPostIdScreen = () => {
   const { history, uri: webViewURI } = useLocalSearchParams();
 
-  console.log(webViewURI);
-
   const onMessage = (data: MessageType) => {};
 
   return (
