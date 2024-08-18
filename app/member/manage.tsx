@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import WebViewContainer, { MessageType } from '@/components/WebViewContainer';
 import { Router } from '@/scripts/router';
 import { BackHeaderContainer } from '@/components/Container';
 import { useAppDispatch } from '@/redux/hooks';
-import { setJobPostId } from '@/redux/manage/memberManageSlice';
+import { setId } from '@/redux/manage/memberManageSlice';
 
 const ManageScreen = () => {
   const dispatch = useAppDispatch();
@@ -12,10 +11,11 @@ const ManageScreen = () => {
     if (data.type === 'NAVIGATION_MANAGE') {
       const typedData = data as MessageType & {
         payload: {
-          job_post_id: number;
+          jobPostId: number;
+          roleId: number;
         };
       };
-      dispatch(setJobPostId(typedData.payload.job_post_id));
+      dispatch(setId(typedData.payload));
       Router.push('/member/manage/detail');
     }
     if (data.type === 'NAVIGATION_DETAIL') {

@@ -50,6 +50,13 @@ interface AttandanceInfoInterface {
   isAttended: boolean;
 }
 
+interface CostumeInfoInterface {
+  id: number;
+  member_name: string;
+  imageUrl: string;
+  costume_approve: 'APPLIED' | 'APPROVED';
+}
+
 export {
   LoginInterface,
   SignUpInterface,
@@ -58,4 +65,5 @@ export {
   TattooInterface,
   ApplicantInterface,
   AttandanceInfoInterface,
+  CostumeInfoInterface,
 };

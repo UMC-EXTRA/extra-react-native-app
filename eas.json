@@ -22,10 +22,24 @@
       }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "distribution": "store",
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_WEBVIEW_URL": "https://extra-react-webview.vercel.app",
+        "EXPO_PUBLIC_SERVER_URL": "https://test-server.store",
+        "EXPO_PUBLIC_SECRET_KEY": "5:pNY&WB+98o+6mwTUdzb.o7>zza1Upmb&FEW^UYg7tfm+4+=+h9jOH>GExVyLg!_|Ud@G1x8TOkHA_A18376D79C428CB6B4959839FEB86"
+      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./service-account-key.json",
+        "track": "internal"
+      }
+    }
   }
 }

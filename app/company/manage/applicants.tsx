@@ -47,15 +47,6 @@ const ApplicantsScreen = () => {
         dispatch(setAttendanceInfoList(res));
       }
     });
-    // const nextPage = manage.page + 1;
-    // dispatch(setPage(nextPage));
-    // await manage.roleIdList.forEach(async (id, index) => {
-    //   await getApplicantsByRoleId(id, nextPage).then(res => {
-    //     if (res !== null) {
-    //       dispatch(setRoleApplicantData({ index, data: res }));
-    //     }
-    //   });
-    // });
   };
 
   return (

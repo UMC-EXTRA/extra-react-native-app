@@ -21,17 +21,19 @@ const ManageScreen = () => {
     if (data.type === 'NAVIGATION_MANAGE') {
       const typedData = data as MessageType & {
         payload: {
-          job_post_id: number;
+          jobPostId: number;
           roleIdList: number[];
           roleNameList: string[];
+          seasonList: string[];
         };
       };
       dispatch(initManage());
-      dispatch(setJobPostId(typedData.payload.job_post_id));
+      dispatch(setJobPostId(typedData.payload.jobPostId));
       dispatch(
         setRoleData({
           roleIdList: typedData.payload.roleIdList,
           roleNameList: typedData.payload.roleNameList,
+          seasonList: typedData.payload.seasonList,
         }),
       );
 

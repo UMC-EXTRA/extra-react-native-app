@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -14,8 +14,16 @@ import {
   TextWeight900,
   weight900,
 } from '@/components/Theme/Text';
+import {
+  getCostumeBoardIdByRoleId,
+  updateCostumeImage,
+  uploadCostumeImage,
+} from '@/api/manageController';
+import { useAppSelector } from '@/redux/hooks';
 
 const ClothesScreen = () => {
+  const manage = useAppSelector(state => state.memberManage);
+
   const [data, setData] = useState({
     role: '',
     season: '',
@@ -25,6 +33,7 @@ const ClothesScreen = () => {
     uri: '',
     status: false,
   });
+  const [boardId, setBoardId] = useState(0);
   const [editable, setEditable] = useState(false);
 
   const pickImage = async () => {
@@ -36,11 +45,53 @@ const ClothesScreen = () => {
     });
 
     if (!result.canceled) {
-      setImageData({ uri: result.assets[0].uri, status: false });
+      // MIME 타입 검사
+      const fileUri = result.assets[0].uri;
+      const fileExtension = fileUri.split('.').pop().toLowerCase();
+
+      // 허용된 확장자 검사 (jpeg, jpg, png)
+      if (
+        fileExtension !== 'jpeg' &&
+        fileExtension !== 'jpg' &&
+        fileExtension !== 'png'
+      ) {
+        Alert.alert(
+          '오류',
+          'jpeg 또는 png 형식의 이미지만 선택할 수 있습니다.',
+        );
+        return;
+      }
+
+      if (imageData.uri === '') {
+        uploadCostumeImage(manage.roleId, {
+          explain: { imageExplain: '' },
+          image: fileUri,
+        }).then(res => {
+          if (res !== null) {
+            setImageData({ uri: fileUri, status: false });
+          }
+        });
+      } else {
+        // 이미지 수정
+        updateCostumeImage(boardId, {
+          explain: { imageExplain: '', imageChange: true },
+          image: fileUri,
+        }).then(res => {
+          if (res !== null) {
+            setImageData({ uri: fileUri, status: false });
+          }
+        });
+      }
     }
   };
 
   useEffect(() => {
+    getCostumeBoardIdByRoleId(manage.roleId).then(res => {
+      if (res !== null) {
+        console.log(res);
+      }
+    });
+
     setData({
       role: '형사',
       season: '겨울',

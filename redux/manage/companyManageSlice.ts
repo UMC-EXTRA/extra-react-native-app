@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ApplicantInterface, AttandanceInfoInterface } from '@/api/interface';
+import {
+  ApplicantInterface,
+  AttandanceInfoInterface,
+  CostumeInfoInterface,
+} from '@/api/interface';
 
 type Applicants = ApplicantInterface[];
+type CostumeInfo = CostumeInfoInterface[];
 
 interface CompanyManageState {
   jobPostId: number;
@@ -10,8 +15,10 @@ interface CompanyManageState {
   clockOutTime: string;
   roleIdList: number[];
   roleNameList: string[];
+  seasonList: string[];
   roleApplicantList: Applicants[];
   attandanceInfoList: AttandanceInfoInterface[];
+  costumeInfoList: CostumeInfo[];
 }
 
 const initialState: CompanyManageState = {
@@ -21,8 +28,10 @@ const initialState: CompanyManageState = {
   clockOutTime: '',
   roleIdList: [],
   roleNameList: [],
+  seasonList: [],
   roleApplicantList: [],
   attandanceInfoList: [],
+  costumeInfoList: [],
 };
 
 const companyManageSlice = createSlice({
@@ -37,10 +46,15 @@ const companyManageSlice = createSlice({
     },
     setRoleData: (
       state,
-      action: PayloadAction<{ roleIdList: number[]; roleNameList: string[] }>,
+      action: PayloadAction<{
+        roleIdList: number[];
+        roleNameList: string[];
+        seasonList: string[];
+      }>,
     ) => {
       state.roleIdList = action.payload.roleIdList;
       state.roleNameList = action.payload.roleNameList;
+      state.seasonList = action.payload.seasonList;
     },
     setPage: (state, action: PayloadAction<number>) => {
       state.page = action.payload;
@@ -64,6 +78,35 @@ const companyManageSlice = createSlice({
     ) => {
       state.attandanceInfoList = action.payload;
     },
+    setCostumeInfoData: (
+      state,
+      action: PayloadAction<{
+        index: number;
+        data: CostumeInfoInterface[];
+        reset: boolean;
+      }>,
+    ) => {
+      if (action.payload.reset) {
+        state.costumeInfoList[action.payload.index] = [];
+      }
+
+      if (state.costumeInfoList[action.payload.index] === undefined) {
+        state.costumeInfoList.push(action.payload.data);
+      } else {
+        state.costumeInfoList[action.payload.index] = [
+          ...state.costumeInfoList[action.payload.index],
+          ...action.payload.data,
+        ];
+      }
+    },
+    applyCostume: (
+      state,
+      action: PayloadAction<{ roleIndex: number; costumeIndex: number }>,
+    ) => {
+      state.costumeInfoList[action.payload.roleIndex][
+        action.payload.costumeIndex
+      ].costume_approve = 'APPLIED';
+    },
     setGlobalClockTime: (
       state,
       action: PayloadAction<{ type: 'in' | 'out'; time: string }>,
@@ -84,6 +127,8 @@ export const {
   setPage,
   setAttendanceInfoList,
   setRoleApplicantData,
+  setCostumeInfoData,
   setGlobalClockTime,
+  applyCostume,
 } = companyManageSlice.actions;
 export default companyManageSlice.reducer;

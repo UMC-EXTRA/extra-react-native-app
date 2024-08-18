@@ -1,9 +1,14 @@
-import { ApplicantInterface, AttandanceInfoInterface } from './interface';
+import {
+  ApplicantInterface,
+  AttandanceInfoInterface,
+  CostumeInfoInterface,
+} from './interface';
 
 import * as Utils from './utils';
 
 const APPLICANT_API_URL = 'application-request/';
 const ATTENDANCE_API_URL = 'attendance-management/';
+const COSTUME_API_URL = `costumeapprovalboards/`;
 
 export const getApplicantsByRoleId = async (
   roleId: number,
@@ -27,7 +32,7 @@ export const getApplicantsByRoleId = async (
 };
 
 export const getAttendanceInfoListByJobPostId = async (
-  job_post_id: number,
+  jobPostId: number,
   page?: number,
   name?: string,
 ): Promise<AttandanceInfoInterface[] | null> => {
@@ -45,7 +50,7 @@ export const getAttendanceInfoListByJobPostId = async (
     const URL =
       ATTENDANCE_API_URL +
       'company/jobposts/' +
-      job_post_id +
+      jobPostId +
       '/members?' +
       query;
     const res = await Utils.requestGetFetch(URL);
@@ -65,15 +70,12 @@ type Attendance = {
 };
 
 export const setAttendance = async (
-  job_post_id: number,
+  jobPostId: number,
   data: Attendance,
 ): Promise<boolean> => {
   try {
     const res = await Utils.requestPostFetch(
-      ATTENDANCE_API_URL +
-        'attendance-management/company/jobposts/' +
-        job_post_id +
-        '/meal-count',
+      ATTENDANCE_API_URL + 'company/jobposts/' + jobPostId + '/meal-count',
       data,
     );
 
@@ -92,17 +94,132 @@ type Clock = Attendance & {
 };
 
 export const setClock = async (
-  job_post_id: number,
+  jobPostId: number,
   type: 'in' | 'out',
   data: Clock,
 ): Promise<boolean> => {
   try {
     const res = await Utils.requestPostFetch(
-      ATTENDANCE_API_URL +
-        'attendance-management/company/jobposts/' +
-        job_post_id +
-        '/clock-' +
-        type,
+      ATTENDANCE_API_URL + 'company/jobposts/' + jobPostId + '/clock-' + type,
+      data,
+    );
+
+    if (res.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return false;
+};
+
+export const getCostumeInfoListByRoleId = async (
+  roleId: number,
+  page: number,
+  name?: string,
+): Promise<CostumeInfoInterface[] | null> => {
+  try {
+    const params = {
+      page: `${page}`,
+    };
+
+    if (name !== undefined) {
+      params['name'] = name;
+    }
+
+    let URL = COSTUME_API_URL + '/roles' + roleId;
+    URL += '?' + new URLSearchParams(params).toString();
+
+    const res = await Utils.requestGetFetch(URL);
+
+    if (res.status === 200) {
+      return res.json();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return null;
+};
+
+export const getCostumeBoardIdByRoleId = async (
+  roleId: number,
+): Promise<object | null> => {
+  try {
+    const res = await Utils.requestGetFetch(
+      COSTUME_API_URL + 'member/roles/' + roleId,
+    );
+
+    if (res.status === 200) {
+      return res.json();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const applyCostumeByBoardId = async (
+  boardId: number,
+): Promise<boolean> => {
+  try {
+    const res = await Utils.requestPostFetch(
+      COSTUME_API_URL + boardId + '/companies',
+      {
+        costume_approve: 'APPLIED',
+      },
+    );
+
+    if (res.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return false;
+};
+
+type CostumeImageInterface = {
+  explain: {
+    imageExplain: string;
+  };
+  image: string;
+};
+
+export const uploadCostumeImage = async (
+  roleId: number,
+  data: CostumeImageInterface,
+): Promise<boolean> => {
+  try {
+    const res = await Utils.requestPostFetch(
+      COSTUME_API_URL + 'roles/' + roleId,
+      data,
+    );
+
+    if (res.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return false;
+};
+
+type UpdateCostumeImageInterface = CostumeImageInterface & {
+  explain: {
+    imageChange: boolean;
+  };
+};
+
+export const updateCostumeImage = async (
+  boardId: number,
+  data: UpdateCostumeImageInterface,
+): Promise<boolean> => {
+  try {
+    const res = await Utils.requestPutFetch(
+      COSTUME_API_URL + boardId + '/members',
       data,
     );
 

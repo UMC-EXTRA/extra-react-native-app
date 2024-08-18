@@ -7,19 +7,55 @@ import { BackHeaderContainer } from '@/components/Container';
 import { Router } from '@/scripts/router';
 import getSize from '@/scripts/getSize';
 import { TextWeight900 } from '@/components/Theme/Text';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { initProfile, isMemberProfileState } from '@/redux/slice/profileSlice';
+import { getMemberProfile } from '@/api/signController';
 
 const DetailScreen = () => {
+  const profile = useAppSelector(state => state.profile);
+  const dispatch = useAppDispatch();
   const [isLoadingQR, setIsLoadingQR] = useState(false);
   const [QRData, setQRData] = useState('');
   const title = 'umc 공고';
 
   useEffect(() => {
-    setQRData(
-      JSON.stringify({
-        name: '박지민',
-        memberId: 1,
-      }),
-    );
+    if (profile.name === '') {
+      getMemberProfile().then(res => {
+        if (res !== null) {
+          setQRData(
+            JSON.stringify({
+              name: res.name,
+              birthday: res.birthday,
+            }),
+          );
+
+          dispatch(
+            initProfile({
+              name: res.name,
+              info: {
+                birthday: res.birthday,
+                home: res.home,
+                introduction: res.introduction,
+                license: res.license,
+                pros: res.pros,
+                height: res.height,
+                weight: res.weight,
+                tattoo: res.tattoo,
+              },
+            }),
+          );
+        }
+      });
+    } else {
+      if (isMemberProfileState(profile)) {
+        setQRData(
+          JSON.stringify({
+            name: profile.name,
+            birthday: profile.info.birthday,
+          }),
+        );
+      }
+    }
     setIsLoadingQR(true);
   }, []);
 
