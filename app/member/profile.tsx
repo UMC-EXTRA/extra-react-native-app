@@ -212,7 +212,6 @@ const ProfileScreen = () => {
           }}
         >
           {Object.keys(data.tattoo).map((key, index) => {
-            console.log(data.tattoo[key]);
             return (
               <View key={index}>
                 {data.tattoo[key] && (

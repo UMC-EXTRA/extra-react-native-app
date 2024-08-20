@@ -119,21 +119,12 @@ export async function login(data: LoginInterface): Promise<boolean> {
       return true;
     }
 
-    if (res.status === 404) {
-      Alert.alert(
-        '이메일 오류',
-        '찾을 수 없는 이메일 입니다. 다시 입력해주세요',
-      );
-    }
-
     if (res.status === 400) {
       Alert.alert(
-        '비밀번호 오류',
-        '비밀번호가 일치하지 않습니다. 다시 입력해주세요',
+        '입력 오류',
+        '이메일 혹은 비밀번호가 잘못되었습니다. 다시 입력해주세요',
       );
     }
-
-    return false;
   } catch (err) {
     console.error(err);
   }
@@ -181,14 +172,12 @@ export async function getMemberProfile(): Promise<MemberProfileInterface | null>
   try {
     const res = await Utils.requestGetFetch(MEMBER_API_URL);
 
-    if (res !== null) {
-      if (res.status === 200) {
-        return res.json();
-      } else {
-        Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요', [
-          { text: '확인', onPress: () => Router.replace('/sign') },
-        ]);
-      }
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      Alert.alert('로그인 필요', '만료되었습니다. 다시 로그인해주세요', [
+        { text: '확인', onPress: () => Router.replace('/sign') },
+      ]);
     }
   } catch (err) {
     console.error(err);

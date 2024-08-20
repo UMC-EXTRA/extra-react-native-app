@@ -39,6 +39,15 @@ const ManageScreen = () => {
 
       Router.push('/company/manage/detail');
     }
+    if (data.type === 'NAVIGATION_DETAIL') {
+      Router.push({
+        pathname: '/company/home/detail',
+        params: {
+          ...data.payload,
+          history: '/company/manage',
+        },
+      });
+    }
   };
 
   return (
