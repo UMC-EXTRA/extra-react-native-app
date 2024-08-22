@@ -108,8 +108,8 @@ const ProfileScreen = () => {
   return (
     <SettingContainer
       title="프로필"
-      onPress={() => Router.navigate('/company')}
-      settingUrl="/company/profile/settings"
+      onPress={() => Router.navigate('/member')}
+      settingUrl="/member/profile/settings"
     >
       <View
         style={{
