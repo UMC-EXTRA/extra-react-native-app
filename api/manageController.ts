@@ -4,6 +4,8 @@ import {
   CostumeInfoInterface,
 } from './interface';
 
+import axios from 'axios';
+
 import * as Utils from './utils';
 
 const APPLICANT_API_URL = 'application-request/';
@@ -180,22 +182,63 @@ export const applyCostumeByBoardId = async (
   return false;
 };
 
-type CostumeImageInterface = {
+type CostumeInterface = {
+  image: string;
   explain: {
     imageExplain: string;
   };
-  image: string;
+};
+
+export const getRoleInfoByRoleId = async (
+  jobPostId: number,
+  roleId: number,
+) => {
+  try {
+    const res = await Utils.requestGetFetch(
+      'jobposts/' + jobPostId + '/roles/' + roleId,
+    );
+
+    console.log(res);
+
+    if (res.status === 200) {
+      return res.json();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return null;
 };
 
 export const uploadCostumeImage = async (
   roleId: number,
-  data: CostumeImageInterface,
+  data: FormData,
 ): Promise<boolean> => {
   try {
-    const res = await Utils.requestPostFetch(
-      COSTUME_API_URL + 'roles/' + roleId,
+    const token = await Utils.getToken();
+
+    console.log(data);
+
+    const res = await axios.post(
+      `${process.env.EXPO_PUBLIC_SERVER_URL}/api/v1/` +
+        COSTUME_API_URL +
+        'roles/' +
+        roleId,
       data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token.accessToken}`,
+        },
+      },
     );
+
+    // const res = await Utils.requestPostFetch(
+    //   COSTUME_API_URL + 'roles/' + roleId,
+    //   data,
+    // );
+
+    console.log(res);
 
     if (res.status === 200) {
       return true;
@@ -207,7 +250,7 @@ export const uploadCostumeImage = async (
   return false;
 };
 
-type UpdateCostumeImageInterface = CostumeImageInterface & {
+type UpdateCostumeInterface = CostumeInterface & {
   explain: {
     imageChange: boolean;
   };
@@ -215,13 +258,33 @@ type UpdateCostumeImageInterface = CostumeImageInterface & {
 
 export const updateCostumeImage = async (
   boardId: number,
-  data: UpdateCostumeImageInterface,
+  data: UpdateCostumeInterface,
 ): Promise<boolean> => {
   try {
+    // const token = await Utils.getToken();
+
+    // const res = await fetch(
+    //   `${process.env.EXPO_PUBLIC_SERVER_URL}/api/v1/` +
+    //     COSTUME_API_URL +
+    //     boardId +
+    //     '/members',
+    //   {
+    //     method: 'PUT',
+    //     headers: {
+    //       accept: '*/*',
+    //       'Content-Type': 'multipart/form-data',
+    //       Authorization: `Bearer ${token.accessToken}`,
+    //     },
+    //     body: data,
+    //   },
+    // );
+
     const res = await Utils.requestPutFetch(
       COSTUME_API_URL + boardId + '/members',
       data,
     );
+
+    console.log(res);
 
     if (res.status === 200) {
       return true;

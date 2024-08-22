@@ -21,13 +21,15 @@ const ClothesPreviewScreen = () => {
           width: '100%',
           height: getSize(493),
           overflow: 'hidden',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Image
           source={{ uri: `${uri}` }}
           style={{
-            minWidth: '100%',
-            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
           }}
         />
       </View>

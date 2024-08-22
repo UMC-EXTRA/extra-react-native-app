@@ -13,10 +13,10 @@ import { getMemberProfile } from '@/api/signController';
 
 const DetailScreen = () => {
   const profile = useAppSelector(state => state.profile);
+  const title = useAppSelector(state => state.memberManage.title);
   const dispatch = useAppDispatch();
   const [isLoadingQR, setIsLoadingQR] = useState(false);
   const [QRData, setQRData] = useState('');
-  const title = 'umc 공고';
 
   useEffect(() => {
     if (profile.name === '') {
@@ -44,6 +44,7 @@ const DetailScreen = () => {
               },
             }),
           );
+          setIsLoadingQR(true);
         }
       });
     } else {
@@ -54,9 +55,9 @@ const DetailScreen = () => {
             birthday: profile.info.birthday,
           }),
         );
+        setIsLoadingQR(true);
       }
     }
-    setIsLoadingQR(true);
   }, []);
 
   return (

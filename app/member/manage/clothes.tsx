@@ -16,10 +16,23 @@ import {
 } from '@/components/Theme/Text';
 import {
   getCostumeBoardIdByRoleId,
-  updateCostumeImage,
+  getRoleInfoByRoleId,
   uploadCostumeImage,
 } from '@/api/manageController';
 import { useAppSelector } from '@/redux/hooks';
+
+const convertToBase64 = async (uri: string): Promise<string> => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
 
 const ClothesScreen = () => {
   const manage = useAppSelector(state => state.memberManage);
@@ -62,26 +75,23 @@ const ClothesScreen = () => {
         return;
       }
 
-      if (imageData.uri === '') {
-        uploadCostumeImage(manage.roleId, {
-          explain: { imageExplain: '' },
-          image: fileUri,
-        }).then(res => {
-          if (res !== null) {
-            setImageData({ uri: fileUri, status: false });
-          }
-        });
-      } else {
-        // 이미지 수정
-        updateCostumeImage(boardId, {
-          explain: { imageExplain: '', imageChange: true },
-          image: fileUri,
-        }).then(res => {
-          if (res !== null) {
-            setImageData({ uri: fileUri, status: false });
-          }
-        });
-      }
+      // const base64Image = await convertToBase64(fileUri);
+
+      const fileBlob = await fetch(fileUri).then(res => res.blob());
+
+      const formData = new FormData();
+      formData.append('image', fileBlob, 'image.' + fileExtension);
+      formData.append(
+        'explain',
+        new Blob([JSON.stringify({ imageExplain: null })], {
+          type: 'application/json',
+        }),
+      );
+      uploadCostumeImage(manage.roleId, formData).then(res => {
+        if (res !== null) {
+          setImageData({ uri: fileUri, status: false });
+        }
+      });
     }
   };
 
@@ -92,12 +102,16 @@ const ClothesScreen = () => {
       }
     });
 
-    setData({
-      role: '형사',
-      season: '겨울',
-      description: '회색옷',
+    getRoleInfoByRoleId(manage.jobPostId, manage.roleId).then(res => {
+      if (res !== null) {
+        setData({
+          role: res.roleName,
+          season: res.season,
+          description: '',
+        });
+      }
     });
-  }, []);
+  }, [manage]);
 
   return (
     <BackHeaderContainer
