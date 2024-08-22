@@ -182,7 +182,7 @@ const ProfileScreen = () => {
           <TextWeight600 size={20}>이름 : {data.name}</TextWeight600>
           <View style={styles.profileInfoLine}>
             <TextWeight600 size={15}>
-              성별 : {data.sex ? '남자' : '여자'}
+              성별 : {data.sex ? '여자' : '남자'}
             </TextWeight600>
             <TextWeight600 size={15}>키 : {data.height}cm</TextWeight600>
           </View>
