@@ -9,7 +9,7 @@ const ManageScreen = () => {
 
   const onMessage = (data: MessageType) => {
     if (data.type === 'NAVIGATION_MANAGE') {
-      Router.push('/member/manage');
+      Router.replace('/member/manage');
     }
     if (data.type === 'NAVIGATION_MANAGE_DETAIL') {
       const typedData = data as MessageType & {
