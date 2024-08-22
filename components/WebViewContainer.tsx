@@ -1,4 +1,11 @@
-import { useRef, useEffect, useCallback, useState, memo } from 'react';
+import {
+  useRef,
+  useEffect,
+  useCallback,
+  useState,
+  memo,
+  forwardRef,
+} from 'react';
 import { useFocusEffect } from 'expo-router';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Router } from '@/scripts/router';
@@ -24,75 +31,79 @@ interface WebViewContainerProps extends Omit<WebViewProps, 'onMessage'> {
   injectedJavaScript?: string;
 }
 
-const WebViewContainer = ({
-  uri = '',
-  onMessage,
-  dataForWebView,
-  history = '',
-  injectedJavaScript = '',
-  ...restProps
-}: WebViewContainerProps) => {
-  const [reloadKey, setReloadKey] = useState(0);
+const WebViewContainer = forwardRef(
+  (
+    {
+      uri = '',
+      onMessage,
+      dataForWebView,
+      history = '',
+      injectedJavaScript = '',
+      ...restProps
+    }: WebViewContainerProps,
+    ref,
+  ) => {
+    const [reloadKey, setReloadKey] = useState(0);
 
-  const webViewRef = useRef<WebView>(null);
+    const webViewRef = useRef<WebView>(null);
 
-  const sendMessage = (data: MessageType) => {
-    webViewRef.current?.postMessage(JSON.stringify(data));
-  };
+    const sendMessage = (data: MessageType) => {
+      webViewRef.current?.postMessage(JSON.stringify(data));
+    };
 
-  const messageHandler = (event: WebViewMessageEvent) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    if (onMessage) {
-      onMessage(data);
-    }
-    switch (data.type) {
-      case 'HISTORY_BACK':
-        if (history) {
-          Router.navigate(history);
-        } else {
-          Router.back();
-        }
-        break;
-      case 'REQUEST_AUTHORIZATION':
-        getToken()
-          .then(res => {
-            if (res !== null) {
-              const accessToken = res.accessToken;
-              const { iv, encryptedData } = encryptAccessToken(accessToken);
-              // const signature = createHmacSignature(encryptedData);
-              sendMessage({
-                type: 'AUTHORIZATION',
-                payload: {
-                  iv,
-                  encryptedData,
-                  // signature,
-                },
-                version: '1.0',
-              });
-            }
-          })
-          .catch(err => {
-            console.error(err);
-          });
-        break;
-    }
-  };
+    const messageHandler = (event: WebViewMessageEvent) => {
+      const data = JSON.parse(event.nativeEvent.data);
+      if (onMessage) {
+        onMessage(data);
+      }
+      switch (data.type) {
+        case 'HISTORY_BACK':
+          if (history) {
+            Router.navigate(history);
+          } else {
+            Router.back();
+          }
+          break;
+        case 'REQUEST_AUTHORIZATION':
+          getToken()
+            .then(res => {
+              if (res !== null) {
+                const accessToken = res.accessToken;
+                const { iv, encryptedData } = encryptAccessToken(accessToken);
+                // const signature = createHmacSignature(encryptedData);
+                sendMessage({
+                  type: 'AUTHORIZATION',
+                  payload: {
+                    iv,
+                    encryptedData,
+                    // signature,
+                  },
+                  version: '1.0',
+                });
+              }
+            })
+            .catch(err => {
+              console.error(err);
+            });
+          break;
+      }
+    };
 
-  useFocusEffect(
-    useCallback(() => {
-      () => {
-        setReloadKey(prevKey => prevKey + 1);
-      };
-    }, []),
-  );
+    useFocusEffect(
+      useCallback(() => {
+        () => {
+          setReloadKey(prevKey => prevKey + 1);
+        };
+      }, []),
+    );
 
-  useEffect(() => {
-    if (dataForWebView) {
-      sendMessage(dataForWebView);
-    }
-  }, [dataForWebView]);
+    useEffect(() => {
+      if (dataForWebView) {
+        sendMessage(dataForWebView);
+      }
+    }, [dataForWebView]);
 
-  const INJECTEDJAVASCRIPT = `
+    const INJECTEDJAVASCRIPT = `
     const metaList = [
       {'name': 'viewport', 'content': 'initial-scale=1.0, maximum-scale=1.0'},
       {'http-equiv': 'X-Frame-Options', 'content': 'deny'},
@@ -110,32 +121,33 @@ const WebViewContainer = ({
     ${injectedJavaScript}
   `;
 
-  return (
-    <WebView
-      key={reloadKey}
-      ref={webViewRef}
-      source={{ uri: `${process.env.EXPO_PUBLIC_WEBVIEW_URL}${uri}` }}
-      onMessage={messageHandler}
-      bounces={false}
-      startInLoadingState={true}
-      cacheEnabled={true}
-      injectedJavaScript={INJECTEDJAVASCRIPT}
-      renderLoading={() => (
-        // spin loader
-        <View
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#000',
-          }}
-        >
-          <ActivityIndicator size="large" color="white" />
-        </View>
-      )}
-      {...restProps}
-    />
-  );
-};
+    return (
+      <WebView
+        key={reloadKey}
+        ref={webViewRef}
+        source={{ uri: `${process.env.EXPO_PUBLIC_WEBVIEW_URL}${uri}` }}
+        onMessage={messageHandler}
+        bounces={false}
+        startInLoadingState={true}
+        cacheEnabled={true}
+        injectedJavaScript={INJECTEDJAVASCRIPT}
+        renderLoading={() => (
+          // spin loader
+          <View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#000',
+            }}
+          >
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
+        {...restProps}
+      />
+    );
+  },
+);
 
 export default memo(WebViewContainer);

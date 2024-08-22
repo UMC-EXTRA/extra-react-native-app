@@ -3,13 +3,15 @@ import { Router } from '@/scripts/router';
 import { BackHeaderContainer } from '@/components/Container';
 import { useAppDispatch } from '@/redux/hooks';
 import { setId, setTitle } from '@/redux/manage/memberManageSlice';
+import { useRef } from 'react';
 
 const ManageScreen = () => {
+  const webViewRef = useRef(null);
   const dispatch = useAppDispatch();
 
   const onMessage = (data: MessageType) => {
     if (data.type === 'NAVIGATION_MANAGE') {
-      Router.replace('/member/manage');
+      webViewRef.current?.reload();
     }
     if (data.type === 'NAVIGATION_MANAGE_DETAIL') {
       const typedData = data as MessageType & {
@@ -39,7 +41,11 @@ const ManageScreen = () => {
       title="촬영 관리"
       onPress={() => Router.push('/member')}
     >
-      <WebViewContainer uri="/extra-shoot-manage" onMessage={onMessage} />
+      <WebViewContainer
+        uri="/extra-shoot-manage"
+        onMessage={onMessage}
+        ref={webViewRef}
+      />
     </BackHeaderContainer>
   );
 };
